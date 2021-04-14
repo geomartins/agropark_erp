@@ -1,16 +1,16 @@
 <template>
   <q-page>
-    <app-welcome-desktop></app-welcome-desktop>
+    <app-welcome-desktop-test></app-welcome-desktop-test>
     <app-welcome-electron></app-welcome-electron>
   </q-page>
 </template>
 
 <script>
-import WelcomeDesktop from '../components/desktop/WelcomeDesktop'
+import WelcomeDesktopTest from '../components/desktop/WelcomeDesktopTest'
 import WelcomeElectron from '../components/electron/WelcomeElectron'
 export default {
   components: {
-    'app-welcome-desktop': WelcomeDesktop,
+    'app-welcome-desktop-test': WelcomeDesktopTest,
     'app-welcome-electron': WelcomeElectron
   }
 };
