@@ -6,8 +6,8 @@
                   <q-list bordered padding>
                     <q-item>
                       <q-item-section>
-                        <q-item-label overline>Sign In to your account</q-item-label>
-                        <q-item-label>Enter your email & password to login</q-item-label>
+                        <q-item-label overline>Reset your account password</q-item-label>
+                        <q-item-label>Enter your email to reset password</q-item-label>
                       
                       </q-item-section>
                     </q-item>
@@ -18,18 +18,16 @@
                 <q-input outlined v-model="text" label="Email Address" :dense="dense" />
               </q-card-section>
 
-              <q-card-section class="q-pt-none">
-                <q-input outlined v-model="text" label="Password" :dense="dense" />
-              </q-card-section>
+             
 
               <q-separator inset />
 
               <q-card-section>
-                <q-btn color="teal" class="full-width" label="Sign In" />
+                <q-btn color="teal" class="full-width" label="Generate Password Reset Link" />
               </q-card-section>
 
                <q-card-section class="q-pt-none">
-                <div class="text-overline text-weight-regular text-center" style="cursor: pointer" @click="$router.push('/auth/password_reset')">Forget password?? Reset Now</div>
+                <div class="text-overline text-weight-regular text-center" style="cursor: pointer" @click="$router.push('/auth/login')">Already have an account?? Login</div>
               </q-card-section>
             </q-card>
           </div>
@@ -37,7 +35,7 @@
 
 <script>
 export default {
-  name: "LoginForm",
+  name: "PasswordResetForm",
   data() {
     return {
        text: '',

@@ -6,8 +6,8 @@ const routes = [
     component: () => import('layouts/AuthLayout.vue'),
     children: [
       { path: '/auth/login', component: () => import('pages/auth/login.vue') },
-      { path: '/auth/forget_password', component: () => import('pages/auth/forget_password.vue') },
-      { path: '/auth/recovery_password', component: () => import('pages/auth/recovery_password.vue') }
+      { path: '/auth/password_reset', component: () => import('pages/auth/password_reset.vue') },
+      { path: '/auth/password_confirmation', component: () => import('pages/auth/password_confirmation.vue') },
     ]
   },
 

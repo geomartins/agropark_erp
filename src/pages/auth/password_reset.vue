@@ -1,7 +1,6 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-page-container>
-       <div class="login-flex-container">  <!-- row -->
+  <q-page>
+     <div class="password-reset-flex-container">  <!-- row -->
       <div class="left-section"></div> 
 
       <div class="right-section">
@@ -9,28 +8,33 @@
           <div class="right-section-logo">
             <img src="/logo.png" />
           </div>
-              <router-view />
+
+          <app-password-reset-form></app-password-reset-form>
 
         </div>
       </div>
 
     </div>
-    </q-page-container>
-  </q-layout>
+   
+  </q-page>
 </template>
 
 <script>
-
+import PasswordResetForm from "../../components/PasswordResetForm"
 export default {
-  // components: {
-  //   'login-register': require('components/LoginRegister.vue')
-  //     .default
-  // }
-}
+  components: {
+    "app-password-reset-form": PasswordResetForm
+  },
+  data(){
+    return {
+     
+    }
+  }
+};
 </script>
 
 <style>
-.login-flex-container{
+.password-reset-flex-container{
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -38,7 +42,7 @@ export default {
   background: grey;
   position: absolute;
 }
-.login-flex-container div.left-section{
+.password-reset-flex-container div.left-section{
   width: 60%;
   height: 100%;
   background: url('/login-left.jpg');
@@ -47,7 +51,7 @@ export default {
   background-position: center center;
 }
 
-.login-flex-container div.right-section{
+.password-reset-flex-container div.right-section{
   width: 40%;
   height: 100%;
   background: url('/illustration.png');
@@ -72,15 +76,14 @@ export default {
 
 
 @media (min-width: 0px) and (max-width: 600px){
-  .login-flex-container div.left-section{
+  .password-reset-flex-container div.left-section{
     display: none;
   }
 
-  .login-flex-container div.right-section{
+  .password-reset-flex-container div.right-section{
     width: 100%;
     padding: 0px;
     padding-top: 7rem;
-    
   }
 
  
@@ -91,6 +94,7 @@ export default {
 
   .q-card{
     box-shadow: 0px 0px white!important;
+    
     background: #fff;
   }
 
@@ -99,11 +103,11 @@ export default {
 
 
 @media (min-width: 601px) and (max-width: 1100px){
-  .login-flex-container div.left-section{
+  .password-reset-flex-container div.left-section{
      width: 50%;
   }
 
-  .login-flex-container div.right-section{
+  .password-reset-flex-container div.right-section{
      width: 50%;
   }
 }

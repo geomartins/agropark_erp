@@ -9,8 +9,8 @@ export default {
 }
 
 
-//TODO: 404 page, password reset, password confirmation, login, welcome page
-//TODO: Working on Auth Vuex
+//TODO: Working on  login, password word reset logic and implementation
+//TODO: Choosing brand color and admin layout
 
 </script>
 
