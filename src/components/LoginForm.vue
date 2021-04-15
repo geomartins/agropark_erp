@@ -8,24 +8,24 @@
                       <q-item-section>
                         <q-item-label overline>Sign In to your account</q-item-label>
                         <q-item-label>Enter your email & password to login</q-item-label>
-                      
                       </q-item-section>
                     </q-item>
                   </q-list>
               </q-card-section>
 
               <q-card-section class="q-pt-none">
-                <q-input outlined v-model="text" label="Email Address" :dense="dense" />
+               
+                <q-input outlined v-model="email" label="Email Address" :dense="dense" />
               </q-card-section>
 
               <q-card-section class="q-pt-none">
-                <q-input outlined v-model="text" label="Password" :dense="dense" />
+                <q-input type="password" outlined v-model="password" label="Password" :dense="dense" />
               </q-card-section>
 
               <q-separator inset />
 
               <q-card-section>
-                <q-btn color="teal" class="full-width" label="Sign In" />
+                <q-btn color="teal" class="full-width" label="Sign In" @click.prevent="login()" />
               </q-card-section>
 
                <q-card-section class="q-pt-none">
@@ -40,9 +40,21 @@ export default {
   name: "LoginForm",
   data() {
     return {
-       text: '',
        dense: true,
     };
+  },
+  computed: {
+      email:  {
+        get() { return this.$store.getters["login/fetchEmail"]; },
+        set(value){ this.$store.commit('login/UPDATE_EMAIL',value); }   
+      },
+      password: {
+        get(){ return this.$store.getters["login/fetchPassword"]; },
+        set(value){ this.$store.commit('login/UPDATE_PASSWORD',value); }   
+      },
+  },
+  methods: {
+    login(){ this.$store.dispatch('login/login',this); },
   }
 };
 </script>

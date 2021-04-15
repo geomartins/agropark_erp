@@ -1,22 +1,22 @@
 import { firebaseAuth } from '../boot/firebase'
 class AuthService{
-    login(email, password){
-        firebaseAuth.signInWithEmailAndPassword(email, password).then(user => {
+    async login(email, password){
+        return firebaseAuth.signInWithEmailAndPassword(email, password).then(user => {
             return user;
         }).catch(err => {
             throw err;
         });
     }
-    password_reset(email){
-        firebaseAuth.sendPasswordResetEmail(email).then(result => {
+    async password_reset(email){
+        return firebaseAuth.sendPasswordResetEmail(email).then(result => {
             return result;
         }).catch(err => {
             throw err;
         });
     }
 
-    password_reset_confirmation(code,password){
-        firebaseAuth.confirmPasswordReset(code,password).then(() => {
+    async  password_reset_confirmation(code,password){
+        return firebaseAuth.confirmPasswordReset(code,password).then(() => {
             return null;
         }).catch(err => {
             throw err;

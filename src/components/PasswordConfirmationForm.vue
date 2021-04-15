@@ -15,10 +15,10 @@
               </q-card-section>
 
               <q-card-section class="q-pt-none">
-                <q-input outlined v-model="text" label="Password" :dense="dense" />
+                <q-input type="password" outlined v-model="password" label="Password" :dense="dense" />
               </q-card-section>
                <q-card-section class="q-pt-none">
-                <q-input outlined v-model="text" label="Confirm Password" :dense="dense" />
+                <q-input type="password" outlined v-model="confirm_password" label="Confirm Password" :dense="dense" />
               </q-card-section>
 
              
@@ -41,10 +41,28 @@ export default {
   name: "PasswordConfirmationForm",
   data() {
     return {
-       text: '',
        dense: true,
     };
-  }
+  },
+  computed: {
+        password:  {
+          get() { return this.$store.getters["password_confirmation/fetchPassword"]; },
+          set(value){ this.$store.commit('password_confirmation/UPDATE_PASSWORD',value); }   
+        },
+        confirm_password:  {
+          get() { return this.$store.getters["password_confirmation/fetchConfirmPassword"]; },
+          set(value){ this.$store.commit('password_confirmation/UPDATE_CONFIRM_PASSWORD',value); }   
+        },
+    },
+    methods: {
+      confirm(){ 
+        this.$store.dispatch("password_confirmation/confirm",this); 
+      }
+    },
+    created() {
+      let queryCode = this.$route.query.oobCode;
+      this.$store.commit('password_confirmation/UPDATE_CODE',queryCode)
+    },
 };
 </script>
 

@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import login from './auth/login'
+import password_reset from './auth/password_reset'
+import password_confirmation from './auth/password_confirmation'
 
 // import example from './module-example'
 
@@ -20,6 +22,8 @@ export default function (/* { ssrContext } */) {
     modules: {
       // example
       login,
+      password_reset,
+      password_confirmation
     },
 
     // enable strict mode (adds overhead!)

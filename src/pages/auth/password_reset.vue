@@ -1,8 +1,5 @@
-<template>
-    <div>
+<template> 
       <app-password-reset-form></app-password-reset-form>
-    </div>
- 
 </template>
 
 <script>

@@ -1,11 +1,33 @@
 import { Notify, Loading, LoadingBar, LocalStorage } from 'quasar'
 
-const snackbar = (type, message, position='top-left') => {
-    Notify.create({
-        type: type,
-        message: message,
-        position: position,
-    })
+const snackbar = (type, message, position='bottom-right') => {
+
+    if(type == 'warning'){
+        Notify.create({
+            type: 'negative',
+            position: position,
+            message: message,
+            timeout: 10000,
+            textColor: 'white',
+            color: 'red',
+            actions: [{  color: 'white' }]
+
+        })
+    }
+
+    if(type == 'success'){
+        Notify.create({
+            type: 'positive',
+            position: position,
+            message: message,
+            timeout: 10000,
+            textColor: 'white',
+            color: 'green',
+            actions: [{  color: 'white' }]
+
+        })
+    }   
+
 }
 
 const showLoading = (message) => {

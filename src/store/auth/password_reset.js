@@ -1,40 +1,36 @@
 import AuthService from '../../services/auth_service'
 import { snackbar, showLoading, hideLoading } from '../../repositories/plugins'
-import { loginValidator } from '../../repositories/validators'
+import { passwordResetValidator } from '../../repositories/validators'
+
 const state = {
    formData: {
-      email: '',
-      password: '',
+       email: '',
    }
 
 }
 const getters = { 
-     fetchEmail: (state) => {
+    fetchEmail: (state) => {
         return state.formData.email;
-     },
-     fetchPassword: (state) => {
-         return state.formData.password;
-     }
+    },
+   
+    
 }
-const mutations = { 
+const mutations = {
+
     UPDATE_EMAIL(state, value){
         state.formData.email = value;
     },
-    UPDATE_PASSWORD(state, value){
-        state.formData.password = value;
-    },
-    CLEAR_FORMDATA(state){
+    CLEAR_FORM_DATA(state){
         state.formData.email = '';
-        state.formData.password = '';
     }
-   
+
 }
 const actions = {
+
     async login({commit, state},instance){
         const email = state.formData.email;
-        const password = state.formData.password;
 
-        const result = await loginValidator(email, password);
+        const result = await passwordResetValidator(email);
         if(result == false){
             return ;
         }
@@ -42,16 +38,19 @@ const actions = {
         try{
             showLoading();
             let authService = new AuthService();
-            await authService.login(email, password);
+            await authService.password_reset(email);
+            commit('CLEAR_FORM_DATA');
             hideLoading();
-            instance.$router.push('/admin/dashboard');
-           
+            snackbar('success','Password reset mail sent successfully');
+
         }catch(err){
             snackbar('warning',err.message);
             hideLoading();
         }
         
     },
+
+   
 
 }
 
