@@ -43,7 +43,7 @@ const confirmPasswordValidator = async (code,password) => {
 
 const passwordMatchValidator = async (password, confirm_password) => {
     let result = true;
-    if(password != confirm_password){
+    if(password !== confirm_password){
         snackbar('warning', 'Password and Confirm Password does not match ')
         result = false;
     }

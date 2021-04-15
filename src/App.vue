@@ -9,7 +9,6 @@ export default {
 }
 
 
-//TODO: Working on  login, password word reset logic and implementation
 //TODO: Choosing brand color and admin layout
 
 </script>

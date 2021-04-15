@@ -58,7 +58,8 @@ const actions = {
             await authService.password_reset_confirmation(code,password);
             commit('CLEAR_FORM_DATA');
             hideLoading();
-           instance.$router.push('/admin/dashboard');
+            snackbar('success','Password Update Successful.. Kindly log in ')
+            instance.$router.push('/auth/login');
 
         }catch(err){
             snackbar('warning',err.message);

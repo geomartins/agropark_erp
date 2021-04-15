@@ -27,7 +27,7 @@ const mutations = {
 }
 const actions = {
 
-    async login({commit, state},instance){
+    async reset({commit, state},instance){
         const email = state.formData.email;
 
         const result = await passwordResetValidator(email);

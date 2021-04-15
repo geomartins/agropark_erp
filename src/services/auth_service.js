@@ -23,8 +23,8 @@ class AuthService{
         });
     }
 
-    static logout(){
-        firebaseAuth.signOut().then(result => {
+    static async logout(){
+        return firebaseAuth.signOut().then(result => {
             return result;
         }).catch(err => {
             throw err;

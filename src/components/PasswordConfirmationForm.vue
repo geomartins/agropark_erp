@@ -26,7 +26,7 @@
               <q-separator inset />
 
               <q-card-section>
-                <q-btn color="teal" class="full-width" label="Update Password" />
+                <q-btn color="teal" class="full-width" label="Update Password" @click.prevent="confirm()" />
               </q-card-section>
 
                <q-card-section class="q-pt-none">
