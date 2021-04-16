@@ -9,7 +9,10 @@ export default {
 }
 
 
-//TODO: Choosing brand color and admin layout
+//TODO: Creation of module categories in database
+//TODO: Creation of module categories page (edit, delete)
+//TODO: Working with custom auth claim
+
 
 </script>
 
