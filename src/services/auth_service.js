@@ -23,6 +23,15 @@ class AuthService{
         });
     }
 
+    async customClaim(){
+        firebaseAuth.currentUser.getIdTokenResult(true).then((idTokenResult) => {
+            //get the user custom claim: e.g coo, cfo
+            return idTokenResult.claims.moderator;
+        }).catch(err => {
+            throw err;
+        });
+    }
+
     static async logout(){
         return firebaseAuth.signOut().then(result => {
             return result;
