@@ -4,6 +4,7 @@ import login from './auth/login'
 import password_reset from './auth/password_reset'
 import password_confirmation from './auth/password_confirmation'
 import admin_layout from './admin_layout'
+import module_categories from './admin/module_categories'
 
 // import example from './module-example'
 
@@ -21,11 +22,18 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      // example
+      
+      //auth
       login,
       password_reset,
       password_confirmation,
-      admin_layout
+      admin_layout,
+ 
+      //admin
+      module_categories,
+
+
+
     },
 
     // enable strict mode (adds overhead!)

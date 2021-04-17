@@ -20,6 +20,7 @@ const routes = [
     },
     children: [
       { path: '/admin/dashboard', component: () => import('pages/admin/dashboard.vue') },
+      { path: '/admin/module_categories', component: () => import('src/pages/admin/module_categories.vue') }
     ]
   },
 

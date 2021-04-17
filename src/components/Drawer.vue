@@ -6,6 +6,7 @@
       bordered
       content-class="bg-white"
       :width="280"
+      side="left"
     >
       <q-scroll-area class="fit">
         <q-list padding class="text-grey-8">

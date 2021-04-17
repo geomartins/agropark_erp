@@ -1,8 +1,9 @@
 
 import { fasGlobeAmericas, fasFlask } from '@quasar/extras/fontawesome-v5'
 const state = {
-    
+        component_name: '',
         leftDrawerOpen: true,
+        rightDrawerOpen: true,
         search: '',
         showAdvanced: false,
         showDateOptions: false,
@@ -41,6 +42,9 @@ const getters = {
     fetchLeftDrawerOpen: (state) => {
         return state.leftDrawerOpen;
     },
+    fetchRightDrawerOpen: (state) => {
+        return state.rightDrawerOpen;
+    },
 
     fetchSearch: (state) => {
         return state.search;
@@ -53,8 +57,14 @@ const mutations = {
     UPDATE_LEFT_DRAWER_OPEN(state, value){
         state.leftDrawerOpen = value;
     },
+    UPDATE_RIGHT_DRAWER_OPEN(state, value){
+        state.rightDrawerOpen = value;
+    },
     UPDATE_SEARCH(state, value){
         state.search = value;
+    },
+    UPDATE_COMPONENT_NAME(state, value){
+        state.component_name = value;
     },
 
    TOGGLE_LEFT_DRAWER(state){

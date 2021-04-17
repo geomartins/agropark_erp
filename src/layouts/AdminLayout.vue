@@ -1,8 +1,11 @@
 <template>
   <q-layout view="hHh lpR fFf" class="bg-grey-1">
-    
+   
     <app-header ></app-header>
     <app-drawer></app-drawer>
+    <app-drawer-right></app-drawer-right>
+
+    
 
     <q-page-container>
       <router-view />
@@ -14,15 +17,19 @@
 
 <script>
 import Drawer from '../components/Drawer';
+import DrawerRight from '../components/DrawerRight';
 import Header from '../components/Header';
 export default {
   name: 'GoogleNewsLayout',
   components: {
     "app-drawer": Drawer,
+    "app-drawer-right": DrawerRight,
     "app-header": Header
   },
   data () {
-    return {}
+    return {
+      right: true
+    }
   },
   methods: {
     onClear () {
