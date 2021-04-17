@@ -8,8 +8,8 @@ class ModuleCategory{
     }
 
     static fetch(cb){
-        return moduleCategoryCollections.orderBy('timestamp','desc').onSnapshot((querySnapshot) => {
-            let data = [];
+        let data = [];
+        let unsubscribe = moduleCategoryCollections.orderBy('timestamp','desc').onSnapshot((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 data.push({ 
                     name: doc.data().name,
@@ -18,8 +18,10 @@ class ModuleCategory{
                     id: doc.id
                 });
             });
-            return cb(data);
+        },(err) => {
+            throw err;
         });
+        return cb(data, unsubscribe);
     }
 
     async save(){

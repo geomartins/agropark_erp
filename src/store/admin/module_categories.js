@@ -1,5 +1,6 @@
 import { snackbar } from 'src/repositories/plugins';
 import ModuleCategory from '../../models/module_category'
+import ChainValidators from '../../repositories/chain_validators'
 const state = {
    id: '',
    formData: {
@@ -9,6 +10,7 @@ const state = {
    mode: 'create',
    is_loading: false,
    datas: [],
+   unsubscribe: ''
    
 }
 const getters = { 
@@ -42,10 +44,13 @@ const actions = {
         const description = state.formData.description;
         const id = '';
 
-        // const result = await loginValidator(email, password);
-        // if(result == false){
-        //     return ;
-        // }
+
+        const name_validator = new ChainValidators(name,'name').notNull().validate;
+        const description_validator = new ChainValidators(description, 'description').notNull().validate;
+        if(name_validator == false || description_validator == false){
+            return '';
+        }
+
 
         try{
             commit('UPDATE_IS_LOADING', true);
@@ -64,8 +69,9 @@ const actions = {
 
     async fetch({commit, state},instance){
         try{
-            ModuleCategory.fetch((data) => {
+            ModuleCategory.fetch((data,unsubscribe) => {
                 state.datas = data;
+                state.unsubscribe = unsubscribe;
            })
         }catch(err){
             snackbar('warning',err.message);
@@ -86,10 +92,13 @@ const actions = {
         const description = state.formData.description;
         const id = state.id;
 
-        // const result = await loginValidator(email, password);
-        // if(result == false){
-        //     return ;
-        // }
+        const name_validator = new ChainValidators(name,'name').notNull().validate;
+        const description_validator = new ChainValidators(description, 'description').notNull().validate;
+        const id_validator = new ChainValidators(id, 'id').notNull().validate;
+
+        if(name_validator == false || description_validator == false || id_validator == false){
+            return '';
+        }
 
         try{
             commit('UPDATE_IS_LOADING', true);
