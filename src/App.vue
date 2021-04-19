@@ -9,8 +9,9 @@ export default {
 }
 
 
-//TODO: Creation of module categories in database
-//TODO: Creation of module categories page (edit, delete)
+//TODO: Creation of department module
+//TODO: Creation of unit module
+//TODO: Creation of department-module relationship
 //TODO: Working with custom auth claim
 
 

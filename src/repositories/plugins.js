@@ -1,4 +1,4 @@
-import { Notify, Loading, LoadingBar, LocalStorage } from 'quasar'
+import { Notify, Loading, LoadingBar, LocalStorage, Dialog } from 'quasar'
 
 const snackbar = (type, message, position='bottom-right') => {
 
@@ -55,6 +55,24 @@ const getData = (key) => {
     LocalStorage.getItem(key);
 }
 
+const confirm = async (title, message) => {
+    return Dialog.create({
+        title: title,
+        message: message,
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        return true
+      }).onOk(() => {
+        return true;
+      }).onCancel(() => {
+        return false;
+      }).onDismiss(() => {
+        return false;
+    });
+
+}
+
 
 
 export {
@@ -65,4 +83,5 @@ export {
     hideLoadingBar,
     setData,
     getData,
+    confirm,
 }

@@ -1,0 +1,18 @@
+.q-table thead tr, .q-table tbody td {
+    height: 54px;
+}
+
+.deleteIcon, .editIcon{
+    /* color: #898989; */
+    color: #ccc;
+    font-size: .65rem;
+    cursor: pointer;
+}
+
+.deleteIcon:hover{
+    color: red;
+}
+
+.editIcon:hover{
+    color: teal;
+}

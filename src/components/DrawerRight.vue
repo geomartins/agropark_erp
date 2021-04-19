@@ -5,13 +5,14 @@
       show-if-above
       bordered
       content-class="bg-white"
-      :width="280"
+      :width="480"
       side="right"
-    >
+      
+     v-if="rightDrawerOpen == true">
       <q-scroll-area class="fit">
 
           <component :is="$store.state.admin_layout.component_name"></component>
-          <q-btn label="Martin"></q-btn>
+         
       
       </q-scroll-area>
     </q-drawer>

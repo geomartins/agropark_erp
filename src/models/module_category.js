@@ -1,4 +1,6 @@
 import { moduleCategoryCollections, firebaseAuth, timestamp } from '../boot/firebase'
+import { purifyObject} from '../repositories/pick';
+
 class ModuleCategory{
     constructor(name, description, id = null){
         this.name = name;
@@ -7,39 +9,40 @@ class ModuleCategory{
         this.user = firebaseAuth.currentUser ? firebaseAuth.currentUser.uid : null;
     }
 
-    static fetch(cb){
-        let data = [];
-        let unsubscribe = moduleCategoryCollections.orderBy('timestamp','desc').onSnapshot((querySnapshot) => {
+    fetch(cb){
+        
+        return moduleCategoryCollections.orderBy('timestamp','desc').onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
+            let data = [];
             querySnapshot.forEach((doc) => {
-                data.push({ 
-                    name: doc.data().name,
-                    description: doc.data().description, 
-                    timestamp: doc.data().timestamp, 
-                    id: doc.id
-                });
-            });
+                let ch = { ...doc.data() };
+                ch.id = doc.id;
+                data.push(ch);
+                 
+             });
+            return cb(data)
         },(err) => {
             throw err;
         });
-        return cb(data, unsubscribe);
     }
 
     async save(){
         let data = this;
 
-        if(this.id == null){  //add
+        if(!this.id){  //add
             data.timestamp = timestamp;
             delete data.id;
     
-            return moduleCategoryCollections.add(data).then((docRef) => {
+            return moduleCategoryCollections.add(purifyObject(data)).then((docRef) => {
                 return docRef;
             }).catch(err => {
                 throw err;
             });
 
         }else{  //update
+            let id = data.id;
             delete data.id;
-            return moduleCategoryCollections.doc(this.id).update(data).then((docRef) => {
+           
+            return moduleCategoryCollections.doc(id).update(purifyObject(data)).then((docRef) => {
                 return docRef;
             }).catch(err => {
                 throw err;
@@ -51,6 +54,7 @@ class ModuleCategory{
 
     static async deleteById(id){
         return moduleCategoryCollections.doc(id).delete().then(()=> {
+            console.log('Deleting');
             return null;
         }).catch(err => {
             throw err;
