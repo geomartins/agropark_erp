@@ -5,6 +5,10 @@ import password_reset from './auth/password_reset'
 import password_confirmation from './auth/password_confirmation'
 import admin_layout from './admin_layout'
 import module_categories from './admin/module_categories'
+import module_activities from './admin/module_activities'
+import departments from './admin/departments';
+import units from './admin/units';
+import roles from './admin/roles'
 
 // import example from './module-example'
 
@@ -31,6 +35,10 @@ export default function (/* { ssrContext } */) {
  
       //admin
       module_categories,
+      module_activities,
+      departments,
+      units,
+      roles,
 
 
 

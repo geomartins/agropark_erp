@@ -15,6 +15,15 @@ var firebaseConfig = {
     messagingSenderId: "568815498090",
     appId: "1:568815498090:web:0311aa1eea2afebd016b13",
     measurementId: "G-4GNQWKTS9G"
+
+
+    // apiKey: "AIzaSyB8-f7ALtW-fQAWSJ8oTffqwvrp_Ux6Suk",
+    // authDomain: "agropark-erp.firebaseapp.com",
+    // projectId: "agropark-erp",
+    // storageBucket: "agropark-erp.appspot.com",
+    // messagingSenderId: "309329127919",
+    // appId: "1:309329127919:web:ce3ff90a181f68bb5bee1a",
+    // measurementId: "G-3Q4VP7SGFK"
 }
 // Initialize Firebase
 const firebaseApp = firebase.initializeApp(firebaseConfig)
@@ -22,6 +31,10 @@ const firebaseAuth = firebaseApp.auth()
 const fs = firebaseApp.firestore()
 const domainCollections = fs.collection('domains')
 const moduleCategoryCollections = fs.collection('module_categories');
+const moduleActivityCollections = fs.collection('module_activities');
+const departmentCollections = fs.collection('departments');
+const unitCollections = fs.collection('units');
+const roleCollections = fs.collection('roles');
 const timestamp = firebase.firestore.FieldValue.serverTimestamp()
 // firebase.analytics();
 
@@ -30,6 +43,10 @@ export {
   fs, 
   domainCollections,
   moduleCategoryCollections,
+  moduleActivityCollections,
+  departmentCollections,
+  unitCollections,
+  roleCollections,
   timestamp 
 }
 

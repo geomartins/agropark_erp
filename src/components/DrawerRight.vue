@@ -23,11 +23,28 @@
 <script>
 import ModuleCategoriesCreateForm from "./forms/ModuleCategoriesCreateForm"
 import ModuleCategoriesUpdateForm from "./forms/ModuleCategoriesUpdateForm"
+
+import DepartmentsCreateForm from "./forms/DepartmentsCreateForm"
+import DepartmentsUpdateForm from "./forms/DepartmentsUpdateForm"
+
+import UnitsCreateForm from "./forms/UnitsCreateForm"
+import UnitsUpdateForm from "./forms/UnitsUpdateForm"
+
+import RolesCreateForm from "./forms/RolesCreateForm"
+import RolesUpdateForm from "./forms/RolesUpdateForm"
+
+
 export default {
     name: 'Drawer',
     components: {
         "app-module-categories-create-form": ModuleCategoriesCreateForm,
         "app-module-categories-update-form": ModuleCategoriesUpdateForm,
+        "app-departments-create-form": DepartmentsCreateForm,
+        "app-departments-update-form": DepartmentsUpdateForm,
+        "app-units-create-form": UnitsCreateForm,
+        "app-units-update-form": UnitsUpdateForm,
+        "app-roles-create-form": RolesCreateForm,
+        "app-roles-update-form": RolesUpdateForm,
     },
     data(){
         return {

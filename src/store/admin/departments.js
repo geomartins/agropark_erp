@@ -1,5 +1,5 @@
 import { snackbar, confirm } from 'src/repositories/plugins';
-import ModuleCategory from '../../models/module_category'
+import Department from '../../models/department'
 import ChainValidators from '../../repositories/chain_validators'
 const state = {
    id: '',
@@ -25,9 +25,9 @@ const state = {
   columns: [
     { name: 'id', label: 'S/N', field: 'id', sortable: true, style: 'width: 5px', },
     {
-      name: 'category',
+      name: 'name',
       required: true,
-      label: 'Module Categories',
+      label: 'Departments',
       align: 'left',
       field: row => row.name,
       format: val => `${val}`,
@@ -111,8 +111,8 @@ const actions = {
 
         try{
             commit('UPDATE_IS_LOADING', true);
-            let moduleCategory = new ModuleCategory(name,description,id);
-            await moduleCategory.save();
+            let department = new Department(name,description,id);
+            await department.save();
 
             snackbar('success','item created successfully')
             commit("CLEAR_FORM_DATA");
@@ -126,7 +126,7 @@ const actions = {
 
     async fetch({commit, state}){
         try{
-            let unsubscribe = new ModuleCategory().fetch((datas,unsubscribe) => {
+            let unsubscribe = new Department().fetch((datas,unsubscribe) => {
                 commit('UPDATE_DATA',datas);
                 console.log(state.datas,'DATA')
            })
@@ -142,7 +142,7 @@ const actions = {
         let x = (await confirm('Confirm','Would you like to delete the selected item?'));
         x.onOk(()=> {
             console.log(id);
-            ModuleCategory.deleteById(id).then().catch(err => {
+            Department.deleteById(id).then().catch(err => {
                 snackbar('warning',err.message);
             });
         })
@@ -164,8 +164,8 @@ const actions = {
 
         try{
             commit('UPDATE_IS_LOADING', true);
-            let moduleCategory = new ModuleCategory(name,description,id);
-            await moduleCategory.save();
+            let department = new Department(name,description,id);
+            await department.save();
 
             snackbar('success','item updated successfully')
             commit("CLEAR_FORM_DATA");

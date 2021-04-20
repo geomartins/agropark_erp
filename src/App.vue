@@ -9,8 +9,8 @@ export default {
 }
 
 
-//TODO: Creation of department module
-//TODO: Creation of unit module
+//TODO: Work on seo and meta-tag
+//TODO: Creation of module-activity-logs
 //TODO: Creation of department-module relationship
 //TODO: Working with custom auth claim
 

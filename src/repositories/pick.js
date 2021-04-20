@@ -2,6 +2,24 @@ const purifyObject = (data) => {
     return Object.assign({}, data);
 }
 
+const generateUid = (name) => {
+  let trimmedName = name.trim();
+  let filteredName = trimmedName.replace(/\s/g, '-');
+  return filteredName+'.'+makeid(5);
+
+}
+
+const  makeid = (length)  => {
+  var result           = [];
+  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for ( var i = 0; i < length; i++ ) {
+    result.push(characters.charAt(Math.floor(Math.random() * 
+charactersLength)));
+ }
+ return result.join('');
+}
+
 const sortBy = (key, reverse) => {
 
     // Move smaller items towards the front
@@ -38,5 +56,6 @@ const sortBy = (key, reverse) => {
 
 export {
     purifyObject,
-    sortBy
+    sortBy,
+    generateUid,
 }
