@@ -1,11 +1,13 @@
 <template>
     <q-header  class="bg-white text-grey-8" height-hint="64">
+      <app-header-bar></app-header-bar>
+
       <q-toolbar class="GNL__toolbar">
         <q-btn
           flat
           dense
           round
-          @click="toggleLeftDrawer()"
+          @click.prevent="toggleLeftDrawer()"
           aria-label="Menu"
           icon="menu"
           class="q-mr-sm"
@@ -21,7 +23,7 @@
         <q-input class="GNL__toolbar-input" outlined dense v-model="search" color="bg-grey-7 shadow-1" placeholder="Search for modules, categories and task">
           <template v-slot:prepend>
             <q-icon v-if="$store.state.admin_layout.search === ''" name="search" />
-            <q-icon v-else name="clear" class="cursor-pointer" @click="search = ''" />
+            <q-icon v-else name="clear" class="cursor-pointer" @click.prevent="search = ''" />
           </template>
           <template v-slot:append>
             <q-btn
@@ -60,17 +62,22 @@
 </template>
 
 <script>
+import HeaderBar from './HeaderBar'
 export default {
     name: 'Header',
+    components: {
+       "app-header-bar": HeaderBar
+    },
     data(){
         return {
-
+            
         }
     },
     methods: {
         toggleLeftDrawer(){
             this.$store.commit('admin_layout/TOGGLE_LEFT_DRAWER')
-        }
+        },
+       
     },
     computed: {
       search:  {

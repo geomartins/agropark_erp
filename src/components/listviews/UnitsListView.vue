@@ -25,7 +25,7 @@
                             </q-td>
                            
                             <q-td key="timestamp" :props="props">
-                                <q-btn flat  icon="visibility" padding="xs" class="editIcon" @click="props.expand = !props.expand">
+                                <q-btn flat  icon="visibility" padding="xs" class="editIcon" @click.prevent="props.expand = !props.expand">
                                     <q-tooltip>
                                       View
                                     </q-tooltip>
@@ -57,12 +57,12 @@
 
 
                     <template v-slot:top>
-                      <q-icon name="file_download" style="color: #ccc; font-size: 1.8em;" @click="exportable()">
+                      <q-icon name="file_download" style="color: #ccc; font-size: 1.8em;" @click.prevent="exportable()">
                            <q-tooltip>
                              Export
                            </q-tooltip>
                       </q-icon>
-                      <q-icon name="add" style="color: #ccc; font-size: 1.8em;" @click="showCreateForm()">
+                      <q-icon name="add" style="color: #ccc; font-size: 1.8em;" @click.prevent="showCreateForm()">
                            <q-tooltip>
                              Create
                            </q-tooltip>
@@ -86,8 +86,9 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import UnitsListTile from '../listtiles/UnitsListTile'
-export default {
+export default Vue.extend({
     name: "UnitsListView",
     components: {
         "app-units-list-tile": UnitsListTile
@@ -130,5 +131,5 @@ export default {
 
       }
    }
-}
+})
 </script>

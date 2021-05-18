@@ -5,7 +5,8 @@ const purifyObject = (data) => {
 const generateUid = (name) => {
   let trimmedName = name.trim();
   let filteredName = trimmedName.replace(/\s/g, '-');
-  return filteredName+'.'+makeid(5);
+  return filteredName;
+  //return filteredName+'.'+makeid(5);
 
 }
 

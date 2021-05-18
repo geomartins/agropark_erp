@@ -1,17 +1,16 @@
-import { moduleCategoryCollections, firebaseAuth, timestamp } from '../boot/firebase'
-import { purifyObject} from '../repositories/pick';
+import { moduleCategoryCollections, firebaseAuth, timestamp, fs } from '../boot/firebase'
+import { purifyObject, generateUid } from '../repositories/pick';
 
 class ModuleCategory{
     constructor(name, description, id = null){
         this.name = name;
         this.description = description;
         this.id = id;
-        this.user = firebaseAuth.currentUser ? firebaseAuth.currentUser.uid : null;
     }
 
     fetch(cb){
         
-        return moduleCategoryCollections.orderBy('timestamp','desc').onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
+        return moduleCategoryCollections.orderBy('createdAt','desc').onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
             let data = [];
             querySnapshot.forEach((doc) => {
                 let ch = { ...doc.data() };
@@ -29,10 +28,11 @@ class ModuleCategory{
         let data = this;
 
         if(!this.id){  //add
-            data.timestamp = timestamp;
+            data.createdAt = timestamp; data.creator = firebaseAuth.currentUser.uid;
+            data.deletedAt = null; data.editedAt = null; //default
             delete data.id;
     
-            return moduleCategoryCollections.add(purifyObject(data)).then((docRef) => {
+            return moduleCategoryCollections.doc(generateUid(data.name)).set(purifyObject(data)).then((docRef) => {
                 return docRef;
             }).catch(err => {
                 throw err;
@@ -41,25 +41,35 @@ class ModuleCategory{
         }else{  //update
             let id = data.id;
             delete data.id;
-           
+            data.editor = firebaseAuth.currentUser.uid; data.editedAt = timestamp;
+
             return moduleCategoryCollections.doc(id).update(purifyObject(data)).then((docRef) => {
                 return docRef;
             }).catch(err => {
                 throw err;
             });
         }
-        
     }
 
 
     static async deleteById(id){
-        return moduleCategoryCollections.doc(id).delete().then(()=> {
-            console.log('Deleting');
-            return null;
-        }).catch(err => {
-            throw err;
+        var ref = moduleCategoryCollections.doc(id);
+        return fs.runTransaction(async (transaction) => {
+            return transaction.get(ref).then((doc) => {
+                if (!doc.exists) {
+                    throw "Document does not exist!";
+                }
+                transaction.update(ref,  { deletedAt: timestamp, createdAt: null, deleter: firebaseAuth.currentUser.uid  });
+                transaction.delete(ref);
+            });
+        }).then(() => {
+            return ;
+        }).catch((err) => {
+            console.error(err);
         });
+
     }
+
 
 
 }

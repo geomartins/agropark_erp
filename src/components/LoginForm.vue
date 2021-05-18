@@ -29,7 +29,7 @@
               </q-card-section>
 
                <q-card-section class="q-pt-none">
-                <div class="text-overline text-weight-regular text-center" style="cursor: pointer" @click="$router.push('/auth/password_reset')">Forget password?? Reset Now</div>
+                <div class="text-overline text-weight-regular text-center" style="cursor: pointer" @click.prevent="$router.push('/auth/password_reset')">Forget password?? Reset Now</div>
               </q-card-section>
             </q-card>
           </div>

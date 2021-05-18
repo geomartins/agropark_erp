@@ -1,4 +1,4 @@
-import { departmentCollections, firebaseAuth, timestamp } from '../boot/firebase'
+import { departmentCollections, firebaseAuth, timestamp, fs } from '../boot/firebase'
 import { purifyObject, generateUid } from '../repositories/pick';
 
 class Department{
@@ -6,12 +6,11 @@ class Department{
         this.name = name;
         this.description = description;
         this.id = id;
-        this.author = firebaseAuth.currentUser ? firebaseAuth.currentUser.uid : null;
     }
 
     fetch(cb){
         
-        return departmentCollections.orderBy('timestamp','desc').onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
+        return departmentCollections.orderBy('createdAt','desc').onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
             let data = [];
             querySnapshot.forEach((doc) => {
                 let ch = { ...doc.data() };
@@ -29,7 +28,8 @@ class Department{
         let data = this;
 
         if(!this.id){  //add
-            data.timestamp = timestamp;
+            data.createdAt = timestamp; data.creator = firebaseAuth.currentUser.uid;
+            data.deletedAt = null; data.editedAt = null; //default
             delete data.id;
     
             return departmentCollections.doc(generateUid(data.name)).set(purifyObject(data)).then((docRef) => {
@@ -41,24 +41,35 @@ class Department{
         }else{  //update
             let id = data.id;
             delete data.id;
-           
+            data.editor = firebaseAuth.currentUser.uid; data.editedAt = timestamp;
+
             return departmentCollections.doc(id).update(purifyObject(data)).then((docRef) => {
                 return docRef;
             }).catch(err => {
                 throw err;
             });
         }
-        
     }
 
 
     static async deleteById(id){
-        return departmentCollections.doc(id).delete().then(()=> {
-            return null;
-        }).catch(err => {
-            throw err;
+        var ref = departmentCollections.doc(id);
+        return fs.runTransaction(async (transaction) => {
+            return transaction.get(ref).then((doc) => {
+                if (!doc.exists) {
+                    throw "Document does not exist!";
+                }
+                transaction.update(ref,  { deletedAt: timestamp, createdAt: null, deleter: firebaseAuth.currentUser.uid  });
+                transaction.delete(ref);
+            });
+        }).then(() => {
+            return ;
+        }).catch((err) => {
+            console.error(err);
         });
+
     }
+
 
 
 }

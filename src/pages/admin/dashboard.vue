@@ -1,13 +1,16 @@
 <template>
   <q-page class="flex flex-center">
-     <p @click="logout()"> Dashboard Page</p>
+     <p @click.prevent="$router.push('/admin/module_categories')"> Dashboard Page</p>
   </q-page>
 </template>
 
 <script>
 import AuthService from '../../services/auth_service';
 export default {
-  name: 'PageIndex',
+  name: 'Dashboard',
+  meta: {
+    titleTemplate: title => `Dashboard - ${title}  `,
+  },
   methods: {
     async logout(){
       console.log('hiiii')

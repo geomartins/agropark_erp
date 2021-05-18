@@ -1,6 +1,10 @@
 <template>
   <q-layout view="lHh Lpr lFf">
+    <q-header >
+     <app-header-bar></app-header-bar>
+    </q-header>
     <q-page-container>
+      
        <div class="login-flex-container">  <!-- row -->
       <div class="left-section"></div> 
 
@@ -20,12 +24,13 @@
 </template>
 
 <script>
-
+import HeaderBar from "../components/HeaderBar"
 export default {
-  // components: {
-  //   'login-register': require('components/LoginRegister.vue')
-  //     .default
-  // }
+  components: {
+    "app-header-bar": HeaderBar
+    // 'login-register': require('components/LoginRegister.vue')
+    //   .default
+  }
 }
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-    <q-list>
+    <q-list class="myFlex">
     <q-item>
         <q-item-section>
           <q-item-label>Name</q-item-label>

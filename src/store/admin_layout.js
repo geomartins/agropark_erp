@@ -62,7 +62,7 @@ const mutations = {
         }
         if(value == false){
             state.leftDrawerOpen = false;
-            state.rightDrawerOpen = true;
+            //state.rightDrawerOpen = true;
         }
     },
     UPDATE_RIGHT_DRAWER_OPEN(state, value){

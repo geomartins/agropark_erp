@@ -1,18 +1,19 @@
 <template>
-    <q-list>
+    <q-list class="myFlex">
     <q-item>
         <q-item-section>
-          <q-item-label>Name</q-item-label>
-          <q-item-label caption lines="2">{{  row.name ? row.name : ''  }}</q-item-label>
+          <q-item-label>Module</q-item-label>
+          <q-item-label caption lines="2">{{  row.module | filterModule  }}</q-item-label>
         </q-item-section>
     </q-item>
 
     <q-item>
         <q-item-section>
-          <q-item-label>Module Details</q-item-label>
-          <q-item-label caption lines="2">{{  row.modules ? row.modules : ''  }}</q-item-label>
+          <q-item-label>Event</q-item-label>
+          <q-item-label caption lines="2">{{  row.action  }}</q-item-label>
         </q-item-section>
     </q-item>
+
 
     <q-item>
         <q-item-section>
@@ -28,34 +29,16 @@
         </q-item-section>
     </q-item>
 
-    <q-item>
-        <q-item-section>
-          <q-item-label>Timestamp</q-item-label>
-          <q-item-label caption lines="2">{{  row.timestamp.toDate() ? row.timestamp.toDate() : ''  }}</q-item-label>
-        </q-item-section>
-    </q-item>
+   
 
 
-    <q-item>
+      <q-item>
         <q-item-section>
           <q-item-label>Notify Roles</q-item-label>
           <q-item-label caption lines="2">{{  row.notify_roles ? row.notify_roles : ''  }}</q-item-label>
         </q-item-section>
     </q-item>
 
-    <q-item>
-        <q-item-section>
-          <q-item-label>Notify Departments</q-item-label>
-          <q-item-label caption lines="2">{{  row.notify_departments ? row.notify_departments : ''  }}</q-item-label>
-        </q-item-section>
-    </q-item>
-
-    <q-item>
-        <q-item-section>
-          <q-item-label>Notify Units</q-item-label>
-          <q-item-label caption lines="2">{{  row.notify_units ? row.notify_units : ''  }}</q-item-label>
-        </q-item-section>
-    </q-item>
 
     <q-item>
         <q-item-section>
@@ -67,7 +50,14 @@
     <q-item>
         <q-item-section>
           <q-item-label>Author</q-item-label>
-          <q-item-label caption lines="2">{{  row.author ? row.author : ''  }}</q-item-label>
+          <q-item-label caption lines="2">{{  row.author | filterAuthor  }}</q-item-label>
+        </q-item-section>
+    </q-item>
+
+     <q-item>
+        <q-item-section>
+          <q-item-label>Timestamp</q-item-label>
+          <q-item-label caption lines="2">{{  row.timestamp.toDate() ? row.timestamp.toDate() : ''  }}</q-item-label>
         </q-item-section>
     </q-item>
 
@@ -77,9 +67,11 @@
 
 
 <script>
+import filters from '../../repositories/filters'
 export default {
     name: "ModuleActivitiesListTile",
     props: ['row'],
+    mixins: [filters],
     data(){
         return {
 

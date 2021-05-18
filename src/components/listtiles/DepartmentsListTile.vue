@@ -1,5 +1,5 @@
 <template>
-    <q-list>
+    <q-list class="myFlex">
     <q-item>
         <q-item-section>
           <q-item-label>Name</q-item-label>
@@ -18,14 +18,14 @@
     <q-item>
         <q-item-section>
           <q-item-label>Timestamp</q-item-label>
-          <q-item-label caption lines="2">{{  row.timestamp ? row.timestamp.toDate() : ''  }}</q-item-label>
+          <q-item-label caption lines="2">{{  row.createdAt ? row.createdAt.toDate() : ''  }}</q-item-label>
         </q-item-section>
     </q-item>
 
     <q-item>
         <q-item-section>
           <q-item-label>Author</q-item-label>
-          <q-item-label caption lines="2">{{  row.author  }}</q-item-label>
+          <q-item-label caption lines="2">{{ row.creator ? row.creator  :  '' | filterAuthor }}</q-item-label>
         </q-item-section>
     </q-item>
 
@@ -42,9 +42,12 @@
 
 
 <script>
+
+import filters from '../../repositories/filters'
 export default {
     name: "DepartmentsListTile",
     props: ['row'],
+    mixins: [filters],
     data(){
         return {
 

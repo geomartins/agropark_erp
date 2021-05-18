@@ -1,37 +1,37 @@
 <template>
-    <q-list>
+    <q-list class="myFlex">
     <q-item>
         <q-item-section>
           <q-item-label>Category</q-item-label>
-          <q-item-label caption lines="2">{{  row.name  }}</q-item-label>
+          <q-item-label caption lines="2">{{  row.name ? row.name : ''  }}</q-item-label>
         </q-item-section>
     </q-item>
 
     <q-item>
         <q-item-section>
           <q-item-label>Description</q-item-label>
-          <q-item-label caption lines="2">{{  row.description  }}</q-item-label>
+          <q-item-label caption lines="2">{{  row.description ? row.description : '' }}</q-item-label>
         </q-item-section>
     </q-item>
 
     <q-item>
         <q-item-section>
           <q-item-label>Category ID</q-item-label>
-          <q-item-label caption lines="2">{{  row.id  }}</q-item-label>
+          <q-item-label caption lines="2">{{  row.id ? row.id : ''  }}</q-item-label>
         </q-item-section>
     </q-item>
 
     <q-item>
         <q-item-section>
-          <q-item-label>Timestamp</q-item-label>
-          <q-item-label caption lines="2">{{  row.timestamp.toDate()  }}</q-item-label>
+          <q-item-label>CreatedAt</q-item-label>
+          <q-item-label caption lines="2">{{  row.createdAt ? row.createdAt.toDate() : '' }}</q-item-label>
         </q-item-section>
     </q-item>
 
     <q-item>
         <q-item-section>
           <q-item-label>User</q-item-label>
-          <q-item-label caption lines="2">{{  row.user  }}</q-item-label>
+          <q-item-label caption lines="2">{{ row.creator ? row.creator  :  '' | filterAuthor }}</q-item-label>
         </q-item-section>
     </q-item>
 
@@ -41,8 +41,10 @@
 
 
 <script>
+import filters from '../../repositories/filters'
 export default {
     name: "ModuleCategoriesListTile",
+    mixins: [filters],
     props: ['row'],
     data(){
         return {

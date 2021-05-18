@@ -30,7 +30,7 @@
               </q-card-section>
 
                <q-card-section class="q-pt-none">
-                <div class="text-overline text-weight-regular text-center" style="cursor: pointer" @click="$router.push('/auth/login')">Already have an account?? Login</div>
+                <div class="text-overline text-weight-regular text-center" style="cursor: pointer" @click.prevent="$router.push('/auth/login')">Already have an account?? Login</div>
               </q-card-section>
             </q-card>
           </div>

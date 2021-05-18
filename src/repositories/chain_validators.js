@@ -22,6 +22,10 @@ class ChainValidators{
         this.value = this.value.toLowerCase();
         return this;
     }
+    bool(){
+        this.value = !!JSON.parse(String(this.val).toLowerCase())
+        return this;
+    }
     validateEmail(){
         var mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
         if(!this.value.match(mailformat)){

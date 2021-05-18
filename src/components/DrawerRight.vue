@@ -21,6 +21,7 @@
 
 
 <script>
+import Vue from 'vue'
 import ModuleCategoriesCreateForm from "./forms/ModuleCategoriesCreateForm"
 import ModuleCategoriesUpdateForm from "./forms/ModuleCategoriesUpdateForm"
 
@@ -33,8 +34,14 @@ import UnitsUpdateForm from "./forms/UnitsUpdateForm"
 import RolesCreateForm from "./forms/RolesCreateForm"
 import RolesUpdateForm from "./forms/RolesUpdateForm"
 
+import ModulesCreateForm from "./forms/ModulesCreateForm"
+import ModulesUpdateForm from "./forms/ModulesUpdateForm"
 
-export default {
+import UsersCreateForm from "./forms/UsersCreateForm"
+import UsersUpdateForm from "./forms/UsersUpdateForm"
+
+
+export default Vue.extend({
     name: 'Drawer',
     components: {
         "app-module-categories-create-form": ModuleCategoriesCreateForm,
@@ -45,6 +52,10 @@ export default {
         "app-units-update-form": UnitsUpdateForm,
         "app-roles-create-form": RolesCreateForm,
         "app-roles-update-form": RolesUpdateForm,
+        "app-modules-create-form": ModulesCreateForm,
+        "app-modules-update-form": ModulesUpdateForm,
+        "app-users-create-form": UsersCreateForm,
+        "app-users-update-form": UsersUpdateForm,
     },
     data(){
         return {
@@ -63,5 +74,5 @@ export default {
     methods: {
        
     }
-}
+})
 </script>

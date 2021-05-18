@@ -5,7 +5,7 @@
                     
                     :data="datas"
                     :columns="$store.state.module_activities.columns"
-                    row-key="name"
+                    row-key="id"
                     :filter="filter"
                     :loading="$store.state.module_activities.loading"
                      :table-header-style="{textTransform: 'uppercase'}"
@@ -17,12 +17,12 @@
                     <template v-slot:body="props">
                       
 
-                        <q-tr :props="props">
+                        <q-tr :props="props" >
                             <q-td key="id" :props="props">
                                 {{ props.pageIndex+1 }} 
                             </q-td>
                             <q-td key="name" :props="props"> 
-                                {{ props.row.name }} 
+                                {{ props.row.module | filterModule }} 
                             </q-td>
                             <q-td key="action" :props="props">
                                 {{ props.row.action }} 
@@ -31,11 +31,11 @@
                                 {{ props.row.activity }} 
                             </q-td>
                             <q-td key="author" :props="props">
-                                {{ props.row.author }} 
+                                {{ props.row.author | filterAuthor }} 
                             </q-td>
                            
                             <q-td key="timestamp" :props="props">
-                                <q-btn flat  icon="visibility" padding="xs" class="editIcon" @click="props.expand = !props.expand">
+                                <q-btn flat  icon="visibility" padding="xs" class="editIcon" @click.prevent="props.expand = !props.expand">
                                     <q-tooltip>
                                       View
                                     </q-tooltip>
@@ -87,9 +87,12 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import ModuleActivitiesListTile from '../listtiles/ModuleActivitiesListTile'
-export default {
+import filters from '../../repositories/filters';
+export default Vue.extend({
     name: "ModuleActivitiesListView",
+    mixins: [filters],
     components: {
         "app-module-activities-list-tile": ModuleActivitiesListTile
     },
@@ -121,5 +124,5 @@ export default {
 
       }
    }
-}
+})
 </script>

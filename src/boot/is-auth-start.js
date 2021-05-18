@@ -1,5 +1,18 @@
 import { firebaseAuth } from './firebase';
 export default async ({ app, router, Vue, urlPath, redirect }) => {
+
+  firebaseAuth.onAuthStateChanged((user) => {
+    if(!user){
+      app = new Vue({
+        //store,
+        router,
+        //i18n,
+       // render: h => h(App)
+      })
+    }
+
+  })
+
   
   // if(urlPath){
   //   console.log(urlPath,'ddddddddddddddddddddddddddddddddddddddddddddddddddddddddd')

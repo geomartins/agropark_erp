@@ -9,7 +9,9 @@ import module_activities from './admin/module_activities'
 import departments from './admin/departments';
 import units from './admin/units';
 import roles from './admin/roles'
-
+import modules from './admin/modules'
+import users from './admin/users'
+import users_details from './admin/users_details'
 // import example from './module-example'
 
 Vue.use(Vuex)
@@ -37,8 +39,11 @@ export default function (/* { ssrContext } */) {
       module_categories,
       module_activities,
       departments,
+      modules,
       units,
       roles,
+      users,
+      users_details,
 
 
 

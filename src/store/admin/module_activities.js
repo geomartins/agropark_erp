@@ -19,19 +19,17 @@ const state = {
     {
       name: 'name',
       required: true,
-      label: 'Module Activities',
+      label: 'Modules',
       align: 'left',
-      field: row => row.name,
-      format: val => `${val}`,
+      field: 'module',
       sortable: true
     },
     {
         name: 'action',
         required: true,
-        label: 'Event',
+        label: 'Events',
         align: 'left',
-        field: row => row.action,
-        format: val => `${val}`,
+        field: 'action',
         sortable: true
       },
     {
@@ -39,18 +37,16 @@ const state = {
         required: true,
         label: 'Activities',
         align: 'left',
-        field: row => row.activity,
-        format: val => `${val}`,
+        field: 'activity',
         sortable: true
       },
 
       {
         name: 'author',
         required: true,
-        label: 'Author',
+        label: 'Authors',
         align: 'left',
-        field: row => row.author,
-        format: val => `${val}`,
+        field: 'author',
         sortable: true
       },
 

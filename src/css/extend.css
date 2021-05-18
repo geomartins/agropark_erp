@@ -16,3 +16,25 @@
 .editIcon:hover{
     color: teal;
 }
+
+.myFlex{
+    display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+}
+
+.myFlex .q-item{
+    width: 49%;
+}
+
+@media (min-width: 0px) and (max-width: 700px){
+  .myFlex{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+
+  .myFlex .q-item{
+    width: 100%;
+  }
+}

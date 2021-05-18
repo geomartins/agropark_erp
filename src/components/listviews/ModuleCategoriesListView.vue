@@ -26,7 +26,7 @@
                             </q-td>
                            
                             <q-td key="timestamp" :props="props">
-                                <q-btn flat  icon="visibility" padding="xs" class="editIcon" @click="props.expand = !props.expand">
+                                <q-btn flat  icon="visibility" padding="xs" class="editIcon" @click.prevent="props.expand = !props.expand">
                                     <q-tooltip>
                                       View
                                     </q-tooltip>
@@ -58,12 +58,12 @@
 
 
                     <template v-slot:top>
-                      <q-icon name="file_download" style="color: #ccc; font-size: 1.8em;" @click="$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-module-categories-update-form')">
+                      <q-icon name="file_download" style="color: #ccc; font-size: 1.8em;" @click.prevent="$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-module-categories-update-form')">
                            <q-tooltip>
                              Export
                            </q-tooltip>
                       </q-icon>
-                      <q-icon name="add" style="color: #ccc; font-size: 1.8em;" @click="$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-module-categories-create-form'); $store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true)">
+                      <q-icon name="add" style="color: #ccc; font-size: 1.8em;" @click.prevent="$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-module-categories-create-form'); $store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true)">
                            <q-tooltip>
                              Create
                            </q-tooltip>
@@ -87,8 +87,9 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import ModuleCategoriesListTile from '../listtiles/ModuleCategoriesListTile'
-export default {
+export default Vue.extend({
     name: "ModuleCategoriesListView",
     components: {
         "app-module-categories-list-tile": ModuleCategoriesListTile
@@ -124,5 +125,5 @@ export default {
 
       }
    }
-}
+})
 </script>

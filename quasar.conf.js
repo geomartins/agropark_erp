@@ -7,6 +7,10 @@
 // https://v1.quasar.dev/quasar-cli/quasar-conf-js
 /* eslint-env node */
 const ESLintPlugin = require('eslint-webpack-plugin')
+const fs = require('fs')
+const packageJson = fs.readFileSync('./package.json')
+const version = JSON.parse(packageJson).version || 0
+const name = JSON.parse(packageJson).name || 'quasar'
 
 module.exports = function (/* ctx */) {
   return {
@@ -52,6 +56,10 @@ module.exports = function (/* ctx */) {
     // Full list of options: https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
+      env: {
+        VERSION: version,
+        NAME: name
+      },
 
       // transpile: false,
 
@@ -80,7 +88,7 @@ module.exports = function (/* ctx */) {
     // Full list of options: https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
       https: false,
-      port: 8080,
+      port: 7000,
       open: true // opens browser window automatically
     },
 
@@ -108,13 +116,17 @@ module.exports = function (/* ctx */) {
         'Loading',
         'LoadingBar',
         'LocalStorage',
-        'Dialog'
+        'Dialog',
+        'Meta'
       ]
     },
 
     // animations: 'all', // --- includes all animations
     // https://v1.quasar.dev/options/animations
-    animations: [],
+    animations: [
+       'fadeIn',
+       'fadeOut'
+    ],
 
     // https://v1.quasar.dev/quasar-cli/developing-ssr/configuring-ssr
     ssr: {

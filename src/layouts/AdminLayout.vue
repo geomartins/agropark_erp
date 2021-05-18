@@ -43,6 +43,9 @@ export default {
       this.byDate = option
       this.showDateOptions = false
     }
+  },
+  created(){
+    
   }
 }
 </script>

@@ -20,11 +20,14 @@ const routes = [
     },
     children: [
       { path: '/admin/dashboard', component: () => import('pages/admin/dashboard.vue') },
-      { path: '/admin/module_categories', component: () => import('src/pages/admin/module_categories.vue') },
-      { path: '/admin/module_activities', component: () => import('src/pages/admin/module_activities.vue') },
+      { path: '/admin/module_categories', component: () => import('pages/admin/module_categories.vue') },
+      { path: '/admin/module_activities', component: () => import('pages/admin/module_activities.vue') },
+      { path: '/admin/modules', component: () => import('pages/admin/modules.vue') },
       { path: '/admin/departments', component: () => import('src/pages/admin/departments.vue') },
       { path: '/admin/units', component: () => import('src/pages/admin/units.vue') },
-      { path: '/admin/roles', component: () => import('src/pages/admin/roles.vue') }
+      { path: '/admin/roles', component: () => import('src/pages/admin/roles.vue') },
+      { path: '/admin/users', component: () => import('src/pages/admin/users.vue') },
+      { path: '/admin/users/:id', component: () => import('pages/admin/users_details.vue') },
     ]
   },
 

@@ -14,6 +14,9 @@
 import UnitsListView from '../../components/listviews/UnitsListView'
 export default {
   name: "units",
+  meta: {
+    titleTemplate: title => `Units - ${title}  `,
+  },
   components: {
       "app-units-list-view": UnitsListView
   },
@@ -21,13 +24,17 @@ export default {
     return {}
   },
   methods: {
-   
+    async main(){
+        this.$store.dispatch('units/fetch', this);
+    },
+    async refresh(done){
+       this.main().then(() => done());
+    }
   },
-  created(){
-    this.$store.dispatch('units/fetch', this);
-  },
+  created(){ this.main() },
   beforeRouteLeave (to, from , next) {
       this.$store.dispatch('units/unsubscribe', this);
+      this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false)
       next();
   }
 }
