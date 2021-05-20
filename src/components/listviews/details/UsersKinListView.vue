@@ -3,12 +3,11 @@
     <q-list padding bordered class="rounded-borders">
       <q-expansion-item
         expand-separator
-        label="Department"
+        label="Next Of Kin"
         expand-icon-class="expand"
         header-class="headerClass"
-        @show="showDepartments()"
+        @show="showKins()"
         dense
-       
         icon="widgets"
       >
      
@@ -16,8 +15,8 @@
         <q-card>
           <q-card-section>
              <q-table
-      :loading="$store.state.users_details_department_is_loading"
-      :data="$store.state.users_details.departmentDatas"
+      :loading="$store.state.users_details.kin_is_loading"
+      :data="$store.state.users_details.kinDatas"
       :columns="columns"
       flat
       row-key="name"
@@ -35,13 +34,11 @@
           <q-td key="id" :props="props">
             {{ props.pageIndex+1 }} 
           </q-td>
-          <q-td key="name" :props="props">
-            {{ props.row.name }}
+          <q-td key="fullname" :props="props">
+            {{ props.row.fullname }}
           </q-td>
-          <q-td key="calories" :props="props">
-            <q-badge color="green">
-              {{ props.row.calories }}
-            </q-badge>
+          <q-td key="telephone" :props="props">
+              {{ props.row.telephone }}
           </q-td>
          
           
@@ -71,17 +68,26 @@
 
 <script>
 export default {
-    name: "UsersDepartmentListView",
+    name: "UsersKinListView",
     data(){
          return {
             columns: [
                  { name: 'id', label: 'S/N',  align: 'left', field: 'id', sortable: true, style:"width: 40px" },
                 {
-                name: 'name',
+                name: 'fullname',
                 required: true,
-                label: 'Department Name',
+                label: 'Kin Name',
                 align: 'left',
-                field: row => row.name,
+                field: row => row.fullname,
+                format: val => `${val}`,
+                sortable: true
+                },
+                {
+                name: 'telephone',
+                required: true,
+                label: 'Telephone',
+                align: 'left',
+                field: row => row.telephone,
                 format: val => `${val}`,
                 sortable: true
                 },
@@ -89,39 +95,28 @@ export default {
                 { name: 'createdAt', label: '',  align: 'right', field: 'createdAt', sortable: true }
             ],
 
-      data: [
-        {
-          id: 1,
-          name: 'Frozen Yogurt',
-          createdAt: '1%'
-        },
-        
-      ]
+     
     }
     },
     methods: {
-        startCounting(){
-           console.log('hello')
-        },
         async deleteItem(id){
-         this.$store.dispatch('users_details/deleteDepartmentById',id);
+         this.$store.dispatch('users_details/deleteKinById',id);
         },
         editItem(payload){
-        
-          this.$store.commit('users_details/CLEAR_DEPARTMENT_FORM_DATA');
-          this.$store.commit('users_details/UPDATE_DEPARTMENT_FORM_DATA', payload);
-          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-users-department-update-form'); 
+          this.$store.commit('users_details/CLEAR_KIN_FORM_DATA');
+          this.$store.commit('users_details/UPDATE_KIN_FORM_DATA', payload);
+          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-users-kin-update-form'); 
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true)
 
         },
         showCreateForm(){
-          this.$store.commit('users_details/CLEAR_DEPARTMENT_FORM_DATA');
-          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-users-department-create-form');
+          this.$store.commit('users_details/CLEAR_KIN_FORM_DATA');
+          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-users-kin-create-form');
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true);
        },
-      async showDepartments(){
-          this.$store.dispatch('users_details/fetchDepartments',this).then(() => {
-              this.$store.dispatch('users_details/fetchDepartmentDependencies', this);
+      async showKins(){
+          this.$store.dispatch('users_details/fetchKins',this).then(() => {
+              this.$store.dispatch('users_details/fetchKinDependencies', this);
           })
 
       }

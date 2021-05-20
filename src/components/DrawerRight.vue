@@ -4,7 +4,6 @@
       
       show-if-above
       bordered
-      content-class="bg-white"
       :width="480"
       side="right"
       
@@ -40,6 +39,15 @@ import ModulesUpdateForm from "./forms/ModulesUpdateForm"
 import UsersCreateForm from "./forms/UsersCreateForm"
 import UsersUpdateForm from "./forms/UsersUpdateForm"
 
+import UsersDepartmentCreateForm from "./forms/details/UsersDepartmentCreateForm"
+import UsersDepartmentUpdateForm from "./forms/details/UsersDepartmentUpdateForm"
+
+import UsersKinCreateForm from "./forms/details/UsersKinCreateForm"
+import UsersKinUpdateForm from "./forms/details/UsersKinUpdateForm"
+
+import UsersBankCreateForm from "./forms/details/UsersBankCreateForm"
+import UsersBankUpdateForm from "./forms/details/UsersBankUpdateForm"
+
 
 export default Vue.extend({
     name: 'Drawer',
@@ -56,6 +64,12 @@ export default Vue.extend({
         "app-modules-update-form": ModulesUpdateForm,
         "app-users-create-form": UsersCreateForm,
         "app-users-update-form": UsersUpdateForm,
+        "app-users-department-create-form": UsersDepartmentCreateForm,
+        "app-users-department-update-form": UsersDepartmentUpdateForm,
+        "app-users-kin-create-form": UsersKinCreateForm,
+        "app-users-kin-update-form": UsersKinUpdateForm,
+        "app-users-bank-create-form": UsersBankCreateForm,
+        "app-users-bank-update-form": UsersBankUpdateForm,
     },
     data(){
         return {

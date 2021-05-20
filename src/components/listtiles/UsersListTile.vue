@@ -57,6 +57,11 @@
           <q-item-label>Unique ID</q-item-label>
           <q-item-label caption lines="2">{{  row.id  }}</q-item-label>
         </q-item-section>
+
+        <q-item-section side top @click="$router.push('/admin/users/'+row.id)">
+          <q-item-label caption>View details</q-item-label>
+          <q-icon name="visibility" />
+        </q-item-section>
     </q-item>
 
       <q-separator spaced inset />

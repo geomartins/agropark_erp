@@ -6,9 +6,11 @@
               <div class="col-lg-8 col-xs-12">
                   <app-users-personal-information-listview></app-users-personal-information-listview>
                   <app-users-department-listview></app-users-department-listview>
+                  <app-users-kin-listview></app-users-kin-listview>
+                  <app-users-bank-listview></app-users-bank-listview>
 
                   
-                  {{ $route.params.id }}
+                  <!-- {{ $route.params.id }} -->
               </div>
               <div class="col-lg-3 col-xs-0"></div>
           </div>
@@ -20,11 +22,16 @@
 <script>
 import UsersPersonalInformationListView from '../../components/listviews/UsersPersonalInformationListView'
 import UsersDepartmentListView from '../../components/listviews/UsersDepartmentListView'
+import UsersKinListView from '../../components/listviews/details/UsersKinListView'
+import UsersBankListView from '../../components/listviews/details/UsersBankListView'
 export default {
     name: "users_details",
     components: {
         "app-users-personal-information-listview": UsersPersonalInformationListView,
-        "app-users-department-listview": UsersDepartmentListView
+        "app-users-department-listview": UsersDepartmentListView,
+        "app-users-kin-listview": UsersKinListView,
+         "app-users-bank-listview": UsersBankListView,
+
     },
     meta: {
         titleTemplate: title => `Users Details - ${title}  `,

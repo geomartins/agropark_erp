@@ -3,12 +3,11 @@
     <q-list padding bordered class="rounded-borders">
       <q-expansion-item
         expand-separator
-        label="Department"
+        label="Bank Details"
         expand-icon-class="expand"
         header-class="headerClass"
-        @show="showDepartments()"
+        @show="showBanks()"
         dense
-       
         icon="widgets"
       >
      
@@ -16,8 +15,8 @@
         <q-card>
           <q-card-section>
              <q-table
-      :loading="$store.state.users_details_department_is_loading"
-      :data="$store.state.users_details.departmentDatas"
+      :loading="$store.state.users_details.bank_is_loading"
+      :data="$store.state.users_details.bankDatas"
       :columns="columns"
       flat
       row-key="name"
@@ -38,10 +37,11 @@
           <q-td key="name" :props="props">
             {{ props.row.name }}
           </q-td>
-          <q-td key="calories" :props="props">
-            <q-badge color="green">
-              {{ props.row.calories }}
-            </q-badge>
+          <q-td key="account_number" :props="props">
+              {{ props.row.account_number }}
+          </q-td>
+          <q-td key="account_holder_name" :props="props">
+              {{ props.row.account_holder_name }}
           </q-td>
          
           
@@ -71,7 +71,7 @@
 
 <script>
 export default {
-    name: "UsersDepartmentListView",
+    name: "UsersBankListView",
     data(){
          return {
             columns: [
@@ -79,9 +79,28 @@ export default {
                 {
                 name: 'name',
                 required: true,
-                label: 'Department Name',
+                label: 'Bank Name',
                 align: 'left',
                 field: row => row.name,
+                format: val => `${val}`,
+                sortable: true,
+                
+                },
+                {
+                name: 'account_number',
+                required: true,
+                label: 'Account Number',
+                align: 'left',
+                field: row => row.account_number,
+                format: val => `${val}`,
+                sortable: true,
+                },
+                 {
+                name: 'account_holder_name',
+                required: true,
+                label: 'Account Holder Name',
+                align: 'left',
+                field: row => row.account_holder_name,
                 format: val => `${val}`,
                 sortable: true
                 },
@@ -89,39 +108,28 @@ export default {
                 { name: 'createdAt', label: '',  align: 'right', field: 'createdAt', sortable: true }
             ],
 
-      data: [
-        {
-          id: 1,
-          name: 'Frozen Yogurt',
-          createdAt: '1%'
-        },
-        
-      ]
+     
     }
     },
     methods: {
-        startCounting(){
-           console.log('hello')
-        },
         async deleteItem(id){
-         this.$store.dispatch('users_details/deleteDepartmentById',id);
+         this.$store.dispatch('users_details/deleteBankById',id);
         },
         editItem(payload){
-        
-          this.$store.commit('users_details/CLEAR_DEPARTMENT_FORM_DATA');
-          this.$store.commit('users_details/UPDATE_DEPARTMENT_FORM_DATA', payload);
-          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-users-department-update-form'); 
+          this.$store.commit('users_details/CLEAR_BANK_FORM_DATA');
+          this.$store.commit('users_details/UPDATE_BANK_FORM_DATA', payload);
+          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-users-bank-update-form'); 
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true)
 
         },
         showCreateForm(){
-          this.$store.commit('users_details/CLEAR_DEPARTMENT_FORM_DATA');
-          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-users-department-create-form');
+          this.$store.commit('users_details/CLEAR_BANK_FORM_DATA');
+          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-users-bank-create-form');
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true);
        },
-      async showDepartments(){
-          this.$store.dispatch('users_details/fetchDepartments',this).then(() => {
-              this.$store.dispatch('users_details/fetchDepartmentDependencies', this);
+      async showBanks(){
+          this.$store.dispatch('users_details/fetchBanks',this).then(() => {
+              this.$store.dispatch('users_details/fetchBankDependencies', this);
           })
 
       }

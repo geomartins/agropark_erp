@@ -14,7 +14,6 @@
               </q-card-section>
 
               <q-card-section class="q-pt-none">
-               
                 <q-input outlined v-model="name" label="Name" :dense="dense" />
               </q-card-section>
 

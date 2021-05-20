@@ -98,9 +98,20 @@
 
           </q-item>
 
+
+ <q-item class="GNL__drawer-item" v-ripple  clickable>
+            <q-item-section 
+           @click.prevent="$router.push('/admin/users')">
+              <q-item-label> Users </q-item-label>
+            </q-item-section>
+        
+
+          </q-item>
+
+
           <div class="q-mt-md">
             <div class="flex flex-center q-gutter-xs">
-              <a class="GNL__drawer-footer-link" href="javascript:void(0)" aria-label="Privacy">Privacy</a>
+              <a class="GNL__drawer-footer-link" aria-label="Privacy">Privacy</a>
               <span> · </span>
               <a class="GNL__drawer-footer-link" href="javascript:void(0)" aria-label="Terms">Terms</a>
               <span> · </span>
