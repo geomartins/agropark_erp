@@ -27,6 +27,50 @@ flex-wrap: wrap;
     width: 49%;
 }
 
+
+.mini_toolbar{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-height: 100%;
+  width: 3rem;
+  background: white;
+  top: 40%;
+  right: 0px;
+  border-radius: 5px;
+  z-index: 4000;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  
+  /* //border: 1px solid teal; */
+}
+
+.mini_toolbar > .mini_toolbar__item{
+  width: 100%;
+  height: 40px;
+  color: #26a69a
+ 
+}
+
+.mini_toolbar > .mini_toolbar__item:hover{
+  background: #26a69a;
+  color: white;
+}
+
+
+
+.mini_toolbar > .mini_toolbar__item > .q-icon{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 24px;
+}
+
+
 @media (min-width: 0px) and (max-width: 700px){
   .myFlex{
     display: flex;

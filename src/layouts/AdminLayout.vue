@@ -1,13 +1,23 @@
 <template>
-  <q-layout view="hHh lpR fFf" class="bg-grey-1">
+  <q-layout view="lHr lpR fFf" class="bg-grey-1">
+    
    
     <app-header ></app-header>
+    
+    
     <app-drawer></app-drawer>
+
+    
+    
+    
     <app-drawer-right></app-drawer-right>
 
     
 
     <q-page-container>
+       <app-bread-crumb></app-bread-crumb>
+     
+     
       <router-view />
     </q-page-container>
 
@@ -19,12 +29,14 @@
 import Drawer from '../components/Drawer';
 import DrawerRight from '../components/DrawerRight';
 import Header from '../components/Header';
+import BreadCrumb from '../components/BreadCrumb'
 export default {
   name: 'GoogleNewsLayout',
   components: {
     "app-drawer": Drawer,
     "app-drawer-right": DrawerRight,
-    "app-header": Header
+    "app-header": Header,
+    "app-bread-crumb": BreadCrumb,
   },
   data () {
     return {

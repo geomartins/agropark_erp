@@ -58,12 +58,15 @@
           </q-btn>
         </div>
       </q-toolbar>
+
+      
     </q-header>
 </template>
 
 <script>
+import Vue from 'vue';
 import HeaderBar from './HeaderBar'
-export default {
+export default Vue.extend({
     name: 'Header',
     components: {
        "app-header-bar": HeaderBar
@@ -85,5 +88,5 @@ export default {
         set(value){ this.$store.commit('admin_layout/UPDATE_SEARCH',value); }   
       },
     }
-}
+})
 </script>

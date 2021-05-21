@@ -19,6 +19,9 @@
                     <q-avatar size="100px" font-size="100px" color="teal" icon="person" text-color="white"></q-avatar>
                     <div class="title">Alex Smauel</div>
                     <div class="subtitle">UI/UX Designer</div>
+                     <div class="action q-mt-sm">
+                        <q-btn  label="Edit Profile" flat style="text-transform: none; background: #deebe0; font-weight: normal" />
+                     </div>
                  
                  </div>
                  <div class="right">
@@ -156,6 +159,11 @@ export default {
     width: 100%;
     height: 45px;
     border-bottom: 1px solid #00808057;
+}
+
+.right__flex__tile:last-child{
+     border-bottom: 1px solid transparent;
+
 }
 
 .right__flex__tile__left{

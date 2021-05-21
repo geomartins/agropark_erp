@@ -1,6 +1,9 @@
 <template>
     <q-page>
+
         <q-pull-to-refresh @refresh="refresh">
+           <app-users-details-toolbar></app-users-details-toolbar>
+           
           <div class="row">
               <div class="col-lg-1 col-xs-0"></div>
               <div class="col-lg-8 col-xs-12">
@@ -8,6 +11,9 @@
                   <app-users-department-listview></app-users-department-listview>
                   <app-users-kin-listview></app-users-kin-listview>
                   <app-users-bank-listview></app-users-bank-listview>
+
+
+                  
 
                   
                   <!-- {{ $route.params.id }} -->
@@ -24,6 +30,7 @@ import UsersPersonalInformationListView from '../../components/listviews/UsersPe
 import UsersDepartmentListView from '../../components/listviews/UsersDepartmentListView'
 import UsersKinListView from '../../components/listviews/details/UsersKinListView'
 import UsersBankListView from '../../components/listviews/details/UsersBankListView'
+import UsersDetailsToolbar from '../../components/toolbar/UsersDetailsToolbar'
 export default {
     name: "users_details",
     components: {
@@ -31,6 +38,7 @@ export default {
         "app-users-department-listview": UsersDepartmentListView,
         "app-users-kin-listview": UsersKinListView,
          "app-users-bank-listview": UsersBankListView,
+         "app-users-details-toolbar": UsersDetailsToolbar
 
     },
     meta: {
@@ -61,7 +69,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-
-</style>
