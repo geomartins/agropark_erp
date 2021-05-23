@@ -53,7 +53,20 @@
            
 
             <q-card-section class="q-pt-none">
-                <q-input outlined v-model="dob" type="date" stack-label label="Date Of Birth" :dense="dense"  />
+               <q-input outlined v-model="dob" :dense="dense" readonly stack-label label="Date Of Birth">
+                <template v-slot:append>
+                    <q-icon name="event" class="cursor-pointer">
+                    <q-popup-proxy transition-show="scale" transition-hide="scale">
+                        <q-date v-model="dob" mask="YYYY-MM-DD">
+                        <div class="row items-center justify-end">
+                            <q-btn v-close-popup label="Close" color="primary" flat />
+                        </div>
+                        </q-date>
+                    </q-popup-proxy>
+                    </q-icon>
+                </template>
+
+                </q-input>
             </q-card-section>
 
             <q-card-section class="q-pt-none">
@@ -75,7 +88,7 @@
 
             <div class="splitTwoFlex">
                 <q-card-section class="q-pt-none">
-                <q-select color="grey-3" outlined :dense="dense"  v-model="nationality" :options="$store.state.users_details.dependencies.nationalities" label="Nationality">
+                <q-select color="grey-3"  outlined :dense="dense"  v-model="nationality" :options="$store.state.users_details.dependencies.nationalities" label="Nationality" >
                 </q-select>
             </q-card-section>
 
@@ -130,7 +143,7 @@ export default {
     return {
        dense: true,
        visible: true,
-       xnl:  '2019/02/01'
+       date:  '2019/02/01'
     };
   },
   computed: {
@@ -165,7 +178,7 @@ export default {
       dob:  {
         get() { return this.$store.getters["users_details/fetchPersonalInformationDob"]; },
         set(value){ 
-            console.log(value)
+            console.log(value, 'final')
             this.$store.commit('users_details/UPDATE_PERSONAL_INFORMATION_DOB',value);
              }   
       },
@@ -195,7 +208,7 @@ export default {
         set(value){ this.$store.commit('users_details/UPDATE_PERSONAL_INFORMATION_WEIGHT',value); }   
       },
       blood_type:  {
-        get() { return this.$store.getters["users_details/fetchPersonalInformationBloofType"]; },
+        get() { return this.$store.getters["users_details/fetchPersonalInformationBloodType"]; },
         set(value){ this.$store.commit('users_details/UPDATE_PERSONAL_INFORMATION_BLOOD_TYPE',value); }   
       },
 
@@ -205,7 +218,7 @@ export default {
   },
   methods: {
     update(){ this.$store.dispatch('users_details/updatePersonalInformation',this); },
-    close(){ this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false) }
+    close(){ this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false) },
   }
 }
 </script>

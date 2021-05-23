@@ -106,6 +106,7 @@ export default {
     },
     methods: {
         editItem(){
+          this.$store.dispatch('users_details/fetchPersonalInformationDependencies', this);
           this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-users-personal-information-update-form'); 
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true)
 

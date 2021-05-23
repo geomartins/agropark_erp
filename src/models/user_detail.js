@@ -1,4 +1,5 @@
 import { userCollections, configurationCollections, firebaseAuth, timestamp } from '../boot/firebase'
+import { convertJSDateToServerTimestamp, convertServerTimestampToJSDate } from '../repositories/pick'
 
 class UserDetail{
     constructor(userId){
@@ -12,7 +13,8 @@ class UserDetail{
             let data = {};
 
             if(doc.exists){
-                data = { ...doc.data(), id: doc.id};
+                let dob = doc.data().dob;
+                data = { ...doc.data(), id: doc.id, dob: dob ? convertServerTimestampToJSDate(dob) : '' };
                 console.log(data);
             }
            
@@ -22,17 +24,55 @@ class UserDetail{
         });
     }
     async personalInformationDependencies(cb){
-        return configurationCollections.doc('banks').get().then(doc => {
-            if(!doc.exists){
-               return cb([])
-            }        
-            return cb(doc.data().ids);
-        })
+        const nationalities = [];
+        const religions = [];
+        const blood_types = [];
+        const marital_status = [];
+        const roles = [];
+        const genders = [];
+
+        const nationalityDoc = await configurationCollections.doc('nationalities').get();
+        if(nationalityDoc.exists){
+            nationalities.push(...nationalityDoc.data().ids);
+        }
+
+        const religionDoc = await configurationCollections.doc('religions').get();
+        if(religionDoc.exists){
+            religions.push(...religionDoc.data().ids);
+        }
+       
+        const bloodTypeDoc = await configurationCollections.doc('blood_types').get();
+        if(bloodTypeDoc.exists){
+            blood_types.push(...bloodTypeDoc.data().ids);
+        }
+
+        const maritalStatusDoc = await configurationCollections.doc('marital_status').get();
+        if(maritalStatusDoc.exists){
+            marital_status.push(...maritalStatusDoc.data().ids);
+        }
+
+        const roleDoc = await configurationCollections.doc('roles').get();
+        if(roleDoc.exists){
+            roles.push(...roleDoc.data().ids);
+        }
+
+        const genderDoc = await configurationCollections.doc('genders').get();
+        if(genderDoc.exists){
+            genders.push(...genderDoc.data().ids);
+        }
+       
+        return cb(nationalities, religions, blood_types, marital_status, roles, genders);
     }
 
     async savePersonalInformation(data, personalInformationId = null){
         delete data.id;
+        let dob = data.dob;
         data.editor = firebaseAuth.currentUser.uid; data.editedAt = timestamp;
+        delete data.dob;
+        if(dob){ data.dob = convertJSDateToServerTimestamp(new Date(dob));}
+        console.log(data, 'ccccccccccccccc')
+
+
 
         return userCollections.doc(personalInformationId).update(data).then((docRef) => {
             return docRef;

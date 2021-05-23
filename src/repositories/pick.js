@@ -1,5 +1,16 @@
+import {firestoreTimestamp, timestamp } from '../boot/firebase'
+import { date } from 'quasar'
 const purifyObject = (data) => {
     return Object.assign({}, data);
+}
+
+const convertJSDateToServerTimestamp = (date) => {
+  return firestoreTimestamp.fromDate(date);
+}
+
+const convertServerTimestampToJSDate = (timestamp) => {
+  let jsDate = timestamp.toDate();
+  return date.formatDate(jsDate, 'YYYY-MM-DD');
 }
 
 const generateUid = (name) => {
@@ -59,4 +70,6 @@ export {
     purifyObject,
     sortBy,
     generateUid,
+    convertJSDateToServerTimestamp,
+    convertServerTimestampToJSDate
 }

@@ -68,6 +68,8 @@ const state = {
         blood_types: [],
         nationalities: [],
         marital_status: [],
+        roles: [],
+        genders: [],
     }
 }
 const getters = {
@@ -158,22 +160,22 @@ const mutations = {
     },
     //PERSONAL INFORMATION
     UPDATE_PERSONAL_INFORMATION_FORM_DATA(state,value){
-        state.personalInformationFormData.id = value.id;
-        state.personalInformationFormData.email = value.email;
-        state.personalInformationFormData.firstname = value.firstname;
-        state.personalInformationFormData.middlename = value.middlename;
-        state.personalInformationFormData.lastname = value.lastname;
-        state.personalInformationFormData.gender = value.gender;
-        state.personalInformationFormData.dob = value.dob;
-        state.personalInformationFormData.pob = value.pob;
-        state.personalInformationFormData.telephone = value.telephone;
-        state.personalInformationFormData.marital_status = value.marital_status;
-        state.personalInformationFormData.nationality = value.nationality;
-        state.personalInformationFormData.religion = value.religion;
-        state.personalInformationFormData.height = value.height;
-        state.personalInformationFormData.weight = value.weight;
-        state.personalInformationFormData.blood_type = value.blood_type;
-        state.personalInformationFormData.role = value.role;
+        state.personalInformationFormData.id = value.id ?? '';
+        state.personalInformationFormData.email = value.email ?? '';
+        state.personalInformationFormData.firstname = value.firstname ?? ''; 
+        state.personalInformationFormData.middlename = value.middlename ?? '';
+        state.personalInformationFormData.lastname = value.lastname ?? '';
+        state.personalInformationFormData.gender = value.gender ?? '';
+        state.personalInformationFormData.dob = value.dob ?? '';
+        state.personalInformationFormData.pob = value.pob ?? '';
+        state.personalInformationFormData.telephone = value.telephone ?? '';
+        state.personalInformationFormData.marital_status = value.marital_status ?? '';
+        state.personalInformationFormData.nationality = value.nationality ?? '';
+        state.personalInformationFormData.religion = value.religion ?? '';
+        state.personalInformationFormData.height = value.height ?? '';
+        state.personalInformationFormData.weight = value.weight ?? '';
+        state.personalInformationFormData.blood_type = value.blood_type ?? '';
+        state.personalInformationFormData.role = value.role ?? '';
     },
     UPDATE_PERSONAL_INFORMATION_EMAIL(state, value){
         state.personalInformationFormData.email = value;
@@ -363,11 +365,18 @@ const mutations = {
     UPDATE_D_BLOOD_TYPES(state, value){
         state.dependencies.blood_types = value;
     },
+    
     UPDATE_D_NATIONALITIES(state, value){
         state.dependencies.nationalities = value;
     },
-    UPDATE_D_BLOOD_MARITAL_STATUS(state, value){
+    UPDATE_D_MARITAL_STATUS(state, value){
         state.dependencies.marital_status = value;
+    },
+    UPDATE_D_ROLES(state, value){
+        state.dependencies.roles = value;
+    },
+    UPDATE_D_GENDERS(state, value){
+        state.dependencies.genders = value;
     },
 
 
@@ -395,11 +404,13 @@ const actions = {
 
     async fetchPersonalInformationDependencies({commit, state}){
         try{
-            await new UserDetail(state.userId).personalInformationDependencies((religions, blood_types, nationalities, marital_status) => {
+            await new UserDetail(state.userId).personalInformationDependencies((nationalities, religions, blood_types, marital_status, roles, genders) => {
+                commit('UPDATE_D_NATIONALITIES', nationalities);
                 commit('UPDATE_D_RELIGIONS', religions);
                 commit('UPDATE_D_BLOOD_TYPES', blood_types);
-                commit('UPDATE_D_NATIONALITIES', nationalities);
                 commit('UPDATE_D_MARITAL_STATUS', marital_status);
+                commit('UPDATE_D_ROLES', roles);
+                commit('UPDATE_D_GENDERS', genders);
            });
         }catch(err){
             snackbar('warning',err.message);
@@ -411,7 +422,6 @@ const actions = {
         const personalInformationId = state.personalInformationFormData.id;
         const data = state.personalInformationFormData;
         delete data.id;
-
         try{
             commit('UPDATE_IS_LOADING', true);
             let userDetail = new UserDetail(state.userId);

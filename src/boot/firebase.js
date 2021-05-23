@@ -31,7 +31,7 @@ var firebaseConfig = {
 const firebaseApp = firebase.initializeApp(firebaseConfig)
 const firebaseAuth = firebaseApp.auth()
 const uid = firebaseAuth.currentUser ? firebaseAuth.currentUser.uid : null;
-const fs = firebaseApp.firestore()
+const fs = firebaseApp.firestore();
 const domainCollections = fs.collection('domains')
 const moduleCategoryCollections = fs.collection('module_categories');
 const moduleActivityCollections = fs.collection('module_activities');
@@ -42,6 +42,8 @@ const userCollections = fs.collection('users');
 const moduleCollections = fs.collection('modules');
 const configurationCollections = fs.collection('configurations')
 const timestamp = firebase.firestore.FieldValue.serverTimestamp()
+const firestoreTimestamp = firebase.firestore.Timestamp;
+
 // firebase.analytics();
 
 if (location.hostname === "localhost") {
@@ -52,6 +54,7 @@ if (location.hostname === "localhost") {
 
 export { 
   firebaseAuth, 
+  firestoreTimestamp,
   fs, 
   uid,
   domainCollections,
