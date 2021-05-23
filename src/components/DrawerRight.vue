@@ -49,6 +49,9 @@ import UsersBankCreateForm from "./forms/details/UsersBankCreateForm"
 import UsersBankUpdateForm from "./forms/details/UsersBankUpdateForm"
 
 
+import UsersPersonalInformationUpdateForm from "./forms/details/UsersPersonalInformationUpdateForm"
+
+
 export default Vue.extend({
     name: 'Drawer',
     components: {
@@ -70,6 +73,7 @@ export default Vue.extend({
         "app-users-kin-update-form": UsersKinUpdateForm,
         "app-users-bank-create-form": UsersBankCreateForm,
         "app-users-bank-update-form": UsersBankUpdateForm,
+        "app-users-personal-information-update-form": UsersPersonalInformationUpdateForm
     },
     data(){
         return {

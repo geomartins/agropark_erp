@@ -51,6 +51,7 @@ export default {
     },
     methods: {
         async main(){
+            this.$store.commit('admin_layout/UPDATE_BREAD_CRUMB', { prevPageTitle: 'Users', pageTitle: 'User Details' })
             this.$store.commit('users_details/UPDATE_USER_ID',this.$route.params.id)
             this.$store.dispatch('users_details/fetchPersonalInformation', this).then(() => {
                 //this.$store.dispatch('users/dependencies', this);

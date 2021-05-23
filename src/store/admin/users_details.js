@@ -8,12 +8,24 @@ const state = {
     unsubscribe: [],
 
     //PERSONAL
+    personal_information_is_loading: false,
     personalInformationFormData: {
         id: '',
+        email: '',
         firstname: '',
         middlename: '',
         lastname: '',
         role: '',
+        gender: '',
+        dob: '',
+        pob: '',
+        telephone: '',
+        marital_status: '',
+        nationality: '',
+        religion: '',
+        height: '',
+        weight: '',
+        blood_type: '',
     },
 
     //DEPARTMENT
@@ -51,12 +63,64 @@ const state = {
         departments: [],
         relationships: [],
         banks: [],
+
+        religions: [],
+        blood_types: [],
+        nationalities: [],
+        marital_status: [],
     }
 }
 const getters = {
     //DEPARTMENT
     fetchDepartmentName: (state) => {
         return state.departmentFormData.name;
+    },
+
+    //PERSONALINFORMATION
+    fetchPersonalInformationEmail: (state) => {
+        return state.personalInformationFormData.email;
+    },
+    fetchPersonalInformationFirstname: (state) => {
+        return state.personalInformationFormData.firstname;
+    },
+    fetchPersonalInformationMiddlename: (state) => {
+        return state.personalInformationFormData.middlename;
+    },
+    fetchPersonalInformationLastname: (state) => {
+        return state.personalInformationFormData.lastname;
+    },
+    fetchPersonalInformationRole: (state) => {
+        return state.personalInformationFormData.role;
+    },
+    fetchPersonalInformationGender: (state) => {
+        return state.personalInformationFormData.gender;
+    },
+    fetchPersonalInformationDob: (state) => {
+        return state.personalInformationFormData.dob;
+    },
+    fetchPersonalInformationPob: (state) => {
+        return state.personalInformationFormData.pob;
+    },
+    fetchPersonalInformationTelephone: (state) => {
+        return state.personalInformationFormData.telephone;
+    },
+    fetchPersonalInformationMaritalStatus: (state) => {
+        return state.personalInformationFormData.marital_status;
+    },
+    fetchPersonalInformationNationality: (state) => {
+        return state.personalInformationFormData.nationality;
+    },
+    fetchPersonalInformationReligion: (state) => {
+        return state.personalInformationFormData.religion;
+    },
+    fetchPersonalInformationHeight: (state) => {
+        return state.personalInformationFormData.height;
+    },
+    fetchPersonalInformationWeight: (state) => {
+        return state.personalInformationFormData.weight;
+    },
+    fetchPersonalInformationBloodType: (state) => {
+        return state.personalInformationFormData.blood_type;
     },
 
     //KIN
@@ -95,9 +159,87 @@ const mutations = {
     //PERSONAL INFORMATION
     UPDATE_PERSONAL_INFORMATION_FORM_DATA(state,value){
         state.personalInformationFormData.id = value.id;
+        state.personalInformationFormData.email = value.email;
         state.personalInformationFormData.firstname = value.firstname;
         state.personalInformationFormData.middlename = value.middlename;
+        state.personalInformationFormData.lastname = value.lastname;
+        state.personalInformationFormData.gender = value.gender;
+        state.personalInformationFormData.dob = value.dob;
+        state.personalInformationFormData.pob = value.pob;
+        state.personalInformationFormData.telephone = value.telephone;
+        state.personalInformationFormData.marital_status = value.marital_status;
+        state.personalInformationFormData.nationality = value.nationality;
+        state.personalInformationFormData.religion = value.religion;
+        state.personalInformationFormData.height = value.height;
+        state.personalInformationFormData.weight = value.weight;
+        state.personalInformationFormData.blood_type = value.blood_type;
         state.personalInformationFormData.role = value.role;
+    },
+    UPDATE_PERSONAL_INFORMATION_EMAIL(state, value){
+        state.personalInformationFormData.email = value;
+    },
+    UPDATE_PERSONAL_INFORMATION_FIRSTNAME(state, value){
+        state.personalInformationFormData.firstname = value;
+    },
+    UPDATE_PERSONAL_INFORMATION_MIDDLENAME(state, value){
+        state.personalInformationFormData.middlename = value;
+    },
+    UPDATE_PERSONAL_INFORMATION_LASTNAME(state, value){
+        state.personalInformationFormData.lastname = value;
+    },
+    UPDATE_PERSONAL_INFORMATION_ROLE(state, value){
+        state.personalInformationFormData.role = value;
+    },
+    UPDATE_PERSONAL_INFORMATION_GENDER(state, value){
+        state.personalInformationFormData.gender = value;
+    },
+    UPDATE_PERSONAL_INFORMATION_DOB(state, value){
+        state.personalInformationFormData.dob = value;
+    },
+    UPDATE_PERSONAL_INFORMATION_POB(state, value){
+        state.personalInformationFormData.pob = value;
+    },
+    UPDATE_PERSONAL_INFORMATION_TELEPHONE(state, value){
+        state.personalInformationFormData.telephone = value;
+    },
+    UPDATE_PERSONAL_INFORMATION_MARITAL_STATUS(state, value){
+        state.personalInformationFormData.marital_status = value;
+    },
+    UPDATE_PERSONAL_INFORMATION_NATIONALITY(state, value){
+        state.personalInformationFormData.nationality = value;
+    },
+    UPDATE_PERSONAL_INFORMATION_RELIGION(state, value){
+        state.personalInformationFormData.religion = value;
+    },
+    UPDATE_PERSONAL_INFORMATION_HEIGHT(state, value){
+        state.personalInformationFormData.height = value;
+    },
+    UPDATE_PERSONAL_INFORMATION_WEIGHT(state, value){
+        state.personalInformationFormData.weight = value;
+    },
+    UPDATE_PERSONAL_INFORMATION_BLOOD_TYPE(state, value){
+        state.personalInformationFormData.blood_type = value;
+    },
+    CLEAR_PERSONAL_INFORMATION_FORM_DATA(state){
+        state.bankFormData = Object.assign({
+            id: '',
+            email: '',
+            firstname: '',
+            middlename: '',
+            lastname: '',
+            role: '',
+            gender: '',
+            dob: '',
+            pob: '',
+            telephone: '',
+            marital_status: '',
+            nationality: '',
+            religion: '',
+            height: '',
+            weight: '',
+            blood_type: '',
+        })
+        
     },
 
 
@@ -212,11 +354,31 @@ const mutations = {
     },
     UPDATE_D_BANKS(state, value){
         state.dependencies.banks = value;
-    }
+    },
+
+    UPDATE_D_RELIGIONS(state, value){
+        state.dependencies.religions = value;
+    },
+
+    UPDATE_D_BLOOD_TYPES(state, value){
+        state.dependencies.blood_types = value;
+    },
+    UPDATE_D_NATIONALITIES(state, value){
+        state.dependencies.nationalities = value;
+    },
+    UPDATE_D_BLOOD_MARITAL_STATUS(state, value){
+        state.dependencies.marital_status = value;
+    },
+
+
+
+
+   
 
 }
 const actions = {
 
+    //PERSONALINFORMATION
     async fetchPersonalInformation({ commit, state}){
         try{
             let unsubscribe = new UserDetail(state.userId).fetchPersonalInformation((data,unsubscribe) => {
@@ -229,6 +391,40 @@ const actions = {
             snackbar('warning',err.message);
            
         }
+    },
+
+    async fetchPersonalInformationDependencies({commit, state}){
+        try{
+            await new UserDetail(state.userId).personalInformationDependencies((religions, blood_types, nationalities, marital_status) => {
+                commit('UPDATE_D_RELIGIONS', religions);
+                commit('UPDATE_D_BLOOD_TYPES', blood_types);
+                commit('UPDATE_D_NATIONALITIES', nationalities);
+                commit('UPDATE_D_MARITAL_STATUS', marital_status);
+           });
+        }catch(err){
+            snackbar('warning',err.message);
+        }
+       
+    },
+
+    async updatePersonalInformation({commit, state},instance){
+        const personalInformationId = state.personalInformationFormData.id;
+        const data = state.personalInformationFormData;
+        delete data.id;
+
+        try{
+            commit('UPDATE_IS_LOADING', true);
+            let userDetail = new UserDetail(state.userId);
+            await userDetail.savePersonalInformation(data,personalInformationId);
+
+            snackbar('success','item updated successfully')
+            commit('UPDATE_IS_LOADING', false);
+            instance.close();
+        }catch(err){
+            snackbar('warning',err.message);
+            commit('UPDATE_IS_LOADING', false);
+        }
+        
     },
 
 

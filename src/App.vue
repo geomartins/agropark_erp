@@ -25,7 +25,12 @@ export default {
   }
 }
 
-//TODO: Creation of subcollection UI
+//TODO: fetching personalInformationDependencies
+//TODO: Updating Personal Information
+//TODO: Work on document upload e.g cv, credentials and download
+//TODO: Work on cover image upload
+//TODO: Admin Password Change
+//TODO: Disable and Enable Account
 //TODO: Creation of department-module relationship
 
 

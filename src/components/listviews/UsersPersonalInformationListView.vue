@@ -1,6 +1,6 @@
 <template>
     <div class="q-pa-sm">
-       
+       <q-list padding bordered class="rounded-borders">
       <q-expansion-item
         expand-separator
         label="Personal Information"
@@ -17,10 +17,10 @@
                   
                  <div class="left">
                     <q-avatar size="100px" font-size="100px" color="teal" icon="person" text-color="white"></q-avatar>
-                    <div class="title">Alex Smauel</div>
-                    <div class="subtitle">UI/UX Designer</div>
+                    <div class="title">{{ $store.state.users_details.personalInformationFormData.firstname | capitalize }} {{ $store.state.users_details.personalInformationFormData.lastname | capitalize}}</div>
+                    <div class="subtitle">{{ $store.state.users_details.personalInformationFormData.role | capitalize }}</div>
                      <div class="action q-mt-sm">
-                        <q-btn  label="Edit Profile" flat style="text-transform: none; background: #deebe0; font-weight: normal" />
+                        <q-btn  label="Edit Profile" flat style="text-transform: none; background: #deebe0; font-weight: normal" @click.prevent="editItem()" />
                      </div>
                  
                  </div>
@@ -32,7 +32,7 @@
                              </div>
 
                              <div class="right__flex__tile__right">
-                                 Martins Abiodun
+                                 {{ $store.state.users_details.personalInformationFormData.firstname | capitalize}}
                              </div>
 
                          </div>
@@ -44,7 +44,7 @@
                              </div>
 
                              <div class="right__flex__tile__right">
-                                 Abiodun
+                                 {{ $store.state.users_details.personalInformationFormData.middlename | capitalize }}
                              </div>
 
                          </div>
@@ -55,7 +55,7 @@
                              </div>
 
                              <div class="right__flex__tile__right">
-                                 Edward
+                                 {{ $store.state.users_details.personalInformationFormData.lastname | capitalize }}
                              </div>
 
                          </div>
@@ -66,7 +66,7 @@
                              </div>
 
                              <div class="right__flex__tile__right">
-                                 martinsabiodun94@gmail.com
+                                {{ $store.state.users_details.personalInformationFormData.email }}
                              </div>
 
                          </div>
@@ -77,7 +77,7 @@
                              </div>
 
                              <div class="right__flex__tile__right">
-                                 Admin
+                                 {{ $store.state.users_details.personalInformationFormData.role | capitalize }}
                              </div>
 
                          </div>
@@ -88,18 +88,28 @@
           </q-card-section>
       </q-card>
       </q-expansion-item>
+       </q-list>
         
     </div>
 
 </template>
 
 <script>
+import filters from '../../repositories/filters'
 export default {
     name: "UsersPersonalInformationListView",
+    mixins: [filters],
     data(){
         return {
 
         }
+    },
+    methods: {
+        editItem(){
+          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-users-personal-information-update-form'); 
+          this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true)
+
+        },
     }
 }
 </script>

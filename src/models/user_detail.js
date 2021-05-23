@@ -5,17 +5,14 @@ class UserDetail{
         this.userId = userId;
     }
 
+    //PERSONAL_INFORMATION
     fetchPersonalInformation(cb){
         return userCollections.doc(this.userId).onSnapshot((doc) => {
 
             let data = {};
 
             if(doc.exists){
-                data.firstname = doc.data().firstname;
-                data.middlename = doc.data().middlename;
-                data.lastname = doc.data().lastname;
-                data.role = doc.data().role;
-                data.id = doc.id;
+                data = { ...doc.data(), id: doc.id};
                 console.log(data);
             }
            
@@ -24,6 +21,26 @@ class UserDetail{
             throw err;
         });
     }
+    async personalInformationDependencies(cb){
+        return configurationCollections.doc('banks').get().then(doc => {
+            if(!doc.exists){
+               return cb([])
+            }        
+            return cb(doc.data().ids);
+        })
+    }
+
+    async savePersonalInformation(data, personalInformationId = null){
+        delete data.id;
+        data.editor = firebaseAuth.currentUser.uid; data.editedAt = timestamp;
+
+        return userCollections.doc(personalInformationId).update(data).then((docRef) => {
+            return docRef;
+        }).catch(err => {
+            throw err;
+        });
+    }
+
 
     //BANKS
 

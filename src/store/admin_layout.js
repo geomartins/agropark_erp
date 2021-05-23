@@ -7,6 +7,9 @@ const state = {
         search: '',
         showAdvanced: false,
         showDateOptions: false,
+        breadCrumb: {
+            pageTitle: ''
+        },
        
         byDate: 'Any time',
         links1: [
@@ -53,6 +56,10 @@ const getters = {
     
 }
 const mutations = {
+
+    UPDATE_BREAD_CRUMB(state, value){
+        state.breadCrumb = value;
+    },
 
     UPDATE_LEFT_DRAWER_OPEN(state, value){
        
