@@ -7,17 +7,7 @@ import 'firebase/auth'
 import 'firebase/firestore'
 
 var firebaseConfig = {
-    // apiKey: "AIzaSyAY4hlakXstWYpjr3c4GulgcRJRpADb4gk",
-    // authDomain: "agropark-76f03.firebaseapp.com",
-    // databaseURL: "https://agropark-76f03.firebaseio.com",
-    // projectId: "agropark-76f03",
-    // storageBucket: "agropark-76f03.appspot.com",
-    // messagingSenderId: "568815498090",
-    // appId: "1:568815498090:web:0311aa1eea2afebd016b13",
-    // measurementId: "G-4GNQWKTS9G"
-
-
-    apiKey: "AIzaSyB8-f7ALtW-fQAWSJ8oTffqwvrp_Ux6Suk",
+    apiKey: "AIzaSyAvvHd4hsC_EoDzSJu-KfrUBrmiRWFfMTs",
     authDomain: "agropark-erp.firebaseapp.com",
     projectId: "agropark-erp",
     storageBucket: "agropark-erp.appspot.com",

@@ -264,6 +264,35 @@ class UserDetail{
         }
 
     }
+
+
+    //RESET
+    async saveReset(data){
+            data.createdAt = timestamp; data.creator = firebaseAuth.currentUser.uid;
+            data.deletedAt = null; data.editedAt = null; //default
+            delete data.confirm_password;
+
+            return userCollections.doc(this.userId).collection('resets').doc().set(data).then((docRef) => {
+                return docRef;
+            }).catch(err => {
+                throw err;
+            });
+
+    }
+
+
+    //SETTING
+    async saveSetting(data){
+        data.editor = firebaseAuth.currentUser.uid; data.editedAt = timestamp;
+
+        return userCollections.doc(this.userId).update(data).then((docRef) => {
+            return docRef;
+        }).catch(err => {
+            throw err;
+        });
+    }
+
+
     
 
 

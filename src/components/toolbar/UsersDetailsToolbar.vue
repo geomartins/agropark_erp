@@ -1,21 +1,15 @@
 <template>
      <div class="mini_toolbar shadow-1">
+                      
                       <div class="mini_toolbar__item">
-                         <q-icon name="settings_power"  >
+                         <q-icon name="settings_suggest"  @click.prevent="showSettingForm()" >
                              <q-tooltip anchor="center left" self="center right" :offset="[10, 10]">
-                                 Download
+                                 Settings
                              </q-tooltip>
                          </q-icon>
                       </div>
                       <div class="mini_toolbar__item">
-                         <q-icon name="settings_suggest"  >
-                             <q-tooltip anchor="center left" self="center right" :offset="[10, 10]">
-                                 Upload
-                             </q-tooltip>
-                         </q-icon>
-                      </div>
-                      <div class="mini_toolbar__item">
-                         <q-icon name="settings_power" >
+                         <q-icon name="add_moderator" @click.prevent="showResetForm()">
                              <q-tooltip anchor="center left" self="center right" :offset="[10, 10]">
                                  Change Password
                              </q-tooltip>
@@ -41,6 +35,17 @@ export default {
     data(){
         return {
 
+        }
+    },
+    methods: {
+        showResetForm(){
+            this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-users-reset-create-form');
+            this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true);
+        },
+        showSettingForm(){
+            console.log('Hvvvvvvvvvvv')
+            this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-users-setting-update-form');
+            this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true);
         }
     }
 }

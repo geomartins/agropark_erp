@@ -1,11 +1,24 @@
 import UserDetail from "../../models/user_detail";
 import { snackbar, confirm } from 'src/repositories/plugins';
 import ChainValidators from '../../repositories/chain_validators'
+import { passwordMatchValidator } from '../../repositories/validators'
 
 const state = {
     userId: '',
     is_loading: false,
     unsubscribe: [],
+
+
+    //RESET
+    resetFormData: {
+        password: '',
+        confirm_password: ''
+    },
+
+    //SETTING
+    settingFormData: {
+        visibility: true,
+    },
 
     //PERSONAL
     personal_information_is_loading: false,
@@ -153,6 +166,22 @@ const getters = {
     fetchBankAccountHolderName: (state) => {
         return state.bankFormData.account_holder_name;
     },
+
+    //RESET
+    fetchResetPassword: (state) => {
+        return state.resetFormData.password;
+    },
+    fetchResetConfirmPassword: (state) => {
+        return state.resetFormData.confirm_password;
+    },
+
+    //SETTING
+    fetchSettingVisibility: (state) => {
+        return state.settingFormData.visibility;
+    },
+
+
+
 }
 const mutations = {
     UPDATE_USER_ID(state, value){
@@ -339,6 +368,29 @@ const mutations = {
     },
 
 
+    //RESET
+    UPDATE_RESET_PASSWORD(state, value){
+        state.resetFormData.password = value;
+    },
+    UPDATE_RESET_CONFIRM_PASSWORD(state, value){
+        state.resetFormData.confirm_password = value;
+    },
+    CLEAR_RESET_FORM_DATA(state){
+        state.resetFormData = Object.assign({
+           password: '',
+           confirm_password: ''
+        })
+    },
+
+    //SETTING
+    UPDATE_SETTING_VISIBILITY(state, value){
+        state.settingFormData.visibility = value;
+    },
+    UPDATE_SETTING_FORM_DATA(state, value){
+        state.settingFormData.visibility = value.visibility ?? false;
+    },
+
+
     //OTHERS
     UPDATE_IS_LOADING(state, value){
         state.is_loading = value;
@@ -392,6 +444,7 @@ const actions = {
         try{
             let unsubscribe = new UserDetail(state.userId).fetchPersonalInformation((data,unsubscribe) => {
                 commit('UPDATE_PERSONAL_INFORMATION_FORM_DATA',data);
+                commit('UPDATE_SETTING_FORM_DATA', data);
            })
            
            commit('UPDATE_UNSUBSCRIBE', [...state.unsubscribe, unsubscribe]);
@@ -691,6 +744,46 @@ const actions = {
     },
 
 
+    //RESET
+    async createReset({commit, state},instance){
+        const data = state.resetFormData;
+       
+        const checkMatch = await passwordMatchValidator(data.password, data.confirm_password);
+        if(checkMatch == false){ return ; }
+
+        try{
+            commit('UPDATE_IS_LOADING', true);
+            let userDetail = new UserDetail(state.userId);
+            await userDetail.saveReset(data);
+
+            snackbar('success','item updated successfully')
+            commit("CLEAR_RESET_FORM_DATA");
+            commit('UPDATE_IS_LOADING', false);
+            instance.close();
+        }catch(err){
+            snackbar('warning',err.message);
+            commit('UPDATE_IS_LOADING', false);
+        }
+    },
+
+
+    //
+    async updateSetting({commit, state},instance){
+        const data = state.settingFormData;
+        try{
+            commit('UPDATE_IS_LOADING', true);
+            let userDetail = new UserDetail(state.userId);
+            await userDetail.saveSetting(data);
+
+            snackbar('success','item updated successfully')
+            commit('UPDATE_IS_LOADING', false);
+            instance.close();
+        }catch(err){
+            snackbar('warning',err.message);
+            commit('UPDATE_IS_LOADING', false);
+        }
+        
+    },
 
 
     async unsubscribe({commit, state},instance){
