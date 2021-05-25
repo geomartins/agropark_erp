@@ -6,6 +6,7 @@ import { passwordMatchValidator } from '../../repositories/validators'
 const state = {
     userId: '',
     is_loading: false,
+    skeleton: false,
     unsubscribe: [],
 
 
@@ -289,8 +290,10 @@ const mutations = {
         state.department_is_loading = value;
     },
     CLEAR_DEPARTMENT_FORM_DATA(state){
-        state.departmentFormData.name = '';
-        state.departmentFormData.id = '';
+        state.departmentFormData = Object.assign({
+            id: '',
+            name: '',
+         })
     },
 
     //KIN
@@ -324,14 +327,14 @@ const mutations = {
         state.kin_is_loading = value;
     },
     CLEAR_KIN_FORM_DATA(state){
-        state.kinFormData = {
+        state.kinFormData = Object.assign({
             id: '',
             fullname: '',
             relationship: '',
             occupation: '',
             address: '',
             telephone: '',
-        };
+         })
     },
 
 
@@ -432,6 +435,12 @@ const mutations = {
     },
 
 
+    //
+    UPDATE_SKELETON(state, value){
+        state.skeleton = value;
+    }
+
+
 
 
    
@@ -442,15 +451,18 @@ const actions = {
     //PERSONALINFORMATION
     async fetchPersonalInformation({ commit, state}){
         try{
+            commit('UPDATE_SKELETON', true);
             let unsubscribe = new UserDetail(state.userId).fetchPersonalInformation((data,unsubscribe) => {
                 commit('UPDATE_PERSONAL_INFORMATION_FORM_DATA',data);
                 commit('UPDATE_SETTING_FORM_DATA', data);
+                commit('UPDATE_SKELETON', false);
            })
            
            commit('UPDATE_UNSUBSCRIBE', [...state.unsubscribe, unsubscribe]);
           
         }catch(err){
             snackbar('warning',err.message);
+            commit('UPDATE_SKELETON', false);
            
         }
     },

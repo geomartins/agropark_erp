@@ -8,19 +8,13 @@
         header-class="headerClass"
         @show="showDepartments()"
         dense
-       
         icon="widgets"
       >
      
       
         <q-card>
           <q-card-section>
-             <q-table
-      :loading="$store.state.users_details_department_is_loading"
-      :data="$store.state.users_details.departmentDatas"
-      :columns="columns"
-      flat
-      row-key="name"
+             <q-table :loading="loading" :data="datas" :columns="columns" flat row-key="name"
     >
 
     <template v-slot:top>
@@ -72,6 +66,10 @@
 <script>
 export default {
     name: "UsersDepartmentListView",
+    props: {
+      loading: Boolean,
+      datas: Array,
+    },
     data(){
          return {
             columns: [
@@ -89,25 +87,14 @@ export default {
                 { name: 'createdAt', label: '',  align: 'right', field: 'createdAt', sortable: true }
             ],
 
-      data: [
-        {
-          id: 1,
-          name: 'Frozen Yogurt',
-          createdAt: '1%'
-        },
-        
-      ]
-    }
+      
+      }
     },
     methods: {
-        startCounting(){
-           console.log('hello')
-        },
         async deleteItem(id){
          this.$store.dispatch('users_details/deleteDepartmentById',id);
         },
         editItem(payload){
-        
           this.$store.commit('users_details/CLEAR_DEPARTMENT_FORM_DATA');
           this.$store.commit('users_details/UPDATE_DEPARTMENT_FORM_DATA', payload);
           this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-users-department-update-form'); 

@@ -2,21 +2,16 @@
     <q-page>
 
         <q-pull-to-refresh @refresh="refresh">
-           <app-users-details-toolbar></app-users-details-toolbar>
-           
           <div class="row">
               <div class="col-lg-1 col-xs-0"></div>
               <div class="col-lg-8 col-xs-12">
-                  <app-users-personal-information-listview></app-users-personal-information-listview>
-                  <app-users-department-listview></app-users-department-listview>
-                  <app-users-kin-listview></app-users-kin-listview>
-                  <app-users-bank-listview></app-users-bank-listview>
-
-
-                  
-
-                  
-                  <!-- {{ $route.params.id }} -->
+                  <app-users-details-skeleton :skeleton="skeleton">
+                        <app-users-details-toolbar></app-users-details-toolbar>
+                        <app-users-personal-information-listview></app-users-personal-information-listview>
+                        <app-users-department-listview :datas='departmentDatas' :loading="department_is_loading"></app-users-department-listview>
+                        <app-users-kin-listview :datas='kinDatas' :loading="kin_is_loading"></app-users-kin-listview>
+                        <app-users-bank-listview></app-users-bank-listview>
+                  </app-users-details-skeleton>
               </div>
               <div class="col-lg-3 col-xs-0"></div>
           </div>
@@ -26,11 +21,13 @@
 
 
 <script>
+import { mapState } from 'vuex';
 import UsersPersonalInformationListView from '../../components/listviews/UsersPersonalInformationListView'
 import UsersDepartmentListView from '../../components/listviews/UsersDepartmentListView'
 import UsersKinListView from '../../components/listviews/details/UsersKinListView'
 import UsersBankListView from '../../components/listviews/details/UsersBankListView'
 import UsersDetailsToolbar from '../../components/toolbar/UsersDetailsToolbar'
+import UsersDetailsSkeleton from '../../components/skeletons/details/UsersDetailsSkeleton'
 export default {
     name: "users_details",
     components: {
@@ -38,16 +35,19 @@ export default {
         "app-users-department-listview": UsersDepartmentListView,
         "app-users-kin-listview": UsersKinListView,
          "app-users-bank-listview": UsersBankListView,
-         "app-users-details-toolbar": UsersDetailsToolbar
-
+         "app-users-details-toolbar": UsersDetailsToolbar,
+         "app-users-details-skeleton": UsersDetailsSkeleton
     },
     meta: {
         titleTemplate: title => `Users Details - ${title}  `,
     },
     data(){
         return {
-
+                
         }
+    },
+    computed: {
+        ...mapState('users_details',['skeleton', 'departmentDatas', 'department_is_loading', 'kin_is_loading', 'kinDatas'])
     },
     methods: {
         async main(){
@@ -70,4 +70,14 @@ export default {
         next();
     }
 }
+
+
+// mapState({
+//         skeleton: state => state.users_details.skeleton,
+//         skeletonAlias(state){
+//             return this.skelo;
+//         }, 
+
+//     })
+
 </script>

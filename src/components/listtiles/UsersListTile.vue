@@ -58,9 +58,9 @@
           <q-item-label caption lines="2">{{  row.id  }}</q-item-label>
         </q-item-section>
 
-        <q-item-section side top @click="$router.push('/admin/users/'+row.id)">
-          <q-item-label caption>View details</q-item-label>
-          <q-icon name="visibility" />
+        <q-item-section side top @click.prevent="$router.push('/admin/users/'+row.id)">
+          <q-item-label caption style="color: teal; cursor: pointer">View details</q-item-label>
+          <q-icon name="arrow_right" color="primary" />
         </q-item-section>
     </q-item>
 

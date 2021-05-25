@@ -54,6 +54,7 @@ import UsersResetCreateForm from "./forms/details/UsersResetCreateForm"
 
 
 import UsersSettingUpdateForm from "./forms/details/UsersSettingUpdateForm"
+import UsersAvatarUpdateForm from "./forms/details/UsersAvatarUpdateForm"
 
 
 export default Vue.extend({
@@ -80,6 +81,7 @@ export default Vue.extend({
         "app-users-personal-information-update-form": UsersPersonalInformationUpdateForm,
         "app-users-reset-create-form": UsersResetCreateForm,
         "app-users-setting-update-form": UsersSettingUpdateForm,
+        "app-users-avatar-update-form": UsersAvatarUpdateForm,
     },
     data(){
         return {

@@ -5,6 +5,7 @@ import firebase from 'firebase/app'
 // Add the Firebase products that you want to use
 import 'firebase/auth'
 import 'firebase/firestore'
+import 'firebase/storage'
 
 var firebaseConfig = {
     apiKey: "AIzaSyAvvHd4hsC_EoDzSJu-KfrUBrmiRWFfMTs",
@@ -20,6 +21,7 @@ var firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = firebase.initializeApp(firebaseConfig)
 const firebaseAuth = firebaseApp.auth()
+const firebaseStorage = firebaseApp.storage();
 const uid = firebaseAuth.currentUser ? firebaseAuth.currentUser.uid : null;
 const fs = firebaseApp.firestore();
 const domainCollections = fs.collection('domains')
@@ -44,6 +46,7 @@ if (location.hostname === "localhost") {
 
 export { 
   firebaseAuth, 
+  firebaseStorage,
   firestoreTimestamp,
   fs, 
   uid,

@@ -3,6 +3,7 @@ import User from '../../models/user'
 import ChainValidators from '../../repositories/chain_validators'
 const state = {
    id: '',
+   skeleton: false,
    formData: {
       firstname: '',
       middlename: '',
@@ -123,6 +124,11 @@ const mutations = {
         state.formData.email = '';
         state.id = '';
     },
+
+     //
+     UPDATE_SKELETON(state, value){
+        state.skeleton = value;
+    }
     
 
 
@@ -166,15 +172,19 @@ const actions = {
     },
 
     async fetch({commit, state}){
+
         try{
+            commit('UPDATE_SKELETON', true);
             let unsubscribe = new User().fetch((datas,unsubscribe) => {
                 commit('UPDATE_DATA',datas);
                 console.log(state.datas,'DATA')
            })
            commit('UPDATE_UNSUBSCRIBE', unsubscribe);
+           commit('UPDATE_SKELETON', false);
           
         }catch(err){
             snackbar('warning',err.message);
+            commit('UPDATE_SKELETON', false);
         }
        
     },

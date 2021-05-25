@@ -1,6 +1,5 @@
 <template>
      <div class="mini_toolbar shadow-1">
-                      
                       <div class="mini_toolbar__item">
                          <q-icon name="settings_suggest"  @click.prevent="showSettingForm()" >
                              <q-tooltip anchor="center left" self="center right" :offset="[10, 10]">
@@ -16,10 +15,10 @@
                          </q-icon>
                       </div>
 
-                      <div class="mini_toolbar__item">
-                         <q-icon name="settings_power" >
+                      <div class="mini_toolbar__item" @click.prevent="showAvatarForm()">
+                         <q-icon name="face" >
                              <q-tooltip anchor="center left" self="center right" :offset="[10, 10]">
-                                Block Account
+                                Update Avatar
                              </q-tooltip>
                          </q-icon>
                       </div>
@@ -43,8 +42,11 @@ export default {
             this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true);
         },
         showSettingForm(){
-            console.log('Hvvvvvvvvvvv')
             this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-users-setting-update-form');
+            this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true);
+        },
+        showAvatarForm(){
+            this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-users-avatar-update-form');
             this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true);
         }
     }

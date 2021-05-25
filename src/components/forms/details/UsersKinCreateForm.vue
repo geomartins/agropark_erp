@@ -20,7 +20,10 @@
               </q-card-section>
 
                <q-card-section class="q-pt-none">
-                <q-input outlined v-model="telephone" label="Telephone" :dense="dense" />
+                 <q-input outlined v-model="telephone" label="Telephone" :dense="dense" mask="(###) ### - #####"
+                fill-mask
+                unmasked-value
+                hint="Mask: (###) ### - ####" />
               </q-card-section>
 
                <q-card-section class="q-pt-none">

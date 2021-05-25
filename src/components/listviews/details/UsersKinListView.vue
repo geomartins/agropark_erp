@@ -10,13 +10,12 @@
         dense
         icon="widgets"
       >
-     
       
         <q-card>
           <q-card-section>
              <q-table
-      :loading="$store.state.users_details.kin_is_loading"
-      :data="$store.state.users_details.kinDatas"
+      :loading="loading"
+      :data="datas"
       :columns="columns"
       flat
       row-key="name"
@@ -69,6 +68,10 @@
 <script>
 export default {
     name: "UsersKinListView",
+    props: {
+      datas: Array,
+      loading: Boolean,
+    },
     data(){
          return {
             columns: [
