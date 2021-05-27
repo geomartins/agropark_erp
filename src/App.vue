@@ -25,8 +25,7 @@ export default {
   }
 }
 
-//TODO: Work on document upload e.g cv, credentials and download
-
+//TODO: Work on createForm, editForm, beforeDestroy on all listview and forms
 //TODO: Working on Search with Export
 //TODO: Creation of department-module relationship
 

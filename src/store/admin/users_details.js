@@ -10,6 +10,13 @@ const state = {
     skeleton: false,
     unsubscribe: [],
 
+    //DOCUMENT
+    document_is_loading: false,
+    documentFormData: {
+        type: '',
+        description: '',
+    },
+    documentDatas: [],
 
     //RESET
     resetFormData: {
@@ -86,6 +93,8 @@ const state = {
         marital_status: [],
         roles: [],
         genders: [],
+
+        document_types: []
     }
 }
 const getters = {
@@ -169,6 +178,20 @@ const getters = {
     fetchBankAccountHolderName: (state) => {
         return state.bankFormData.account_holder_name;
     },
+
+
+     //DOCUMENT
+    fetchDocumentType: (state) => {
+        return state.documentFormData.type;
+    },
+    fetchDocumentDescription: (state) => {
+        return state.documentFormData.description;
+    },
+    fetchDocumentFiles: (state) => {
+        return state.documentFormData.files;
+    },
+
+
 
     //RESET
     fetchResetPassword: (state) => {
@@ -375,6 +398,34 @@ const mutations = {
     },
 
 
+    //DOCUMENT
+    UPDATE_DOCUMENT_IS_LOADING(state, value){
+        state.document_is_loading = value;
+    },
+    UPDATE_DOCUMENT_DATAS(state,value){
+        state.documentDatas = Object.assign([], value)
+    },
+    UPDATE_DOCUMENT_TYPE(state, value){
+        state.documentFormData.type = value;
+    },
+    UPDATE_DOCUMENT_DESCRIPTION(state, value){
+        state.documentFormData.description = value;
+    },
+    UPDATE_DOCUMENT_FILES(state, value){
+        //let newData = [ ...state.documentFormData.files, value]
+       // state.documentFormData.files.push(value);
+        state.documentFormData.files.push(value);
+        //state.documentFormData.files.push(value);
+    },
+    CLEAR_DOCUMENT_FORM_DATA(state){
+        state.documentFormData = Object.assign({
+            type: '',
+            description: '',
+            images: []
+        })
+       
+    },
+
     //RESET
     UPDATE_RESET_PASSWORD(state, value){
         state.resetFormData.password = value;
@@ -436,6 +487,10 @@ const mutations = {
     },
     UPDATE_D_GENDERS(state, value){
         state.dependencies.genders = value;
+    },
+
+    UPDATE_D_DOCUMENT_TYPES(state, value){
+        state.dependencies.document_types = value;
     },
 
 
@@ -504,6 +559,78 @@ const actions = {
         
     },
 
+
+    //DOCUMENT
+    async fetchDocuments({commit, state}){
+        try{
+            commit('UPDATE_DOCUMENT_IS_LOADING', true);
+            let unsubscribe = new UserDetail(state.userId).fetchDocuments((datas,unsubscribe) => {
+                commit('UPDATE_DOCUMENT_DATAS',datas);
+           })
+           commit('UPDATE_UNSUBSCRIBE', [...state.unsubscribe, unsubscribe]);
+           commit('UPDATE_DOCUMENT_IS_LOADING', false);
+          
+        }catch(err){
+            snackbar('warning',err.message);
+            commit('UPDATE_DOCUMENT_IS_LOADING', false);
+        }
+    },
+
+    async fetchDocumentDependencies({commit, state}){
+        try{
+            await new UserDetail(state.userId).documentDependencies((documents) => {
+                console.log(documents);
+                commit('UPDATE_D_DOCUMENT_TYPES', documents);
+           });
+        }catch(err){
+            snackbar('warning',err.message);
+        }
+       
+    },
+
+    async createDocument({commit, state},payload){
+        let instance = payload.instance;
+        const data = state.documentFormData;
+        data.files = payload.files;
+
+        //check if type is not empty
+        //check if description is not empty
+        //check if array of file is not empty
+        // ChainValidatorsn(state.documentFormData).check({
+        //     description: 'string|notNull|len:300|isArray|lowercase|',
+        // })
+
+        try{
+            commit('UPDATE_IS_LOADING', true);
+            new StorageService().uploads('documents', data.files, async (urls) => {
+                delete data.files;
+                let userDetail = new UserDetail(state.userId);
+                await userDetail.saveDocument(data, urls);
+    
+                snackbar('success','item created successfully')
+                commit("CLEAR_DOCUMENT_FORM_DATA");
+                commit('UPDATE_IS_LOADING', false);
+                instance.close();
+            })
+            
+        }catch(err){
+            snackbar('warning',err.message);
+            commit('UPDATE_IS_LOADING', false);
+        }
+    },
+
+
+    async deleteDocumentById({commit, state}, payload){
+        let docId = payload.docId;
+        let url = payload.url;
+
+        let x = (await confirm('Confirm','Would you like to delete the selected item?'));
+        x.onOk(()=> {
+            new UserDetail(state.userId).deleteDocumentById(docId,url).then().catch(err => {
+                snackbar('warning',err.message);
+            });
+        })
+    },
 
 
     //DEPARTMENT

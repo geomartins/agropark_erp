@@ -94,7 +94,10 @@ export default {
   methods: {
     update(){ this.$store.dispatch('users_details/updateKin',this); },
     close(){ this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false) }
-  }
+  },
+  beforeDestroy(){
+    this.$store.commit('users_details/CLEAR_KIN_FORM_DATA');
+  },
 }
 </script>
 

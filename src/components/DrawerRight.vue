@@ -59,6 +59,9 @@ import UsersResetCreateForm from "./forms/details/UsersResetCreateForm"
 import UsersSettingUpdateForm from "./forms/details/UsersSettingUpdateForm"
 import UsersAvatarUpdateForm from "./forms/details/UsersAvatarUpdateForm"
 
+import UsersDocumentCreateForm from "./forms/details/UsersDocumentCreateForm"
+
+
 
 export default Vue.extend({
     name: 'Drawer',
@@ -85,6 +88,7 @@ export default Vue.extend({
         "app-users-reset-create-form": UsersResetCreateForm,
         "app-users-setting-update-form": UsersSettingUpdateForm,
         "app-users-avatar-update-form": UsersAvatarUpdateForm,
+        "app-users-document-create-form": UsersDocumentCreateForm,
     },
     data(){
         return {

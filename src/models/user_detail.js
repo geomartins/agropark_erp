@@ -1,4 +1,4 @@
-import { userCollections, configurationCollections, firebaseAuth, timestamp } from '../boot/firebase'
+import { userCollections, configurationCollections, firebaseAuth, timestamp, fs, firebaseStorage } from '../boot/firebase'
 import { convertJSDateToServerTimestamp, convertServerTimestampToJSDate } from '../repositories/pick'
 
 class UserDetail{
@@ -266,6 +266,60 @@ class UserDetail{
     }
 
 
+    //DOCUMENTS
+    fetchDocuments(cb){
+        return userCollections.doc(this.userId).collection('documents').orderBy('createdAt','desc').onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
+            let data = [];
+            querySnapshot.forEach((doc) => {
+                let ch = { ...doc.data() };
+                ch.id = doc.id;
+                data.push(ch);
+             });
+            return cb(data)
+        },(err) => {
+            throw err;
+        });
+    }
+
+    async saveDocument(data, urls = []){
+            data.createdAt = timestamp; data.creator = firebaseAuth.currentUser.uid;
+            data.deletedAt = null; data.editedAt = null; //default
+
+            let batch = fs.batch();
+            for(let url of urls){
+                let ref = userCollections.doc(this.userId).collection('documents').doc();
+                let inputData = data;
+                inputData.url = url;
+                batch.set(ref, inputData);
+            }
+
+            // Commit the batch
+            return batch.commit().then(() => {
+                return ;
+            }).catch(err => {
+                throw err;
+            });
+    }
+
+    async documentDependencies(cb){
+        return configurationCollections.doc('documents').get().then(doc => {
+            if(!doc.exists){
+               return cb([])
+            }        
+            return cb(doc.data().ids);
+        })
+    }
+
+    async deleteDocumentById(docId = null, url){
+        return firebaseStorage.refFromURL(url).delete().then(() => {
+            return userCollections.doc(this.userId).collection('documents').doc(docId).delete();
+        }).then(()=> {
+            return ;
+        }).catch(err => console.log(err));;
+       
+    }
+
+
     //RESET
     async saveReset(data){
             data.createdAt = timestamp; data.creator = firebaseAuth.currentUser.uid;
@@ -277,7 +331,6 @@ class UserDetail{
             }).catch(err => {
                 throw err;
             });
-
     }
 
 

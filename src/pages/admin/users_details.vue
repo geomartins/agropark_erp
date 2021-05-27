@@ -1,9 +1,33 @@
 <template>
     <q-page>
+        <q-pull-to-refresh @refresh="refresh">
+           <app-users-details-toolbar></app-users-details-toolbar>
+           
+          <div class="row">
+              <div class="col-lg-1 col-xs-0"></div>
+              <div class="col-lg-8 col-xs-12">
+                  <app-users-details-skeleton :skeleton="skeleton">
+                        <app-users-details-toolbar></app-users-details-toolbar>
+                        <app-users-personal-information-listview></app-users-personal-information-listview>
+                        <app-users-department-listview :datas='departmentDatas' :loading="department_is_loading"></app-users-department-listview>
+                        <app-users-kin-listview :datas='kinDatas' :loading="kin_is_loading"></app-users-kin-listview>
+                        <app-users-bank-listview></app-users-bank-listview>
+                        <app-users-document-listview :datas='documentDatas' :loading="document_is_loading"></app-users-document-listview>
+                  </app-users-details-skeleton>
+
+
+                  
+
+                  
+                  <!-- {{ $route.params.id }} -->
+              </div>
+              <div class="col-lg-3 col-xs-0"></div>
+          </div>
+        </q-pull-to-refresh>
         
 
 
-        <q-pull-to-refresh @refresh="refresh">
+        <!-- <q-pull-to-refresh @refresh="refresh">
            <div class="row">
             
               <div class="col-lg-8 offset-lg-2  col-md-12">
@@ -18,7 +42,7 @@
               </div>
               
           </div>
-        </q-pull-to-refresh>
+        </q-pull-to-refresh> -->
     </q-page>
 </template>
 
@@ -31,15 +55,17 @@ import UsersKinListView from '../../components/listviews/details/UsersKinListVie
 import UsersBankListView from '../../components/listviews/details/UsersBankListView'
 import UsersDetailsToolbar from '../../components/toolbar/UsersDetailsToolbar'
 import UsersDetailsSkeleton from '../../components/skeletons/details/UsersDetailsSkeleton'
+import UsersDocumentListView from '../../components/listviews/details/UsersDocumentListView'
 export default {
     name: "users_details",
     components: {
         "app-users-personal-information-listview": UsersPersonalInformationListView,
         "app-users-department-listview": UsersDepartmentListView,
         "app-users-kin-listview": UsersKinListView,
-         "app-users-bank-listview": UsersBankListView,
-         "app-users-details-toolbar": UsersDetailsToolbar,
-         "app-users-details-skeleton": UsersDetailsSkeleton
+        "app-users-bank-listview": UsersBankListView,
+        "app-users-details-toolbar": UsersDetailsToolbar,
+        "app-users-details-skeleton": UsersDetailsSkeleton,
+        "app-users-document-listview": UsersDocumentListView,
     },
     meta: {
         titleTemplate: title => `Users Details - ${title}  `,
@@ -50,7 +76,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('users_details',['skeleton', 'departmentDatas', 'department_is_loading', 'kin_is_loading', 'kinDatas'])
+        ...mapState('users_details',['skeleton', 'departmentDatas', 'department_is_loading', 'kin_is_loading', 'kinDatas', 'document_is_loading', 'documentDatas'])
     },
     methods: {
         async main(){

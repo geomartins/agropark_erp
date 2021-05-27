@@ -19,6 +19,25 @@ class StorageService{
       }
     }
 
+    async uploads(storagePath, uploads, cb ){
+      try {
+        let result = [];
+        for(let upload of uploads){
+          let imageName = uid();
+          let file = upload;
+          var storageRef = firebaseStorage.ref();
+          var imageRef = storageRef.child(`${storagePath}/${imageName}`);
+          await imageRef.put(file);
+          var downloadURL = await imageRef.getDownloadURL();
+          result.push(downloadURL);
+        }
+        return cb(result);
+
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     // upload(e){
     //     if(e.target.files[0]){
         
