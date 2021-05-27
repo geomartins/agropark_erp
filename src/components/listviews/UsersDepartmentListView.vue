@@ -117,25 +117,6 @@ export default {
 </script>
 
 <style>
-.expand{
-    color: teal
-}
 
-.headerClass{
-    color: teal;
-    font-size: 1rem;
-}
-
-.headerFlex{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    width: 100%;
-}
-
-.q-expansion-item__content{
-    border-top: 1px solid #00808057
-
-}
 
 </style>

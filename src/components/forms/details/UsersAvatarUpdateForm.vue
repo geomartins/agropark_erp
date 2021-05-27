@@ -7,26 +7,27 @@
         header-class="headerClass"
         default-opened
         style="border-bottom: 1px solid #00808057; background: #fafafa"
-        class="q-pb-md"
-
+        class="q-pb-xs"
       >
        <q-card flat >
               
             <div class="q-mt-md"></div>
 
               
-
-               <!-- <q-card-section class="q-pt-none">
-                <q-input type="textarea"  outlined v-model="address" label="Address" :dense="dense" />
-              </q-card-section> -->
-
-
+              <vue-dropzone ref="imgDropZone"  id="dropzone" :options="dropzoneOptions" @vdropzone-complete="update" :useCustomSlot='true'>
+                 <div class="dropzone-custom-content">
+                   <div>
+                     <q-icon name="cloud_download" color="teal" style="font-size: 30px"></q-icon>
+                   </div>
+                   <div class="q-mt-sm"> Drag and drop here</div>
+                </div>
+              </vue-dropzone>
+              
            
 
-             <q-card-section class="q-pt-none">
+             <q-card-section class="q-pt-md bottomFix" >
                   <div class="editFlex">
-                      <q-btn color="primary"   label="Update" @click.prevent="update()" />
-                      <q-btn color="primary" outline label="Close" @click.prevent="$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false)" />
+                      <q-btn color="primary" flat label="Close" @click.prevent="$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false)" />
                   </div>
               </q-card-section>
 
@@ -42,38 +43,38 @@
 
 
 <script>
+import vue2Dropzone from 'vue2-dropzone';
+import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 export default {
     name: "UsersAvatarUpdateForm",
+    components: {
+      vueDropzone: vue2Dropzone
+    },
      data() {
     return {
        dense: true,
        visible: true,
+       images: [],
+       dropzoneOptions: {
+          url: 'https://httpbin.org/post',
+          thumbnailWidth: 150,
+          addRemoveLinks: false,
+          acceptedFiles: ".jpg, .jpeg, .png",
+          maxFilesize: 0.5,
+          maxFiles: 1,
+      }
     };
   },
-  computed: {
-    //  fullname:  {
-    //     get() { return this.$store.getters["users_details/fetchKinFullname"]; },
-    //     set(value){ this.$store.commit('users_details/UPDATE_KIN_FULLNAME',value); }   
-    //   },
-     
-     
-     
-  },
   methods: {
-    update(){ this.$store.dispatch('users_details/updateAvatar',this); },
+    update(file){ this.$store.dispatch('users_details/updateAvatar',{ instance: this, file: file }); },
     close(){ this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false) }
-  }
+  },
 }
 </script>
 
 <style>
-.editFlex{
-    display: flex;
-flex-direction: row;
-justify-content: flex-start;
-}
 
-.editFlex button{
-    margin-right: 10px;
-}
+
+
+
 </style>

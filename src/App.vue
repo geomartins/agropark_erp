@@ -26,7 +26,6 @@ export default {
 }
 
 //TODO: Work on document upload e.g cv, credentials and download
-//TODO: Work on cover image upload
 
 //TODO: Working on Search with Export
 //TODO: Creation of department-module relationship

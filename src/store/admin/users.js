@@ -184,7 +184,7 @@ const actions = {
           
         }catch(err){
             snackbar('warning',err.message);
-            commit('UPDATE_SKELETON', false);
+            
         }
        
     },

@@ -2,6 +2,7 @@ import UserDetail from "../../models/user_detail";
 import { snackbar, confirm } from 'src/repositories/plugins';
 import ChainValidators from '../../repositories/chain_validators'
 import { passwordMatchValidator } from '../../repositories/validators'
+import StorageService from "src/services/storage_service";
 
 const state = {
     userId: '',
@@ -40,6 +41,7 @@ const state = {
         height: '',
         weight: '',
         blood_type: '',
+        avatar: '',
     },
 
     //DEPARTMENT
@@ -206,6 +208,7 @@ const mutations = {
         state.personalInformationFormData.weight = value.weight ?? '';
         state.personalInformationFormData.blood_type = value.blood_type ?? '';
         state.personalInformationFormData.role = value.role ?? '';
+        state.personalInformationFormData.avatar = value.avatar ?? '';
     },
     UPDATE_PERSONAL_INFORMATION_EMAIL(state, value){
         state.personalInformationFormData.email = value;
@@ -270,6 +273,7 @@ const mutations = {
             height: '',
             weight: '',
             blood_type: '',
+            avatar: '',
         })
         
     },
@@ -462,8 +466,6 @@ const actions = {
           
         }catch(err){
             snackbar('warning',err.message);
-            commit('UPDATE_SKELETON', false);
-           
         }
     },
 
@@ -790,6 +792,32 @@ const actions = {
             snackbar('success','item updated successfully')
             commit('UPDATE_IS_LOADING', false);
             instance.close();
+        }catch(err){
+            snackbar('warning',err.message);
+            commit('UPDATE_IS_LOADING', false);
+        }
+        
+    },
+
+
+    //
+    async updateAvatar({commit, state},instance){
+        const file = instance.file;
+        const vueInstance = instance.instance;
+
+        try{
+            commit('UPDATE_IS_LOADING', true);
+            
+            new StorageService().upload(file, async (downloadURL) => {
+                const data = { avatar: downloadURL  };
+
+                await new UserDetail(state.userId).saveAvatar(data)
+                snackbar('success','item updated successfully')
+
+                commit('UPDATE_IS_LOADING', false);
+                vueInstance.close();
+            });
+           
         }catch(err){
             snackbar('warning',err.message);
             commit('UPDATE_IS_LOADING', false);

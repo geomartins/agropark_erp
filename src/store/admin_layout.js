@@ -1,5 +1,6 @@
 
 import { fasGlobeAmericas, fasFlask } from '@quasar/extras/fontawesome-v5'
+import { Screen } from 'quasar'
 const state = {
         component_name: '',
         leftDrawerOpen: false,
@@ -62,26 +63,61 @@ const mutations = {
     },
 
     UPDATE_LEFT_DRAWER_OPEN(state, value){
+        console.log('Left value', value)
        
         if(value == true){
-            state.leftDrawerOpen = true;
-            state.rightDrawerOpen = false;
+            if(Screen.lt.xl){
+                state.leftDrawerOpen = true;
+                state.rightDrawerOpen = false;
+            }else if(Screen.lt.lg || Screen.lt.md){
+                state.leftDrawerOpen = true;
+                state.rightDrawerOpen = false;
+            }else if(Screen.lt.sm || Screen.lt.xs){
+                state.leftDrawerOpen = true;
+                state.rightDrawerOpen = false;
+            }else{
+                state.leftDrawerOpen = true;
+                state.rightDrawerOpen = false;
+            }
+            
         }
         if(value == false){
             state.leftDrawerOpen = false;
-            //state.rightDrawerOpen = true;
+           
         }
     },
     UPDATE_RIGHT_DRAWER_OPEN(state, value){
-       
         if(value == true){
-            state.rightDrawerOpen = true;
-            state.leftDrawerOpen = false;
+            if(Screen.lt.xl){
+                state.rightDrawerOpen = true;
+                state.leftDrawerOpen = false;
+            }else if(Screen.lt.lg || Screen.lt.md ){
+                state.rightDrawerOpen = true;
+                state.leftDrawerOpen = false;
+            }else if(Screen.lt.xs || Screen.lt.sm){
+                state.rightDrawerOpen = true;
+                state.leftDrawerOpen = false;
+            }else{
+                state.rightDrawerOpen = true;
+                state.leftDrawerOpen = true;
+            }
+           
         }
 
         if(value == false){
-            state.rightDrawerOpen = false;
-            state.leftDrawerOpen = true;
+            if(Screen.lt.xl){
+                state.rightDrawerOpen = false;
+                state.leftDrawerOpen = true;
+            }else if(Screen.lt.lg || Screen.lt.md){
+                state.rightDrawerOpen = false;
+                state.leftDrawerOpen = true;
+            }else if(Screen.lt.xs || Screen.lt.sm){
+                state.rightDrawerOpen = false;
+                state.leftDrawerOpen = false;
+            }else{
+                state.rightDrawerOpen = false;
+                state.leftDrawerOpen = true;
+            }
         }
     },
     
@@ -94,6 +130,9 @@ const mutations = {
 
    TOGGLE_LEFT_DRAWER(state){
         state.leftDrawerOpen = !state.leftDrawerOpen;
+    },
+    TOGGLE_RIGHT_DRAWER(state){
+        state.rightDrawerOpen = !state.rightDrawerOpen;
     },
 
 }

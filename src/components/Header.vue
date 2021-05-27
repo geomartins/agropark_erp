@@ -7,7 +7,7 @@
           flat
           dense
           round
-          @click.prevent="toggleLeftDrawer()"
+          @click="toggleLeftDrawer"
           aria-label="Menu"
           icon="menu"
           class="q-mr-sm"
@@ -57,6 +57,7 @@
             <q-tooltip>Account</q-tooltip>
           </q-btn>
         </div>
+
       </q-toolbar>
 
       
@@ -79,6 +80,10 @@ export default Vue.extend({
     methods: {
         toggleLeftDrawer(){
             this.$store.commit('admin_layout/TOGGLE_LEFT_DRAWER')
+        },
+
+        toggleRightDrawer(){
+            this.$store.commit('admin_layout/TOGGLE_RIGHT_DRAWER')
         },
        
     },

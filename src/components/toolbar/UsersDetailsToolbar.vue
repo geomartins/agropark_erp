@@ -15,7 +15,7 @@
                          </q-icon>
                       </div>
 
-                      <div class="mini_toolbar__item" @click.prevent="showAvatarForm()">
+                      <div class="mini_toolbar__item" @click="showAvatarForm">
                          <q-icon name="face" >
                              <q-tooltip anchor="center left" self="center right" :offset="[10, 10]">
                                 Update Avatar

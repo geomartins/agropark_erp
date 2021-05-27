@@ -1,10 +1,13 @@
 <template>
     <q-drawer
      v-model="rightDrawerOpen"
+     
+     behavior="default"
       
       show-if-above
       bordered
-      :width="480"
+      :width="width"
+      class="rightDrawer"
       side="right"
       
      v-if="rightDrawerOpen == true">
@@ -85,10 +88,36 @@ export default Vue.extend({
     },
     data(){
         return {
+            width: 350,
+            overlay: true,
+            breakpoint: 300,
         //    name: 'app-module-categories-create-form'
         }
     },
+    watch: {
+        rightDrawerOpen: function (newValue, oldValue) {
+            console.log('-----------------')
+           this.width = 250;
+         if(this.$q.screen.lt.md){
+                console.log('Medium')
+                this.width = 300;
+         }else if(this.$q.screen.lt.lg){
+                console.log('Large')
+                this.width = 440;
+         }else if(this.$q.screen.lt.sm){
+                console.log('small')
+                this.width = 200;
+         }else if(this.$q.screen.lt.xs){
+                console.log('Xtra small')
+                 this.width = 200;
+         }else{
+              console.log('Xtra Xtra large')
+               this.width = 480;
+         }
+      }
+    },
     methods: {
+       
        
     },
     computed: {
@@ -102,3 +131,39 @@ export default Vue.extend({
     }
 })
 </script>
+
+<style >
+/* 
+@media (min-width: 0px) and (max-width: 400px){
+    .q-drawer--right{
+        width: calc(80%)!important;
+    }
+}
+
+@media (min-width: 400px) and (max-width: 600px){
+    .q-drawer--right{
+        width: calc(70%)!important;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 800px){
+    .q-drawer--right{
+        width: calc(60%)!important;
+    }
+}
+
+@media (min-width: 801px) and (max-width: 1200px){
+    .q-drawer--right{
+        width: calc(30%)!important;
+    }
+} */
+
+/* 
+--q-size-xs: 0;
+--q-size-sm: 600px;
+--q-size-md: 1024px;
+--q-size-lg: 1440px;
+--q-size-xl: 1920px; */
+
+
+</style>

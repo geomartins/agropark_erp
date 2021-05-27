@@ -1,11 +1,14 @@
 <template>
     <q-drawer
      v-model="leftDrawerOpen"
-      
       show-if-above
       bordered
       content-class="bg-white"
-      :width="280"
+       behavior="default"
+      
+     
+      
+      :width="width"
       side="left"
     >
       <q-scroll-area class="fit">
@@ -131,8 +134,14 @@ export default {
     name: 'Drawer',
     data(){
         return {
-
+          width: 280,
         }
+    },
+    watch: {
+      leftDrawerOpen: function (newValue, oldValue) {
+        this.$store.commit('admin_layout/UPDATE_LEFT_DRAWER_OPEN',newValue);
+      
+      }
     },
     methods: {
        
@@ -144,6 +153,9 @@ export default {
       },
     },
     methods: {
+       show(){
+         console.log('yeee')
+       }, 
         logout(){
             const x = this;
            AuthService.logout().then(()=> {

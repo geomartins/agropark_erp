@@ -293,6 +293,19 @@ class UserDetail{
     }
 
 
+
+    async saveAvatar(data){
+        data.editor = firebaseAuth.currentUser.uid; data.editedAt = timestamp;
+
+        return userCollections.doc(this.userId).update(data).then((docRef) => {
+            return docRef;
+        }).catch(err => {
+            throw err;
+        });
+    }
+
+
+
     
 
 

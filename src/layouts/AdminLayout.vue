@@ -1,14 +1,11 @@
 <template>
-  <q-layout view="lHr lpR fFf" class="bg-grey-1">
+  <q-layout view="lHr lpR fFf" class="bg-grey-1" >
     
    
     <app-header ></app-header>
     
     
     <app-drawer></app-drawer>
-
-    
-    
     
     <app-drawer-right></app-drawer-right>
 

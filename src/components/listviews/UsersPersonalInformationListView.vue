@@ -12,11 +12,21 @@
         icon="widgets"
       >
       <q-card>
+          
+          <div class="row justify-end q-mx-lg q-my-sm" v-if="$q.screen.lt.sm || $q.screen.xs ">
+              <q-icon name="mode_edit" size="sm" class="q-pr-md" @click.prevent="editItem()" >
+                   <q-tooltip>Add</q-tooltip>
+              </q-icon>
+          </div>
+   
           <q-card-section style="padding: 0px">
              <div class="pflex">
                   
                  <div class="left">
-                    <q-avatar size="100px" font-size="100px" color="teal" icon="person" text-color="white"></q-avatar>
+                    <q-avatar size="100px" v-if="$store.state.users_details.personalInformationFormData.avatar != ''">
+                        <img :src="$store.state.users_details.personalInformationFormData.avatar">
+                    </q-avatar>
+                    <q-avatar v-if="$store.state.users_details.personalInformationFormData.avatar == ''" size="100px" font-size="100px" color="teal" icon="person" text-color="white"></q-avatar>
                     <div class="title">{{ $store.state.users_details.personalInformationFormData.firstname | capitalize }} {{ $store.state.users_details.personalInformationFormData.lastname | capitalize}}</div>
                     <div class="subtitle">{{ $store.state.users_details.personalInformationFormData.role | capitalize }}</div>
                      <div class="action q-mt-sm">
@@ -144,12 +154,12 @@ export default {
 }
 
 .left > .title{
-    font-size: 17px;
+    font-size: 1rem;
     margin-top: .6rem;
 }
 
 .left > .subtitle{
-    font-size: 13px;
+    font-size: 0.9rem;
     font-weight: lighter;
 }
 
@@ -189,5 +199,46 @@ export default {
     font-size: 14px;
     font-weight: lighter;
     
+}
+
+
+
+@media (min-width: 0px) and (max-width: 600px){
+    .pflex > .left{
+        visibility: hidden;
+        width: 0%;
+    }
+
+    .pflex > .right{
+        width: 100%;
+    }
+
+    .right__flex__tile__left {
+        width: 40%;
+        padding-left: 1rem;
+        font-size: 0.9rem;
+    }
+
+    .right__flex__tile__right {
+        width: 60%;
+        font-size: 0.9rem;
+        font-weight: lighter;
+    }
+}
+
+
+@media (min-width: 601px) and (max-width: 900px){
+  
+    .right__flex__tile__left {
+        width: 40%;
+        padding-left: 1rem;
+        font-size: 0.9rem;
+    }
+
+    .right__flex__tile__right {
+        width: 60%;
+        font-size: 0.9rem;
+        font-weight: lighter;
+    }
 }
 </style>

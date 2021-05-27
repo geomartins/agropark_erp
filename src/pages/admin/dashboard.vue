@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center">
-     <p @click.prevent="$router.push('/admin/module_categories')"> Dashboard Page</p>
+     <p @click.prevent="$router.push('/admin/users')"> Dashboard Page</p>
   </q-page>
 </template>
 

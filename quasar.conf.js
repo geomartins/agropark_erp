@@ -30,6 +30,7 @@ module.exports = function (/* ctx */) {
       'firebase',
       'is-auth-start',
       'is-auth',
+      //'uuid'
     ],
 
     // https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css

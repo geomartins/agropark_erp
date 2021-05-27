@@ -25,7 +25,10 @@
     "electron-updater": "^4.3.8",
     "firebase": "^8.3.1",
     "quasar": "^1.0.0",
-    "vue-i18n": "^8.0.0"
+    "uuid": "^8.3.2",
+    "vue-i18n": "^8.0.0",
+    "vue-uuid": "^2.0.2",
+    "vue2-dropzone": "^3.6.0"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",

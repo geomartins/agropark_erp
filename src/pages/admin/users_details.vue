@@ -1,10 +1,13 @@
 <template>
     <q-page>
+        
+
 
         <q-pull-to-refresh @refresh="refresh">
-          <div class="row">
-              <div class="col-lg-1 col-xs-0"></div>
-              <div class="col-lg-8 col-xs-12">
+           <div class="row">
+            
+              <div class="col-lg-8 offset-lg-2  col-md-12">
+                  
                   <app-users-details-skeleton :skeleton="skeleton">
                         <app-users-details-toolbar></app-users-details-toolbar>
                         <app-users-personal-information-listview></app-users-personal-information-listview>
@@ -13,7 +16,7 @@
                         <app-users-bank-listview></app-users-bank-listview>
                   </app-users-details-skeleton>
               </div>
-              <div class="col-lg-3 col-xs-0"></div>
+              
           </div>
         </q-pull-to-refresh>
     </q-page>
@@ -63,7 +66,9 @@ export default {
         }
     },
 
-    created(){ this.main(); },
+    created(){ 
+        this.main();
+     },
     beforeRouteLeave (to, from , next) {
         this.$store.dispatch('users_details/unsubscribe', this);
         this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false)
@@ -81,3 +86,49 @@ export default {
 //     })
 
 </script>
+
+<style scoped>
+.pageFlex{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+}
+
+.pageFlex > .center{
+    width: 80%;
+    height: 100%;
+    
+}
+
+@media (min-width: 0px) and (max-width: 400px){
+    .pageFlex > .center{
+        width: 100%;
+        height: 100%;
+        
+    }
+
+}
+
+@media (min-width: 401px) and (max-width: 1000px){
+    .pageFlex > .center{
+        width: 100%;
+        height: 100%;
+        
+    }
+
+}
+
+@media (min-width: 10001px) and (max-width: 1200px){
+    .pageFlex > .center{
+        width: 100%;
+        height: 100%;
+        
+    }
+
+}
+
+
+</style>
