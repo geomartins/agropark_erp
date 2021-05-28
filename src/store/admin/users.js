@@ -149,6 +149,15 @@ const actions = {
                 'email': 'required|notNull|email'
             });
 
+            /** 
+             * new MaskValidator(state.formData)
+                .trim('firstname','middlename','lastname','role','email')
+                .lower('firstname','middlename','lastname','role','email')
+                .val;
+
+
+            **/
+
             const firstname = new ChainValidators(state.formData.firstname).trim().lower().val;
             const middlename = new ChainValidators(state.formData.middlename).trim().lower().val;
             const lastname = new ChainValidators(state.formData.lastname).trim().lower().val;
