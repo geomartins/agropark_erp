@@ -1,6 +1,7 @@
 import UserDetail from "../../models/user_detail";
 import { snackbar, confirm } from 'src/repositories/plugins';
 import ChainValidators from '../../repositories/chain_validators'
+import FlexValidators from '../../repositories/flex_validators'
 import { passwordMatchValidator } from '../../repositories/validators'
 import StorageService from "src/services/storage_service";
 
@@ -593,15 +594,14 @@ const actions = {
         const data = state.documentFormData;
         data.files = payload.files;
 
-        //check if type is not empty
-        //check if description is not empty
-        //check if array of file is not empty
-        // ChainValidatorsn(state.documentFormData).check({
-        //     description: 'string|notNull|len:300|isArray|lowercase|',
-        // })
-
         try{
+            new FlexValidators(data).check({
+                'type': 'required|notNull',
+                'description': 'required|notNull'
+            });
+          
             commit('UPDATE_IS_LOADING', true);
+
             new StorageService().uploads('documents', data.files, async (urls) => {
                 delete data.files;
                 let userDetail = new UserDetail(state.userId);

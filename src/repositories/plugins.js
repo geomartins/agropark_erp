@@ -3,16 +3,32 @@ import { Notify, Loading, LoadingBar, LocalStorage, Dialog } from 'quasar'
 const snackbar = (type, message, position='bottom-right') => {
 
     if(type == 'warning'){
-        Notify.create({
-            type: 'negative',
-            position: position,
-            message: message,
-            timeout: 10000,
-            textColor: 'white',
-            color: 'red',
-            actions: [{  color: 'white' }]
-
-        })
+        if( Array.isArray(message)){
+            for(var mes of message){
+                Notify.create({
+                    type: 'negative',
+                    position: position,
+                    message: mes,
+                    timeout: 10000,
+                    textColor: 'white',
+                    color: 'red',
+                    actions: [{  color: 'white' }]
+        
+                })
+            }
+        }else{
+            Notify.create({
+                type: 'negative',
+                position: position,
+                message: message,
+                timeout: 10000,
+                textColor: 'white',
+                color: 'red',
+                actions: [{  color: 'white' }]
+    
+            })
+        }
+        
     }
 
     if(type == 'success'){

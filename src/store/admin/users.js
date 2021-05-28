@@ -1,6 +1,8 @@
 import { snackbar, confirm } from 'src/repositories/plugins';
 import User from '../../models/user'
 import ChainValidators from '../../repositories/chain_validators'
+import FlexValidators from 'src/repositories/flex_validators';
+
 const state = {
    id: '',
    skeleton: false,
@@ -136,28 +138,25 @@ const mutations = {
 }
 const actions = {
     async create({commit, state},instance){
-        console.log(state.formData,'gggggggggggggggg')
-        const firstname = new ChainValidators(state.formData.firstname).trim().lower().val;
-        const middlename = new ChainValidators(state.formData.middlename).trim().lower().val;
-        const lastname = new ChainValidators(state.formData.lastname).trim().lower().val;
-        const role = new ChainValidators(state.formData.role).trim().lower().val;
-        const email = new ChainValidators(state.formData.email).trim().lower().val;
-        const id = null;
-
-
-        const firstname_validator = new ChainValidators(firstname,'firstname').notNull().validate;
-        const middlename_validator = new ChainValidators(middlename, 'middlename').notNull().validate;
-        const lastname_validator = new ChainValidators(lastname, 'lastname').notNull().validate;
-        const role_validator = new ChainValidators(role, 'role').notNull().validate;
-        const email_validator = new ChainValidators(email, 'email').notNull().validateEmail().validate;
-
-        if(firstname_validator == false || middlename_validator == false || lastname_validator == false || role_validator == false || email_validator == false){
-            return '';
-        }
-
-
         try{
             commit('UPDATE_IS_LOADING', true);
+
+            new FlexValidators(state.formData).check({
+                'firstname': 'required|notNull',
+                'middlename': 'required|notNull',
+                'lastname': 'required|notNull',
+                'role': 'required|notNull',
+                'email': 'required|notNull|email'
+            });
+
+            const firstname = new ChainValidators(state.formData.firstname).trim().lower().val;
+            const middlename = new ChainValidators(state.formData.middlename).trim().lower().val;
+            const lastname = new ChainValidators(state.formData.lastname).trim().lower().val;
+            const role = new ChainValidators(state.formData.role).trim().lower().val;
+            const email = new ChainValidators(state.formData.email).trim().lower().val;
+            const id = null;
+
+
             let user = new User(firstname,middlename,lastname,role, email ,id);
             await user.save();
 
@@ -213,28 +212,25 @@ const actions = {
     },
 
     async update({commit, state},instance){
-        const firstname = state.formData.firstname;
-        const middlename = state.formData.middlename;
-        const lastname = state.formData.lastname;
-        const role = state.formData.role;
-        const email = state.formData.email;
-        const id = state.id;
-
-
-        const firstname_validator = new ChainValidators(firstname,'firstname').notNull().validate;
-        const middlename_validator = new ChainValidators(middlename, 'middlename').notNull().validate;
-        const lastname_validator = new ChainValidators(lastname, 'lastname').notNull().validate;
-        const role_validator = new ChainValidators(role, 'role').notNull().validate;
-        const email_validator = new ChainValidators(email, 'email').notNull().validateEmail().validate;
-        const id_validator = new ChainValidators(id, 'id').notNull().validate;
-
-        if(firstname_validator == false || middlename_validator == false || lastname_validator == false || role_validator == false || email_validator == false || id_validator == false){
-            return '';
-        }
-        
-
         try{
             commit('UPDATE_IS_LOADING', true);
+
+            new FlexValidators(state.formData).check({
+                'firstname': 'required|notNull',
+                'middlename': 'required|notNull',
+                'lastname': 'required|notNull',
+                'role': 'required|notNull',
+                'email': 'required|notNull|email',
+                'id': 'required|notNull',
+            });
+
+            const firstname = state.formData.firstname;
+            const middlename = state.formData.middlename;
+            const lastname = state.formData.lastname;
+            const role = state.formData.role;
+            const email = state.formData.email;
+            const id = state.id;
+
             let user = new User(firstname,middlename,lastname, role, email,id);
             await user.save();
 
