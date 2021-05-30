@@ -64,38 +64,12 @@ class Module{
 
 
     static async deleteById(id){
-        var ref = moduleCollections.doc(id);
-        fs.runTransaction(async (transaction) => {
-            return transaction.get(ref).then((doc) => {
-                if (!doc.exists) {
-                    throw "Document does not exist!";
-                }
-                transaction.update(ref,  { deletedAt: timestamp, createdAt: null, deleter: firebaseAuth.currentUser.uid  });
-                transaction.delete(ref);
-            });
-        }).then(() => {
+        return moduleCollections.doc(id).delete().then(() => {
             return ;
-        }).catch((err) => {
-            console.error(err);
-        });
+        }).catch(err => console.log(err));
 
     }
 
-
-    // hide(){
-    //     let batch = fs.batch();
-    //     let ref = moduleCollections.doc(id);
-    //     batch.update(ref, { deletedAt: timestamp, createdAt: null, deleter: firebaseAuth.currentUser.uid  });
-
-    //     let delRef = moduleCollections.doc(id);
-    //     batch.delete(delRef);
-    //     batch.commit().then(() => {
-    //         console.log('Deleting');
-    //         return null;
-    //     }).catch(err => {
-    //         throw err;
-    //     });
-    // }
 
 
 }

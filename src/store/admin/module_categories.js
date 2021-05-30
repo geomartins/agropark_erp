@@ -1,6 +1,7 @@
 import { snackbar, confirm } from 'src/repositories/plugins';
 import ModuleCategory from '../../models/module_category'
 import ChainValidators from '../../repositories/chain_validators'
+import FlexValidators from 'src/repositories/flex_validators';
 const state = {
    id: '',
    formData: {
@@ -97,20 +98,18 @@ const mutations = {
 }
 const actions = {
     async create({commit, state},instance){
-        const name = new ChainValidators(state.formData.name).trim().lower().val;
-        const description = new ChainValidators(state.formData.description).trim().lower().val;
-        const id = null;
-
-
-        const name_validator = new ChainValidators(name,'name').notNull().validate;
-        const description_validator = new ChainValidators(description, 'description').notNull().validate;
-        if(name_validator == false || description_validator == false){
-            return '';
-        }
-
 
         try{
             commit('UPDATE_IS_LOADING', true);
+
+            new FlexValidators(state.formData).check({
+                'name': 'required|notNull',
+                'description': 'required|notNull'
+            });
+
+            const { name, description } = state.formData;
+            const id = null;
+            
             let moduleCategory = new ModuleCategory(name,description,id);
             await moduleCategory.save();
 
@@ -149,21 +148,18 @@ const actions = {
     },
 
     async update({commit, state},instance){
-        const name = state.formData.name;
-        const description = state.formData.description;
-        const id = state.id;
-
-        const name_validator = new ChainValidators(name,'name').notNull().validate;
-        const description_validator = new ChainValidators(description, 'description').notNull().validate;
-        const id_validator = new ChainValidators(id, 'id').notNull().validate;
-
-        if(name_validator == false || description_validator == false || id_validator == false){
-            return '';
-        }
-        
-
         try{
             commit('UPDATE_IS_LOADING', true);
+            const data = state.formData;
+            data.id = state.id;
+
+            new FlexValidators(data).check({
+                'name': 'required|notNull',
+                'description': 'required|notNull',
+                'id': 'required|notNull'
+            });
+            const { name, description, id } = data;
+
             let moduleCategory = new ModuleCategory(name,description,id);
             await moduleCategory.save();
 

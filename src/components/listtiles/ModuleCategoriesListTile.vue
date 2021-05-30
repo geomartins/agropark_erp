@@ -30,7 +30,7 @@
 
     <q-item>
         <q-item-section>
-          <q-item-label>User</q-item-label>
+          <q-item-label>Author</q-item-label>
           <q-item-label caption lines="2">{{ row.creator ? row.creator  :  '' | filterAuthor }}</q-item-label>
         </q-item-section>
     </q-item>

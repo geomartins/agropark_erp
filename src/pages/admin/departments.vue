@@ -27,6 +27,7 @@ export default {
   },
   methods: {
     async main(){
+        this.$store.commit('admin_layout/UPDATE_BREAD_CRUMB', { pageTitle: 'Departments' })
         this.$store.dispatch('departments/fetch', this);
     },
     async refresh(done){

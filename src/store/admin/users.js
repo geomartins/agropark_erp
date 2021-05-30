@@ -1,6 +1,5 @@
 import { snackbar, confirm } from 'src/repositories/plugins';
 import User from '../../models/user'
-import ChainValidators from '../../repositories/chain_validators'
 import FlexValidators from 'src/repositories/flex_validators';
 
 const state = {
@@ -149,28 +148,15 @@ const actions = {
                 'email': 'required|notNull|email'
             });
 
-            /** 
-             * new MaskValidator(state.formData)
-                .trim('firstname','middlename','lastname','role','email')
-                .lower('firstname','middlename','lastname','role','email')
-                .val;
-
-
-            **/
-
-            const firstname = new ChainValidators(state.formData.firstname).trim().lower().val;
-            const middlename = new ChainValidators(state.formData.middlename).trim().lower().val;
-            const lastname = new ChainValidators(state.formData.lastname).trim().lower().val;
-            const role = new ChainValidators(state.formData.role).trim().lower().val;
-            const email = new ChainValidators(state.formData.email).trim().lower().val;
+            const { firstname, middlename, lastname, role, email } = state.formData;
             const id = null;
-
 
             let user = new User(firstname,middlename,lastname,role, email ,id);
             await user.save();
 
             snackbar('success','user created successfully')
             commit("CLEAR_FORM_DATA");
+            instance.close();
             commit('UPDATE_IS_LOADING', false);
         }catch(err){
             snackbar('warning',err.message);
@@ -224,7 +210,10 @@ const actions = {
         try{
             commit('UPDATE_IS_LOADING', true);
 
-            new FlexValidators(state.formData).check({
+            const data = state.formData;
+            data.id = state.id;
+        
+            new FlexValidators(data).check({
                 'firstname': 'required|notNull',
                 'middlename': 'required|notNull',
                 'lastname': 'required|notNull',
@@ -233,14 +222,8 @@ const actions = {
                 'id': 'required|notNull',
             });
 
-            const firstname = state.formData.firstname;
-            const middlename = state.formData.middlename;
-            const lastname = state.formData.lastname;
-            const role = state.formData.role;
-            const email = state.formData.email;
-            const id = state.id;
-
-            let user = new User(firstname,middlename,lastname, role, email,id);
+            const { firstname, middlename, lastname, role, email, id } = data;
+            let user = new User(firstname,middlename,lastname, role, email, id);
             await user.save();
 
             snackbar('success','user updated successfully')

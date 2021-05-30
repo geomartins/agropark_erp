@@ -119,14 +119,14 @@ export default Vue.extend({
          this.$store.dispatch('departments/delete', id);
       },
       editItem(payload){
-          this.$store.commit('departments/CLEAR_DEPARTMENT_FORM_DATA');
+          this.$store.commit('departments/CLEAR_FORM_DATA');
           this.$store.commit('departments/UPDATE_EDIT_FORM_DATA',payload);
           this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-departments-update-form'); 
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true)
 
       },
       showCreateForm(){
-          this.$store.commit('departments/CLEAR_DEPARTMENT_FORM_DATA');
+          this.$store.commit('departments/CLEAR_FORM_DATA');
           this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-departments-create-form');
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true);
       },

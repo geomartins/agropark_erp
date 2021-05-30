@@ -27,6 +27,7 @@ export default {
   },
   methods: {
     async main(){
+         this.$store.commit('admin_layout/UPDATE_BREAD_CRUMB', { pageTitle: 'Modules' })
         this.$store.dispatch('modules/fetch', this).then(() => {
         this.$store.dispatch('modules/dependencies', this);
        });

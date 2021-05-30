@@ -58,12 +58,12 @@
 
 
                     <template v-slot:top>
-                      <q-icon name="file_download" style="color: #ccc; font-size: 1.8em;" @click.prevent="$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-module-categories-update-form')">
+                      <q-icon name="file_download" style="color: #ccc; font-size: 1.8em;">
                            <q-tooltip>
                              Export
                            </q-tooltip>
                       </q-icon>
-                      <q-icon name="add" style="color: #ccc; font-size: 1.8em;" @click.prevent="$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-module-categories-create-form'); $store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true)">
+                      <q-icon name="add" style="color: #ccc; font-size: 1.8em;" @click.prevent="showCreateForm()">
                            <q-tooltip>
                              Create
                            </q-tooltip>
@@ -119,10 +119,16 @@ export default Vue.extend({
          this.$store.dispatch('module_categories/delete', id);
       },
       editItem(payload){
+          this.$store.commit('module_categories/CLEAR_FORM_DATA');
           this.$store.commit('module_categories/UPDATE_EDIT_FORM_DATA',payload);
           this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-module-categories-update-form'); 
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true)
 
+      },
+      showCreateForm(){
+          this.$store.commit('module_categories/CLEAR_FORM_DATA');
+          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-module-categories-create-form'); 
+          this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true)
       }
    }
 })

@@ -38,6 +38,7 @@ export default {
     },
     methods: {
         showResetForm(){
+            this.$store.commit('users_details/CLEAR_RESET_FORM_DATA')
             this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-users-reset-create-form');
             this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true);
         },

@@ -1,6 +1,7 @@
 import { snackbar, confirm } from 'src/repositories/plugins';
 import Department from '../../models/department'
 import ChainValidators from '../../repositories/chain_validators'
+import FlexValidators from 'src/repositories/flex_validators';
 const state = {
    id: '',
    formData: {
@@ -97,26 +98,27 @@ const mutations = {
 }
 const actions = {
     async create({commit, state},instance){
-        const name = new ChainValidators(state.formData.name).trim().lower().val;
-        const description = new ChainValidators(state.formData.description).trim().lower().val;
-        const id = null;
-
-
-        const name_validator = new ChainValidators(name,'name').notNull().validate;
-        const description_validator = new ChainValidators(description, 'description').notNull().validate;
-        if(name_validator == false || description_validator == false){
-            return '';
-        }
-
-
+       
         try{
             commit('UPDATE_IS_LOADING', true);
+            const data = state.formData;
+            data.id = null;
+    
+            new FlexValidators(data).check({
+                'name': 'required|notNull',
+                'description': 'required|notNull',
+               
+            });
+
+            const { name, description, id } = data;
+
             let department = new Department(name,description,id);
             await department.save();
 
             snackbar('success','item created successfully')
             commit("CLEAR_FORM_DATA");
             commit('UPDATE_IS_LOADING', false);
+            instance.close();
         }catch(err){
             snackbar('warning',err.message);
             commit('UPDATE_IS_LOADING', false);
@@ -164,6 +166,17 @@ const actions = {
 
         try{
             commit('UPDATE_IS_LOADING', true);
+            const data = state.formData;
+            data.id = state.id;
+
+            new FlexValidators(data).check({
+                'name': 'required|notNull',
+                'description': 'required|notNull',
+                'id': 'required|notNull'
+               
+            });
+
+            const { name, description, id } = data;
             let department = new Department(name,description,id);
             await department.save();
 

@@ -119,12 +119,14 @@ export default Vue.extend({
          this.$store.dispatch('modules/delete', id);
       },
       editItem(payload){
+          this.$store.commit('modules/CLEAR_FORM_DATA');
           this.$store.commit('modules/UPDATE_EDIT_FORM_DATA',payload);
           this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-modules-update-form'); 
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true)
 
       },
       showCreateForm(){
+          this.$store.commit('modules/CLEAR_FORM_DATA');
           this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-modules-create-form');
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true);
       },

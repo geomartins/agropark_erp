@@ -53,21 +53,9 @@ class ModuleCategory{
 
 
     static async deleteById(id){
-        var ref = moduleCategoryCollections.doc(id);
-        return fs.runTransaction(async (transaction) => {
-            return transaction.get(ref).then((doc) => {
-                if (!doc.exists) {
-                    throw "Document does not exist!";
-                }
-                transaction.update(ref,  { deletedAt: timestamp, createdAt: null, deleter: firebaseAuth.currentUser.uid  });
-                transaction.delete(ref);
-            });
-        }).then(() => {
+        return moduleCategoryCollections.doc(id).delete().then(() => {
             return ;
-        }).catch((err) => {
-            console.error(err);
-        });
-
+        }).catch(err => console.log(err));
     }
 
 

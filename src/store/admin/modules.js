@@ -1,6 +1,6 @@
 import { snackbar, confirm } from 'src/repositories/plugins';
 import Module from '../../models/module'
-import ChainValidators from '../../repositories/chain_validators'
+import FlexValidators from 'src/repositories/flex_validators';
 const state = {
    id: '',
    formData: {
@@ -122,31 +122,26 @@ const mutations = {
 }
 const actions = {
     async create({commit, state},instance){
-        const name = new ChainValidators(state.formData.name).trim().lower().val;
-        const category = new ChainValidators(state.formData.category).trim().lower().val;
-        const description = new ChainValidators(state.formData.description).trim().lower().val;
-        const approval = new ChainValidators(state.formData.approval).trim().lower().bool().val;
-        const id = null;
-
-
-        const name_validator = new ChainValidators(name,'name').notNull().validate;
-        const description_validator = new ChainValidators(description, 'description').notNull().validate;
-        const category_validator = new ChainValidators(category, 'category').notNull().validate;
-        const approval_validator = new ChainValidators(approval, 'approval').notNull().validate;
-
-        if(name_validator == false || description_validator == false || category_validator == false || approval_validator == false){
-            return '';
-        }
-
-
         try{
             commit('UPDATE_IS_LOADING', true);
+            const data = state.formData;
+            data.id = null;
+           
+            new FlexValidators(data).check({
+                'name': 'required|notNull',
+                'description': 'required|notNull',
+                'category': 'required|notNull',
+                'approval': 'required|notNull',
+            });
+
+            const { name, description, approval, category, id } = data;
             let module = new Module(name,description,category,approval ,id);
             await module.save();
 
             snackbar('success','item created successfully')
             commit("CLEAR_FORM_DATA");
             commit('UPDATE_IS_LOADING', false);
+            instance.close();
         }catch(err){
             snackbar('warning',err.message);
             commit('UPDATE_IS_LOADING', false);
@@ -192,26 +187,24 @@ const actions = {
     },
 
     async update({commit, state},instance){
-        const name = state.formData.name;
-        const description = state.formData.description;
-        const category = state.formData.category;
-        const approval = state.formData.approval;
-        const id = state.id;
+      
 
-
-        const name_validator = new ChainValidators(name,'name').notNull().validate;
-        const category_validator = new ChainValidators(category,'category').notNull().validate;
-        const description_validator = new ChainValidators(description, 'description').notNull().validate;
-        const approval_validator = new ChainValidators(approval, 'approval').notNull().validate;
-        const id_validator = new ChainValidators(id, 'id').notNull().validate;
-
-        if(name_validator == false || description_validator == false || id_validator == false || category_validator == false || approval_validator == false){
-            return '';
-        }
         
-
+       
         try{
             commit('UPDATE_IS_LOADING', true);
+            const data = state.formData;
+            data.id = state.id;
+
+            new FlexValidators(data).check({
+                'name': 'required|notNull',
+                'description': 'required|notNull',
+                'category': 'required|notNull',
+                'approval': 'required|notNull',
+                'id': 'required|notNull',
+            });
+
+            const { name, description, category, approval, id } = data;
             let module = new Module(name,description,category, approval,id);
             await module.save();
 

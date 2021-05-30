@@ -27,6 +27,7 @@ export default {
   },
   methods: {
     async main(){
+       this.$store.commit('admin_layout/UPDATE_BREAD_CRUMB', { pageTitle: 'Module Categories' })
        this.$store.dispatch('module_categories/fetch', this);
     },
     async refresh(done){
@@ -38,7 +39,6 @@ export default {
   beforeRouteLeave (to, from , next) {
       this.$store.dispatch('module_categories/unsubscribe', this);
       this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false)
-      
       next();
   }
 }

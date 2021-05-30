@@ -123,12 +123,14 @@ export default Vue.extend({
          this.$store.dispatch('users/delete', id);
       },
       editItem(payload){
+          this.$store.commit('users/CLEAR_FORM_DATA');
           this.$store.commit('users/UPDATE_EDIT_FORM_DATA',payload);
           this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-users-update-form'); 
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true)
 
       },
       showCreateForm(){
+          this.$store.commit('users/CLEAR_FORM_DATA');
           this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-users-create-form');
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true);
       },
