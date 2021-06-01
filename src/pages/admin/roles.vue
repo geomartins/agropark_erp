@@ -4,7 +4,7 @@
           <div class="row">
               <div class="col-lg-1 col-xs-0"></div>
               <div class="col-lg-8 col-xs-12">
-                {{ skeleton }}
+                
                   <app-skeleton :skeleton="skeleton" type="a">
                     <app-roles-list-view></app-roles-list-view>
                   </app-skeleton>

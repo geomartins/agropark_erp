@@ -92,6 +92,7 @@ export default Vue.extend({
     data(){
         return {
 
+            
         }
     },
     computed: {

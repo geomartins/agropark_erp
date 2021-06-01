@@ -242,14 +242,16 @@ const actions = {
 
             const data = state.moduleFormData;
             delete data.id;
+            
             new FlexValidators(data).check({
                 'name': 'required|notNull',
                 'primary_access': 'required|notNull',
             });
             
+           
             let roleDetail = new RoleDetail(state.roleId);
             await roleDetail.saveModule(data);
-
+           
             snackbar('success','item created successfully')
             commit("CLEAR_MODULE_FORM_DATA");
             commit('UPDATE_IS_LOADING', false);

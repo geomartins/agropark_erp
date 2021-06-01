@@ -42,9 +42,11 @@ class Module{
             data.createdAt = timestamp; data.creator = firebaseAuth.currentUser.uid;
             data.deletedAt = null; data.editedAt = null; //default
             delete data.id;
-    
-            return moduleCollections.doc(generateUid(data.name)).set(purifyObject(data)).then((docRef) => {
-                return docRef;
+
+            var checkDuplicate = (await moduleCollections.doc(generateUid(data.name)).get()).exists;
+            if(checkDuplicate){ throw new Error('Duplicate Data Entry') }
+            await moduleCollections.doc(generateUid(data.name)).set(purifyObject(data)).then(()=> {
+                return ;
             }).catch(err => {
                 throw err;
             });

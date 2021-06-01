@@ -21,7 +21,7 @@ const state = {
     sortBy: 'name',
     descending: false,
     //page: 2,
-    rowsPerPage: 20
+    rowsPerPage: 25
     // rowsNumber: xx if getting data from a server
   },
   loading: false,

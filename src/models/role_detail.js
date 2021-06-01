@@ -1,4 +1,4 @@
-import { roleCollections, configurationCollections, firebaseAuth, timestamp } from '../boot/firebase'
+import { roleCollections, configurationCollections, firebaseAuth, timestamp, fs } from '../boot/firebase'
 
 class RoleDetail{
     constructor(roleId){
@@ -77,8 +77,10 @@ class RoleDetail{
             data.deletedAt = null; data.editedAt = null; //default
             delete data.id;
 
-            return roleCollections.doc(this.roleId).collection('modules').doc().set(data).then((docRef) => {
-                return docRef;
+            var checkDuplicate = (await roleCollections.doc(this.roleId).collection('modules').doc(data.name).get()).exists;
+            if(checkDuplicate){ throw new Error('Duplicate Data Entry') }
+            await roleCollections.doc(this.roleId).collection('modules').doc(data.name).set(data).then(()=> {
+                return ;
             }).catch(err => {
                 throw err;
             });

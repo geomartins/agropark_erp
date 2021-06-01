@@ -25,9 +25,23 @@ export default {
   }
 }
 
-//TODO: Work on createForm, editForm, beforeDestroy on all listview and forms
+//TODO: Work on module, module_categories , role, role_module on deletion
+
 //TODO: Working on Search with Export
 //TODO: Creation of department-module relationship
+
+
+/**
+ * If you delete a module by mistake, what will happen
+ * Go to the roles > modules and delete the module
+ * Go to the roles > modules_ref and remove index that contain the deleted module name
+ */
+
+/**
+ * If you change a module_categories of a module
+ * Go to the roles > modules and update the module category
+ * Go to roles > modules_ref and update the module category
+ */
 
 
             /** 

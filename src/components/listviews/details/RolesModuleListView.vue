@@ -9,19 +9,28 @@
         dense
         icon="widgets"
         default-opened
+        
       >
      
       
         <q-card>
           <q-card-section>
-             <q-table :loading="loading" :data="datas" :columns="columns" flat row-key="name"
+             <q-table :loading="loading" :data="datas" :columns="columns" flat row-key="name" :pagination="initialPagination"  :filter="filter"
     >
 
     <template v-slot:top>
           <div class="headerFlex">
-              <q-icon name="add" size="sm" class="q-pr-md" @click.prevent="showCreateForm()">
+              <q-icon name="add" size="sm" style="color: #ccc; font-size: 1.8em;" class="q-pr-md" @click.prevent="showCreateForm()">
                    <q-tooltip>Add</q-tooltip>
               </q-icon>
+
+                <q-space />
+                        <q-input borderless dense debounce="300" color="primary"  placeholder="search" v-model="filter">
+                        <template v-slot:append>
+                            <q-icon name="search" />
+                        </template>
+                        </q-input>
+
           </div>
     </template>
       <template v-slot:body="props">
@@ -31,6 +40,9 @@
           </q-td>
           <q-td key="name" :props="props">
             {{ props.row.name }}
+            <div>
+           
+            </div>
           </q-td>
 
            <q-td key="primary_access" :props="props">
@@ -85,6 +97,12 @@
           </q-td>
         </q-tr>
       </template>
+
+
+       
+
+
+
     </q-table>
           </q-card-section>
         </q-card>
@@ -104,6 +122,14 @@ export default {
     },
     data(){
          return {
+            initialPagination: {
+              sortBy: 'name',
+              descending: false,
+              //page: 2,
+              rowsPerPage: 25
+              // rowsNumber: xx if getting data from a server
+            },
+            filter: '',
             columns: [
                  { name: 'id', label: 'S/N',  align: 'left', field: 'id', sortable: true, style:"width: 40px" },
                 {
