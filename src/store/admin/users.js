@@ -172,9 +172,10 @@ const actions = {
             let unsubscribe = new User().fetch((datas,unsubscribe) => {
                 commit('UPDATE_DATA',datas);
                 console.log(state.datas,'DATA')
+                commit('UPDATE_SKELETON', false);
            })
            commit('UPDATE_UNSUBSCRIBE', unsubscribe);
-           commit('UPDATE_SKELETON', false);
+          
           
         }catch(err){
             snackbar('warning',err.message);

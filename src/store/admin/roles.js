@@ -1,8 +1,10 @@
 import { snackbar, confirm } from 'src/repositories/plugins';
 import Role from '../../models/role'
 import ChainValidators from '../../repositories/chain_validators'
+import FlexValidators from 'src/repositories/flex_validators';
 const state = {
    id: '',
+   skeleton: false,
    formData: {
       name: '',
       description: '',
@@ -75,11 +77,6 @@ const mutations = {
     UPDATE_UNSUBSCRIBE(state,value){
         state.unsubscribe = value;
     },
-    UPDATE_EDIT_FORM_DATA(state, payload){
-        state.formData.name = payload.name;
-        state.formData.description = payload.description;
-        state.id = payload.id;
-    },
     UPDATE_DATA(state,value){
         state.datas = Object.assign([], value)
         // state.datas.length = 0;
@@ -90,6 +87,11 @@ const mutations = {
         state.formData.description = '';
         state.id = '';
     },
+
+     //
+     UPDATE_SKELETON(state, value){
+        state.skeleton = value;
+    }
     
 
 
@@ -97,26 +99,25 @@ const mutations = {
 }
 const actions = {
     async create({commit, state},instance){
-        const name = new ChainValidators(state.formData.name).trim().lower().val;
-        const description = new ChainValidators(state.formData.description).trim().lower().val;
-        const id = null;
-
-
-        const name_validator = new ChainValidators(name,'name').notNull().validate;
-        const description_validator = new ChainValidators(description, 'description').notNull().validate;
-        if(name_validator == false || description_validator == false){
-            return '';
-        }
-
 
         try{
             commit('UPDATE_IS_LOADING', true);
+            const data = state.formData;
+            data.id = null;
+
+            new FlexValidators(data).check({
+                'name': 'required|notNull',
+                'description': 'required|notNull',
+            });
+
+            const { name, description, id } = data;
             let role = new Role(name,description,id);
             await role.save();
 
             snackbar('success','item created successfully')
             commit("CLEAR_FORM_DATA");
             commit('UPDATE_IS_LOADING', false);
+            instance.close();
         }catch(err){
             snackbar('warning',err.message);
             commit('UPDATE_IS_LOADING', false);
@@ -126,10 +127,13 @@ const actions = {
 
     async fetch({commit, state}){
         try{
+            commit('UPDATE_SKELETON', true);
             let unsubscribe = new Role().fetch((datas,unsubscribe) => {
                 commit('UPDATE_DATA',datas);
                 console.log(state.datas,'DATA')
+                commit('UPDATE_SKELETON', false);
            })
+       
            commit('UPDATE_UNSUBSCRIBE', unsubscribe);
           
         }catch(err){
@@ -148,35 +152,6 @@ const actions = {
         })
     },
 
-    async update({commit, state},instance){
-        const name = state.formData.name;
-        const description = state.formData.description;
-        const id = state.id;
-
-        const name_validator = new ChainValidators(name,'name').notNull().validate;
-        const description_validator = new ChainValidators(description, 'description').notNull().validate;
-        const id_validator = new ChainValidators(id, 'id').notNull().validate;
-
-        if(name_validator == false || description_validator == false || id_validator == false){
-            return '';
-        }
-        
-
-        try{
-            commit('UPDATE_IS_LOADING', true);
-            let role = new Role(name,description,id);
-            await role.save();
-
-            snackbar('success','item updated successfully')
-            commit("CLEAR_FORM_DATA");
-            commit('UPDATE_IS_LOADING', false);
-            instance.close();
-        }catch(err){
-            snackbar('warning',err.message);
-            commit('UPDATE_IS_LOADING', false);
-        }
-        
-    },
 
     async unsubscribe({commit, state},instance){
         if(state.unsubscribe){

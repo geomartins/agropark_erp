@@ -26,6 +26,7 @@ const routes = [
       { path: '/admin/departments', component: () => import('src/pages/admin/departments.vue') },
       { path: '/admin/units', component: () => import('src/pages/admin/units.vue') },
       { path: '/admin/roles', component: () => import('src/pages/admin/roles.vue') },
+      { path: '/admin/roles/:id', component: () => import('src/pages/admin/roles_details.vue') },
       { path: '/admin/users', component: () => import('src/pages/admin/users.vue') },
       { path: '/admin/users/:id', component: () => import('pages/admin/users_details.vue') },
     ]

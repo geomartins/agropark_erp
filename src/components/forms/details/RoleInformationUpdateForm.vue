@@ -1,9 +1,7 @@
 <template>
-
-
-      <q-expansion-item
+    <q-expansion-item
         expand-separator
-        label="Add Role"
+        label="Edit Role Information"
         expand-icon-class="expand"
         header-class="headerClass"
         default-opened
@@ -17,36 +15,35 @@
             <div class="q-mt-md"></div>
 
             
-            <q-card-section class="q-pt-none">
-                <q-input outlined v-model="name" label="Name" :dense="dense" />
+              <q-card-section class="q-pt-none">
+                <q-input outlined v-model="name" label="Name" :dense="dense"  readonly/>
               </q-card-section>
 
               <q-card-section class="q-pt-none">
                 <q-input type="textarea" outlined v-model="description" label="Description" :dense="dense" />
               </q-card-section>
 
-
               <q-card-section class="q-pt-none">
                   <div class="editFlex">
-                      <q-btn color="primary"   label="Save" @click.prevent="create()" />
+                      <q-btn color="primary"   label="Update" @click.prevent="update()" />
                       <q-btn color="primary" outline label="Close" @click.prevent="close()" />
                   </div>
               </q-card-section>
 
-              <q-inner-loading :showing="$store.state.roles.is_loading">
+              <q-inner-loading :showing="$store.state.roles_details.is_loading">
                 <q-spinner-gears size="50px" color="primary" />
               </q-inner-loading>
 
              
             </q-card>
       </q-expansion-item>
-
+      
 </template>
 
 
 <script>
 export default {
-    name: "RolesCreateForm",
+    name: "RoleInformationUpdateForm",
      data() {
     return {
        dense: true,
@@ -55,16 +52,16 @@ export default {
   },
   computed: {
       name:  {
-        get() { return this.$store.getters["roles/fetchName"]; },
-        set(value){ this.$store.commit('roles/UPDATE_NAME',value); }   
+        get() { return this.$store.getters["roles_details/fetchRoleInformationName"]; },
+        set(value){ this.$store.commit('roles_details/UPDATE_ROLE_INFORMATION_NAME',value); }   
       },
       description: {
-        get(){ return this.$store.getters["roles/fetchDescription"]; },
-        set(value){ this.$store.commit('roles/UPDATE_DESCRIPTION',value); }   
+        get(){ return this.$store.getters["roles_details/fetchRoleInformationDescription"]; },
+        set(value){ this.$store.commit('roles_details/UPDATE_ROLE_INFORMATION_DESCRIPTION',value); }   
       },
   },
   methods: {
-    create(){ this.$store.dispatch('roles/create',this); },
+    update(){ this.$store.dispatch('roles_details/updateRoleInformation',this); },
     close(){ this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false) }
   }
 }

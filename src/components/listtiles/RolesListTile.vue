@@ -34,6 +34,11 @@
           <q-item-label>Unique ID</q-item-label>
           <q-item-label caption lines="2">{{  row.id ? row.id : ''  }}</q-item-label>
         </q-item-section>
+
+        <q-item-section side top @click.prevent="$router.push('/admin/roles/'+row.id)">
+          <q-item-label caption style="color: teal; cursor: pointer">View details</q-item-label>
+          <q-icon name="arrow_right" color="primary" />
+        </q-item-section>
     </q-item>
 
       <q-separator spaced inset />

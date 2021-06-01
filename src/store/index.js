@@ -12,6 +12,7 @@ import roles from './admin/roles'
 import modules from './admin/modules'
 import users from './admin/users'
 import users_details from './admin/users_details'
+import roles_details from './admin/roles_details'
 // import example from './module-example'
 
 Vue.use(Vuex)
@@ -42,6 +43,7 @@ export default function (/* { ssrContext } */) {
       modules,
       units,
       roles,
+      roles_details,
       users,
       users_details,
 

@@ -4,9 +4,9 @@
           <div class="row">
               <div class="col-lg-1 col-xs-0"></div>
               <div class="col-lg-8 col-xs-12">
-                  <app-users-skeleton :skeleton="skeleton">
+                  <app-skeleton :skeleton="skeleton" type="a">
                      <app-users-list-view></app-users-list-view>
-                  </app-users-skeleton>
+                  </app-skeleton>
               </div>
               <div class="col-lg-3 col-xs-0"></div>
           </div>
@@ -18,7 +18,7 @@
 
 import { mapState } from 'vuex';
 import UsersListView from '../../components/listviews/UsersListView'
-import UsersSkeleton from '../../components/skeletons/UsersSkeleton'
+import Skeleton from '../../components/Skeleton'
 
 export default {
   name: "users",
@@ -27,7 +27,7 @@ export default {
   },
   components: {
       "app-users-list-view": UsersListView,
-      "app-users-skeleton": UsersSkeleton
+      "app-skeleton": Skeleton
   },
   data () {
     return {}

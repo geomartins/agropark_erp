@@ -4,7 +4,10 @@
           <div class="row">
               <div class="col-lg-1 col-xs-0"></div>
               <div class="col-lg-8 col-xs-12">
-                  <app-roles-list-view></app-roles-list-view>
+                {{ skeleton }}
+                  <app-skeleton :skeleton="skeleton" type="a">
+                    <app-roles-list-view></app-roles-list-view>
+                  </app-skeleton>
               </div>
               <div class="col-lg-3 col-xs-0"></div>
           </div>
@@ -13,20 +16,29 @@
 </template>
 
 <script>
+
+
+import { mapState } from 'vuex';
 import RolesListView from '../../components/listviews/RolesListView'
+import Skeleton from '../../components/Skeleton'
 export default {
   name: "roles",
   meta: {
     titleTemplate: title => `Roles - ${title}  `,
   },
   components: {
-      "app-roles-list-view": RolesListView
+      "app-roles-list-view": RolesListView,
+       "app-skeleton": Skeleton
   },
   data () {
     return {}
   },
+  computed: {
+    ...mapState('roles',['skeleton'])
+  },
   methods: {
     async main(){
+        this.$store.commit('admin_layout/UPDATE_BREAD_CRUMB', { pageTitle: 'Roles' })
         this.$store.dispatch('roles/fetch', this);
     },
     async refresh(done){

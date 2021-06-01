@@ -38,36 +38,14 @@ class Role{
                 throw err;
             });
 
-        }else{  //update
-            let id = data.id;
-            delete data.id;
-            data.editor = firebaseAuth.currentUser.uid; data.editedAt = timestamp;
-
-            return roleCollections.doc(id).update(purifyObject(data)).then((docRef) => {
-                return docRef;
-            }).catch(err => {
-                throw err;
-            });
         }
     }
 
 
     static async deleteById(id){
-        var ref = roleCollections.doc(id);
-        return fs.runTransaction(async (transaction) => {
-            return transaction.get(ref).then((doc) => {
-                if (!doc.exists) {
-                    throw "Document does not exist!";
-                }
-                transaction.update(ref,  { deletedAt: timestamp, createdAt: null, deleter: firebaseAuth.currentUser.uid  });
-                transaction.delete(ref);
-            });
-        }).then(() => {
+        return roleCollections.doc(id).delete().then(() => {
             return ;
-        }).catch((err) => {
-            console.error(err);
-        });
-
+        }).catch(err => console.log(err));
     }
 
 

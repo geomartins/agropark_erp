@@ -25,24 +25,6 @@
           </div>
         </q-pull-to-refresh>
         
-
-
-        <!-- <q-pull-to-refresh @refresh="refresh">
-           <div class="row">
-            
-              <div class="col-lg-8 offset-lg-2  col-md-12">
-                  
-                  <app-users-details-skeleton :skeleton="skeleton">
-                        <app-users-details-toolbar></app-users-details-toolbar>
-                        <app-users-personal-information-listview></app-users-personal-information-listview>
-                        <app-users-department-listview :datas='departmentDatas' :loading="department_is_loading"></app-users-department-listview>
-                        <app-users-kin-listview :datas='kinDatas' :loading="kin_is_loading"></app-users-kin-listview>
-                        <app-users-bank-listview></app-users-bank-listview>
-                  </app-users-details-skeleton>
-              </div>
-              
-          </div>
-        </q-pull-to-refresh> -->
     </q-page>
 </template>
 

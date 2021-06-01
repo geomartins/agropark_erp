@@ -280,7 +280,7 @@ const mutations = {
         state.personalInformationFormData.blood_type = value;
     },
     CLEAR_PERSONAL_INFORMATION_FORM_DATA(state){
-        state.bankFormData = Object.assign({
+        state.personalInformationFormData = Object.assign({
             id: '',
             email: '',
             firstname: '',

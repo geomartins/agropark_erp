@@ -31,11 +31,6 @@
                                       View
                                     </q-tooltip>
                                 </q-btn>
-                                <q-btn flat  icon="mode" padding="xs" class="editIcon" @click.prevent="editItem(props.row)" >
-                                     <q-tooltip>
-                                      Edit
-                                    </q-tooltip>
-                                </q-btn>
                                 <q-btn flat  icon="delete_outline" padding="xs" class="deleteIcon" @click.prevent="deleteItem(props.row.id)" >
                                      <q-tooltip>
                                        Delete
@@ -118,13 +113,9 @@ export default Vue.extend({
       async deleteItem(id){
          this.$store.dispatch('roles/delete', id);
       },
-      editItem(payload){
-          this.$store.commit('roles/UPDATE_EDIT_FORM_DATA',payload);
-          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-roles-update-form'); 
-          this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true)
-
-      },
+     
       showCreateForm(){
+          this.$store.commit('roles/CLEAR_FORM_DATA');
           this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-roles-create-form');
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true);
       },

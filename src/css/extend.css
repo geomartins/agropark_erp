@@ -129,6 +129,12 @@ justify-content: flex-start;
 }
 
 
+
+.permission{
+  border-top: 1px solid #a5d1d1;
+  border-bottom: 1px solid #a5d1d1;
+}
+
 @media (min-width: 0px) and (max-width: 700px){
   .myFlex{
     display: flex;

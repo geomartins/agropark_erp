@@ -1,6 +1,5 @@
 import { snackbar, confirm } from 'src/repositories/plugins';
 import Department from '../../models/department'
-import ChainValidators from '../../repositories/chain_validators'
 import FlexValidators from 'src/repositories/flex_validators';
 const state = {
    id: '',
@@ -151,19 +150,6 @@ const actions = {
     },
 
     async update({commit, state},instance){
-        const name = state.formData.name;
-        const description = state.formData.description;
-        const id = state.id;
-
-        const name_validator = new ChainValidators(name,'name').notNull().validate;
-        const description_validator = new ChainValidators(description, 'description').notNull().validate;
-        const id_validator = new ChainValidators(id, 'id').notNull().validate;
-
-        if(name_validator == false || description_validator == false || id_validator == false){
-            return '';
-        }
-        
-
         try{
             commit('UPDATE_IS_LOADING', true);
             const data = state.formData;
@@ -184,6 +170,7 @@ const actions = {
             commit("CLEAR_FORM_DATA");
             commit('UPDATE_IS_LOADING', false);
             instance.close();
+            
         }catch(err){
             snackbar('warning',err.message);
             commit('UPDATE_IS_LOADING', false);

@@ -62,6 +62,12 @@ import UsersAvatarUpdateForm from "./forms/details/UsersAvatarUpdateForm"
 import UsersDocumentCreateForm from "./forms/details/UsersDocumentCreateForm"
 
 
+import RoleInformationUpdateForm from "./forms/details/RoleInformationUpdateForm"
+
+import RolesModuleCreateForm from "./forms/details/RolesModuleCreateForm"
+import RolesModuleUpdateForm from "./forms/details/RolesModuleUpdateForm"
+
+
 
 export default Vue.extend({
     name: 'Drawer',
@@ -89,6 +95,9 @@ export default Vue.extend({
         "app-users-setting-update-form": UsersSettingUpdateForm,
         "app-users-avatar-update-form": UsersAvatarUpdateForm,
         "app-users-document-create-form": UsersDocumentCreateForm,
+        "app-role-information-update-form": RoleInformationUpdateForm,
+        "app-roles-module-create-form": RolesModuleCreateForm,
+        "app-roles-module-update-form": RolesModuleUpdateForm,
     },
     data(){
         return {
