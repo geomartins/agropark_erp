@@ -47,7 +47,7 @@ export default {
     }
   },
 
-  created(){ this.main(); },
+  async created(){ this.main(); },
   beforeRouteLeave (to, from , next) {
       this.$store.dispatch('users/unsubscribe', this);
       this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false)

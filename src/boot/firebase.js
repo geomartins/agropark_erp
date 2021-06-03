@@ -20,7 +20,8 @@ var firebaseConfig = {
 
 // Initialize Firebase
 const firebaseApp = firebase.initializeApp(firebaseConfig)
-const firebaseAuth = firebaseApp.auth()
+const firebaseAuth = firebaseApp.auth();
+//const firebaseAuth = firebase.auth()
 const firebaseStorage = firebaseApp.storage();
 const uid = firebaseAuth.currentUser ? firebaseAuth.currentUser.uid : null;
 const fs = firebaseApp.firestore();

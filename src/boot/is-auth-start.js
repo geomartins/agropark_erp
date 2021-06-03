@@ -1,13 +1,23 @@
 import { firebaseAuth } from './firebase';
-export default async ({ app, router, Vue, urlPath, redirect }) => {
+import { api, axios } from './axios';
+export default async ({ app, router, store, Vue, urlPath, redirect }) => {
 
   firebaseAuth.onAuthStateChanged((user) => {
+   user.getIdTokenResult().then(result => {
+      if(result.claims.role == 'admin'){
+        api.get('/login').then(result => {
+          store.commit('admin_layout/UPDATE_MODULES', result.data)
+        })
+      }
+      return result.claims.role;
+    });
+
     if(!user){
       app = new Vue({
-        //store,
+        store,
         router,
         //i18n,
-       // render: h => h(App)
+        render: h => h(app)
       })
     }
 

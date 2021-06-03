@@ -4,63 +4,35 @@
           <div class="row">
               <div class="col-lg-1 col-xs-0"></div>
               <div class="col-lg-9 col-xs-12">
-                  <app-skeleton :skeleton="skeleton" type="b">
-                    <q-splitter
-                    v-model="splitterModel"
-                    style="max-height: 100%"
-                    >
+                  
+                  
+     
+                <app-skeleton :skeleton="skeleton" type="b">
 
-                    <template v-slot:before>
-                        <q-tabs
-                        v-model="tab"
-                        vertical
-                        dense
-                        indicator-color="primary"
-                        active-bg-color=""
-                        class="text-teal"
-                        align="left"
-                        :breakpoint="0"
-                        
-                        >
-                        <q-tab name="mails"  label="Module"  style="text-transform: capitalize"/>
-                         <q-tab name="infos"  label="Details"  style="text-transform: capitalize"/>
-                        
-                        
-                        </q-tabs>
-                    </template>
+                    <q-chip class="q-mb-sm">
+                        <q-avatar icon="edit" color="primary" text-color="white" @click.prevent="showEditForm()"/>
+                        {{ roleInformationFormData.name | capitalize }} Role
+                    </q-chip>
 
-                    <template v-slot:after>
-                        <q-tab-panels
-                        v-model="tab"
-                        animated
-                        swipeable
-                        vertical
-                        transition-prev="jump-up"
-                        transition-next="jump-up"
-                        style="background: transparent"
-                        >
-                        <q-tab-panel name="mails">
-                            <app-roles-module-listview :datas='moduleDatas' :loading="module_is_loading"></app-roles-module-listview>
-                        </q-tab-panel>
+                    <q-splitter v-model="splitterModel" style="max-height: 100%;">
+                        <template v-slot:before>
+                            <q-tabs v-model="tab" vertical dense indicator-color="primary"  class="text-teal" align="left" :breakpoint="0" style="background: white">
+                                <q-tab name="modules"  label="Modules"  style="text-transform: capitalize"/>
+                            </q-tabs>
+                        </template>
 
-                         <q-tab-panel name="infos">
-                             <app-role-information-listview :data="roleInformationFormData"></app-role-information-listview>
-                        </q-tab-panel>
-
-                        
-
-                        
-                        </q-tab-panels>
-                    </template>
-
+                        <template v-slot:after>
+                            <q-tab-panels v-model="tab" animated swipeable vertical transition-prev="jump-up" transition-next="jump-up" style="background: transparent">
+                                <q-tab-panel name="modules">
+                                    <app-roles-module-listview :datas='moduleDatas' :loading="module_is_loading"></app-roles-module-listview>
+                                </q-tab-panel>
+                            </q-tab-panels>
+                        </template>
                     </q-splitter>
+
+                </app-skeleton>
+
                 
-
-
-                    
-                       
-                        
-                    </app-skeleton>
               </div>
               <div class="col-lg-2 col-xs-0"></div>
           </div>
@@ -72,23 +44,24 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
-import RoleInformationListView from '../../components/listviews/details/RoleInformationListView'
 import RolesModuleListView from '../../components/listviews/details/RolesModuleListView'
 import Skeleton from '../../components/Skeleton';
+
+import filters from '../../repositories/filters'
 export default {
     name: "roles_details",
     components: {
-        "app-role-information-listview": RoleInformationListView,
         "app-roles-module-listview": RolesModuleListView,
         "app-skeleton": Skeleton
     },
+    mixins: [filters],
     meta: {
         titleTemplate: title => `Role Details - ${title}  `,
     },
     data(){
         return {
-             tab: 'mails',
-      splitterModel: 20
+             tab: 'modules',
+             splitterModel: 20
         }
     },
     computed: {
@@ -104,6 +77,10 @@ export default {
         //ACTION
         ...mapActions('roles_details',['fetchRoleInformation','unsubscribe']),
 
+        showEditForm(){
+             this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-role-information-update-form'); 
+             this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true)
+        },
         async main(){
             this.UPDATE_BREAD_CRUMB({ prevPageTitle: 'Roles', pageTitle: 'Role Details' });
             this.UPDATE_ROLE_ID(this.$route.params.id);
@@ -140,6 +117,7 @@ export default {
 .q-tabs__content > .q-tab:first-child{
     border-top: 1px solid #e0e0e0 !important;
 }
+
 
 
 

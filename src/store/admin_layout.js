@@ -11,6 +11,8 @@ const state = {
         breadCrumb: {
             pageTitle: ''
         },
+        modules: [],
+        moduleCategories: [],
        
         byDate: 'Any time',
         links1: [
@@ -53,6 +55,23 @@ const getters = {
     fetchSearch: (state) => {
         return state.search;
     },
+    fetchModulesByCategory: (state) => (category) =>{
+        let result  = state.modules.filter(function (e) {
+            return e.category == category;
+        });
+        console.log(result,category)
+        return result;
+    }
+    // fetchModule: (state) => {
+    //     let categories = [];
+    //     categories = state.modules.map(a => a.category);
+
+    //     let result = [];
+
+    //     for(category of categories){
+
+    //     }
+    // }
    
     
 }
@@ -62,6 +81,36 @@ const mutations = {
         state.breadCrumb = value;
     },
 
+    UPDATE_MODULES(state, value){
+        state.modules = Object.assign([], value)
+
+        let categories = state.modules.map(a => a.category);
+        state.moduleCategories = Object.assign([], [...new Set(categories)])
+    },
+
+    // UPDATE_MODULES(state, value){
+    //     // state.modules = Object.assign([], value)
+
+    //     // let categories = state.modules.map(a => a.category);
+    //     // state.moduleCategories = Object.assign([], categories)
+    //     let result = []
+
+    //     let modules = value;
+
+    //     let categories = modules.map(a => a.category);
+
+    //     console.log('Array', categories)
+        
+    //     for( let category of categories){
+    //         result[category] = modules.filter((e) => e.category == category);
+    //     }
+
+    //     console.log('Result', result)
+
+    //     state.modules = result;
+
+    //     console.log(state.modules,'MMM')
+    // },
     UPDATE_LEFT_DRAWER_OPEN(state, value){
         console.log('Left value', value)
        

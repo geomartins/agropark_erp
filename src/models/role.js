@@ -32,6 +32,8 @@ class Role{
             data.deletedAt = null; data.editedAt = null; //default
             delete data.id;
             
+            //fs.collection('roles').where('name','=','admin').
+
             var checkDuplicate = (await roleCollections.doc(generateUid(data.name)).get()).exists;
             if(checkDuplicate){ throw new Error('Duplicate Data Entry') }
             await roleCollections.doc(generateUid(data.name)).set(purifyObject(data)).then(()=> {

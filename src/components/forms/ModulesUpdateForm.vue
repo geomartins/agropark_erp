@@ -21,12 +21,12 @@
 
               <q-card-section class="q-pt-none">
                  <div v-if="typeof category === 'string' ">
-                      <q-select color="grey-3"  outlined :dense="dense" emit-value v-model="category" :options="$store.state.modules.dependencies.categories" label="Category">
+                      <q-select color="grey-3" readonly  outlined :dense="dense" emit-value v-model="category" :options="$store.state.modules.dependencies.categories" label="Category">
                       </q-select>
                  </div>
 
                  <div v-if="typeof category == 'object' ">
-                      <q-select color="grey-3"  outlined :dense="dense" emit-value v-model="category.id" :options="$store.state.modules.dependencies.categories" label="Category">
+                      <q-select color="grey-3"  readonly outlined :dense="dense" emit-value v-model="category.id" :options="$store.state.modules.dependencies.categories" label="Category">
                       </q-select>
                  </div>
                
