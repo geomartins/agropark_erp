@@ -1,6 +1,9 @@
 import { userCollections, configurationCollections, firebaseAuth, timestamp, fs } from '../boot/firebase'
 import { purifyObject, generateUid } from '../repositories/pick';
+import AlgoliaService from '../services/algolia_service';
 
+let dataRef = null;
+let data = [];
 class User{
     constructor(firstname, middlename, lastname,role, email, id = null){
         this.firstname = firstname;
@@ -20,19 +23,41 @@ class User{
         })
     }
 
-    fetch(cb){
-        return userCollections.orderBy('createdAt','desc').onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
-            let data = [];
-            querySnapshot.forEach((doc) => {
-                let ch = { ...doc.data() };
-                ch.id = doc.id;
-                data.push(ch);
-                 
-             });
-            return cb(data)
-        },(err) => {
-            throw err;
-        });
+    fetch(type, cb){
+
+            let ref;
+            if(dataRef && type == 'next'){
+                // console.log('Inside old data', dataRef)
+                ref = userCollections.orderBy('createdAt','desc').startAfter(dataRef).limit(25);
+            }else if(type == 'initial'){
+                data = [];
+                ref = userCollections.orderBy('createdAt','desc').limit(25);
+            }
+
+            return ref.onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
+                var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+                if(lastVisible){
+                     dataRef = lastVisible;
+                }
+                console.log('Last Visible', lastVisible)
+                querySnapshot.forEach((doc) => {
+                    let ch = { ...doc.data() };
+                    ch.id = doc.id;
+                    data.push(ch);
+                     
+                 });
+                 console.log(data,'yes ooo')
+                return cb(data, null)
+            },(err) => {
+                const errMessage = {message: err.code };
+                return cb([],errMessage);
+                
+            }); 
+
+
+
+
+       
     }
 
     async save(){
@@ -62,6 +87,15 @@ class User{
                 throw err;
             });
         }
+    }
+
+
+    static async search(newValue){
+        return new AlgoliaService("users").search(newValue).then((result) => {
+            return result;
+        }).catch(err => {
+            throw err;
+        })
     }
 
 

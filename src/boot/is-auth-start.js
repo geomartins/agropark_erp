@@ -1,46 +1,37 @@
 import { firebaseAuth } from './firebase';
 import { api, axios } from './axios';
 export default async ({ app, router, store, Vue, urlPath, redirect }) => {
+  
+  firebaseAuth.onAuthStateChanged( async (user) => {
+    
+    if(user){
+      let displayName = user.displayName ?? '';
+      let avatar = user.photoURL;
+      let role = (await user.getIdTokenResult()).claims.role;
+      let modules = (await api.post('/modules', { role: role })).data ?? [];
+      
+      store.commit('admin_layout/UPDATE_MODULES', modules)
+      store.commit('admin_layout/UPDATE_DISPLAY_NAME', displayName);
+      store.commit('admin_layout/UPDATE_AVATAR', avatar);
+      store.commit('admin_layout/UPDATE_ROLE', role);
 
-  firebaseAuth.onAuthStateChanged((user) => {
-   user.getIdTokenResult().then(result => {
-      if(result.claims.role == 'admin'){
-        api.get('/login').then(result => {
-          store.commit('admin_layout/UPDATE_MODULES', result.data)
-        })
+      if(urlPath.includes('auth')){
+        redirect('#/admin/dashboard');
       }
-      return result.claims.role;
-    });
+    }
+
 
     if(!user){
-      app = new Vue({
-        store,
-        router,
-        //i18n,
-        render: h => h(app)
-      })
+      store.commit('admin_layout/UPDATE_MODULES',[])
+      store.commit('admin_layout/UPDATE_DISPLAY_NAME', '');
+      store.commit('admin_layout/UPDATE_AVATAR', '');
+      store.commit('admin_layout/UPDATE_ROLE', '');
+
+      if(urlPath.includes('admin')){
+         redirect('#/auth/login');
+      }
     }
 
   })
-
-  
-  // if(urlPath){
-  //   console.log(urlPath,'ddddddddddddddddddddddddddddddddddddddddddddddddddddddddd')
-  //   urlPath = urlPath.replace('#/','');
-  //   firebaseAuth.onAuthStateChanged((user) => {
-  //       if(!user){ //if not authenticated
-  //         if(urlPath != '/' || urlPath != '/auth/login' || urlPath != '/auth/password_reset' || !urlPath.contain('password_confirmation')){ //if url is not login,welcome or register page
-  //           redirect('#/auth/login');
-            
-  //         }
-  //       }else{
-  //         //if authenticated
-  //         if(urlPath == '/' || urlPath == '/auth/login' || urlPath == '/auth/password_reset' || urlPath.contain('password_confirmation')){
-  //           redirect('#/admin/dashboard');
-  //         }
-  //       }
-    
-  //   })
-  // }
  
 }

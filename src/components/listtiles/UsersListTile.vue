@@ -41,10 +41,11 @@
     <q-item>
         <q-item-section>
           <q-item-label>Timestamp</q-item-label>
-          <q-item-label caption lines="2">{{  row.createdAt ? row.createdAt.toDate() : ''  }}</q-item-label>
+          <q-item-label caption lines="2">{{  row.createdAt | toRealDate  }}</q-item-label>
         </q-item-section>
     </q-item>
 
+    
     <q-item>
         <q-item-section>
           <q-item-label>Author</q-item-label>

@@ -6,6 +6,7 @@ const state = {
         leftDrawerOpen: false,
         rightDrawerOpen: false,
         search: '',
+        searchResult: [],
         showAdvanced: false,
         showDateOptions: false,
         breadCrumb: {
@@ -13,6 +14,10 @@ const state = {
         },
         modules: [],
         moduleCategories: [],
+
+        displayName: '',
+        avatar: '',
+        role: '',
        
         byDate: 'Any time',
         links1: [
@@ -61,21 +66,33 @@ const getters = {
         });
         console.log(result,category)
         return result;
-    }
-    // fetchModule: (state) => {
-    //     let categories = [];
-    //     categories = state.modules.map(a => a.category);
-
-    //     let result = [];
-
-    //     for(category of categories){
-
+    },
+    // fetchModulesBySearchValue: (state) => (value) =>{
+    //     if(value.length < 1){
+    //         return []
     //     }
+    //     console.log('In ', value)
+    //     let result  = state.modules.filter(function (e) {
+    //         return e.name.includes(value);
+    //     });
+    //     console.log(result,value)
+    //     return result;
     // }
+
    
     
 }
 const mutations = {
+
+    UPDATE_DISPLAY_NAME(state, value){
+        state.displayName = value;
+    },
+    UPDATE_ROLE(state, value){
+        state.role = value;
+    },
+    UPDATE_AVATAR(state, value){
+        state.avatar = value;
+    },
 
     UPDATE_BREAD_CRUMB(state, value){
         state.breadCrumb = value;
@@ -88,29 +105,7 @@ const mutations = {
         state.moduleCategories = Object.assign([], [...new Set(categories)])
     },
 
-    // UPDATE_MODULES(state, value){
-    //     // state.modules = Object.assign([], value)
-
-    //     // let categories = state.modules.map(a => a.category);
-    //     // state.moduleCategories = Object.assign([], categories)
-    //     let result = []
-
-    //     let modules = value;
-
-    //     let categories = modules.map(a => a.category);
-
-    //     console.log('Array', categories)
-        
-    //     for( let category of categories){
-    //         result[category] = modules.filter((e) => e.category == category);
-    //     }
-
-    //     console.log('Result', result)
-
-    //     state.modules = result;
-
-    //     console.log(state.modules,'MMM')
-    // },
+  
     UPDATE_LEFT_DRAWER_OPEN(state, value){
         console.log('Left value', value)
        
@@ -172,6 +167,14 @@ const mutations = {
     
     UPDATE_SEARCH(state, value){
         state.search = value;
+        if(value.length < 2){
+            console.log('less than 2')
+            state.searchResult = [];
+            return;
+        }
+        state.searchResult = state.modules.filter(function (e) {
+            return e.name.toLowerCase().includes(value.toLowerCase()) || e.category.toLowerCase().includes(value.toLowerCase());
+        });
     },
     UPDATE_COMPONENT_NAME(state, value){
         state.component_name = value;

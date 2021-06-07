@@ -18,9 +18,10 @@ class UserDetail{
                 console.log(data);
             }
            
-            return cb(data)
+            return cb(data, null)
         },(err) => {
-            throw err;
+            const errMessage = {message: err.code };
+            return cb([], errMessage);
         });
     }
     async personalInformationDependencies(cb){
@@ -93,9 +94,10 @@ class UserDetail{
                 data.push(ch);
                  
              });
-            return cb(data)
+            return cb(data, null)
         },(err) => {
-            throw err;
+            const errMessage = {message: err.code };
+            return cb([], errMessage);
         });
     }
 
@@ -157,9 +159,10 @@ class UserDetail{
                 data.push(ch);
                  
              });
-            return cb(data)
+            return cb(data,null)
         },(err) => {
-            throw err;
+            const errMessage = {message: err.code };
+            return cb([], errMessage);
         });
     }
     async kinDependencies(cb){
@@ -217,9 +220,10 @@ class UserDetail{
                 data.push(ch);
                  
              });
-            return cb(data)
+            return cb(data,null)
         },(err) => {
-            throw err;
+            const errMessage = {message: err.code };
+            return cb([], errMessage);
         });
     }
 
@@ -275,9 +279,10 @@ class UserDetail{
                 ch.id = doc.id;
                 data.push(ch);
              });
-            return cb(data)
+            return cb(data, null)
         },(err) => {
-            throw err;
+            const errMessage = {message: err.code };
+            return cb([], errMessage);
         });
     }
 

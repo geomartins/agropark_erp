@@ -1,21 +1,18 @@
 <template>
     <div class="q-pa-md">
+
                     <q-table
                     flat
                     
                     :data="datas"
-                    :columns="$store.state.users.columns"
+                    :columns="columns"
                     row-key="id"
-                    :filter="filter"
+                   
                     :loading="$store.state.users.loading"
                      :table-header-style="{textTransform: 'uppercase'}"
-                     :pagination="$store.state.users.initialPagination"
+                     :pagination="initialPagination"
                     >
-
-                    
-
                     <template v-slot:body="props">
-                      
 
                         <q-tr :props="props">
                             <q-td key="id" :props="props">
@@ -93,29 +90,63 @@
 <script>
 import Vue from 'vue';
 import UsersListTile from '../listtiles/UsersListTile'
+import { exportTable } from '../../repositories/plugins'
+import filters from '../../repositories/filters'
 export default Vue.extend({
     name: "UsersListView",
+    mixins: [filters],
     components: {
         "app-users-list-tile": UsersListTile
     },
     data(){
         return {
+            exportableColumns: [
+                { label: 'UID', field: 'id'},
+                { label: 'FIRSTNAME', field: row => row.firstname},
+                { label: 'MIDDLENAME', field: row => row.middlename},
+                { label: 'LASTNAME', field: row => row.lastname},
+                { label: 'EMAIL', field: row => row.email},
+                { label: 'ROLE', field: row => row.role },
+                { label: 'CREATED AT', field: row => row.createdAt, format: (val, row) => filters.filters.toRealDate(val)  }
+            ],
+            columns: [
+                { name: 'id', label: 'S/N', field: 'id', sortable: true, style: 'width: 5px', align: 'left'},
+                {
+                name: 'name',
+                required: true,
+                label: 'Fullname',
+                align: 'left',
+                field: row => row.firstname,
+                format: val => `${val}`,
+                sortable: true
+                },
+                { name: 'role', label: 'Role', field: 'role', sortable: true, align: 'left', },
+                { name: 'timestamp', label: '', field: 'created_at', sortable: true, align: 'left', }
+            ],
+            initialPagination: {
+                sortBy: 'name',
+                descending: false,
+                //page: 2,
+                rowsPerPage: 0
+                // rowsNumber: xx if getting data from a server
+            },
 
         }
     },
+    watch: {
+        filter(newValue, oldValue) {
+            this.$store.dispatch('users/search',newValue);
+        }
+    },
     computed: {
-     filter:  {
-        get() { return this.$store.getters["users/fetchFilter"]; },
-        set(value){ this.$store.commit('users/UPDATE_FILTER',value); }   
+      filter: {
+           get: function() { return this.$store.getters["users/fetchFilter"]; },
+           set: function(value){ this.$store.commit('users/UPDATE_FILTER',value); }
       },
       datas: {
            get: function() { return this.$store.getters["users/fetchData"]; },
            set: function(value){ this.$store.commit('users/UPDATE_DATA',value); }
       },
-       columns: {
-           get() { return this.$store.getters["users/fetchColumns"]; },
-           set(value){ this.$store.commit('users/UPDATE_COLUMNS',value); }
-      }
 
    },
    methods: {
@@ -135,6 +166,7 @@ export default Vue.extend({
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true);
       },
       exportable(){
+          exportTable(this.exportableColumns, this.datas,'users-list');
 
       }
    }

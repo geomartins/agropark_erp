@@ -6,8 +6,16 @@ const filters =  {
             return replaceDash.replace('_',' ')
 
         },
+        toRealDate: (value) => {
+            if (!value) return ''
+            if(isNaN(value._seconds) == false){
+                return new Date(value._seconds * 1000)
+            }else{
+                return value.toDate();
+            }
+        },
         capitalizer:  (value)  => {
-
+            
             if (!value) return ''
             return value.toLowerCase().replace(/(?<= )[^\s]|^./g, a => a.toUpperCase());
 

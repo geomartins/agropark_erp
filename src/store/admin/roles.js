@@ -126,19 +126,18 @@ const actions = {
     },
 
     async fetch({commit, state}){
-        try{
-            commit('UPDATE_SKELETON', true);
-            let unsubscribe = new Role().fetch((datas,unsubscribe) => {
-                commit('UPDATE_DATA',datas);
-                console.log(state.datas,'DATA')
+        commit('UPDATE_SKELETON', true);
+        let unsubscribe = new Role().fetch((datas,err) => {
+            if(err){ 
+                snackbar('warning',err.message);
                 commit('UPDATE_SKELETON', false);
-           })
-       
-           commit('UPDATE_UNSUBSCRIBE', unsubscribe);
-          
-        }catch(err){
-            snackbar('warning',err.message);
-        }
+                return;
+            }
+            commit('UPDATE_DATA',datas);
+            console.log(state.datas,'DATA')
+            commit('UPDATE_SKELETON', false);
+        })
+        commit('UPDATE_UNSUBSCRIBE', unsubscribe);
        
     },
 

@@ -33,21 +33,36 @@ export default {
     return {}
   },
   computed: {
-    ...mapState('users',['skeleton'])
+    ...mapState('users',['skeleton','filter'])
   },
   methods: {
     async main(){
         this.$store.commit('admin_layout/UPDATE_BREAD_CRUMB', { pageTitle: 'Users' })
-        this.$store.dispatch('users/fetch', this).then(() => {
+        this.$store.commit('users/UPDATE_FILTER','')
+        this.$store.dispatch('users/fetch', 'initial').then(() => {
         this.$store.dispatch('users/dependencies', this);
        });
+    },
+    async getNextData() {
+      window.onscroll = () => {
+        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+        if (bottomOfWindow) {
+          if(this.filter.length < 1){
+            this.$store.dispatch('users/fetch', 'next');
+          }
+        }
+      }
     },
     async refresh(done){
        this.main().then(() => done());
     }
   },
-
-  async created(){ this.main(); },
+  beforeMount() {
+    this.main();
+  },
+  mounted() {
+    this.getNextData();
+  },
   beforeRouteLeave (to, from , next) {
       this.$store.dispatch('users/unsubscribe', this);
       this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false)

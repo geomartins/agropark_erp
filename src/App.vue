@@ -24,19 +24,4 @@ export default {
     },
   }
 }
-
-
-//TODO: Working on Search with Export
-//TODO: Creation of department-module relationship
-
-
-
-            /** 
-             * new MaskValidator(state.formData)
-                .trim('firstname','middlename','lastname','role','email')
-                .lower('firstname','middlename','lastname','role','email')
-                .val;
-
-
-            **/
 </script>

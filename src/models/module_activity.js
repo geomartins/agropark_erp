@@ -12,9 +12,10 @@ class ModuleActivity{
                 data.push(ch);
                  
              });
-            return cb(data)
+            return cb(data,null)
         },(err) => {
-            throw err;
+            const errMessage = {message: err.code };
+            return cb([], errMessage);
         });
     }
 

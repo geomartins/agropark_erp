@@ -13,6 +13,26 @@ const convertServerTimestampToJSDate = (timestamp) => {
   return date.formatDate(jsDate, 'YYYY-MM-DD');
 }
 
+
+
+const convertAccessArrayToObject = (dataArray) => {
+  let obj = {};
+  for(var item of dataArray){
+      obj[item] = true;
+  } 
+  return obj;
+}
+
+const  convertAccessObjectToArray = (dataObj) => {
+  let array = [];
+
+  for(var key in dataObj){
+    array.push(key.toString());
+  }
+
+  return array;
+}
+
 const generateUid = (name) => {
   let trimmedName = name.trim();
   let filteredName = trimmedName.replace(/\s/g, '-');
@@ -71,5 +91,7 @@ export {
     sortBy,
     generateUid,
     convertJSDateToServerTimestamp,
-    convertServerTimestampToJSDate
+    convertServerTimestampToJSDate,
+    convertAccessArrayToObject,
+    convertAccessObjectToArray,
 }

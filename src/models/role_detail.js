@@ -1,4 +1,5 @@
 import { roleCollections, configurationCollections, firebaseAuth, timestamp, fs } from '../boot/firebase'
+import { convertAccessArrayToObject, convertAccessObjectToArray } from '../repositories/pick'
 
 class RoleDetail{
     constructor(roleId){
@@ -15,9 +16,10 @@ class RoleDetail{
                 console.log(data);
             }
            
-            return cb(data)
+            return cb(data, null)
         },(err) => {
-            throw err;
+            const errMessage = {message: err.code };
+            return cb([], errMessage);
         });
     }
 
@@ -45,12 +47,16 @@ class RoleDetail{
             querySnapshot.forEach((doc) => {
                 let ch = { ...doc.data() };
                 ch.id = doc.id;
+                ch.primary_access = convertAccessObjectToArray(ch.primary_access);
+                ch.secondary_access =  convertAccessObjectToArray(ch.secondary_access);
+                ch.tertiary_access =  convertAccessObjectToArray(ch.tertiary_access);
                 data.push(ch);
                  
              });
-            return cb(data)
+            return cb(data, null)
         },(err) => {
-            throw err;
+            const errMessage = {message: err.code };
+            return cb([], errMessage);
         });
     }
 
@@ -79,7 +85,14 @@ class RoleDetail{
 
             var checkDuplicate = (await roleCollections.doc(this.roleId).collection('modules').doc(data.name).get()).exists;
             if(checkDuplicate){ throw new Error('Duplicate Data Entry') }
-            await roleCollections.doc(this.roleId).collection('modules').doc(data.name).set(data).then(()=> {
+
+            const updatedData = data;
+
+            updatedData.primary_access = convertAccessArrayToObject(updatedData.primary_access);
+            updatedData.secondary_access = convertAccessArrayToObject(updatedData.secondary_access);
+            updatedData.tertiary_access = convertAccessArrayToObject(updatedData.tertiary_access);
+
+            await roleCollections.doc(this.roleId).collection('modules').doc(updatedData.name).set(updatedData).then(()=> {
                 return ;
             }).catch(err => {
                 throw err;
@@ -90,7 +103,13 @@ class RoleDetail{
             data.editor = firebaseAuth.currentUser.uid; data.editedAt = timestamp;
 
 
-            return roleCollections.doc(this.roleId).collection('modules').doc(moduleId).update(data).then((docRef) => {
+            const updatedData = data;
+
+            updatedData.primary_access = convertAccessArrayToObject(updatedData.primary_access);
+            updatedData.secondary_access = convertAccessArrayToObject(updatedData.secondary_access);
+            updatedData.tertiary_access = convertAccessArrayToObject(updatedData.tertiary_access);
+
+            return roleCollections.doc(this.roleId).collection('modules').doc(moduleId).update(updatedData).then((docRef) => {
                 return docRef;
             }).catch(err => {
                 throw err;

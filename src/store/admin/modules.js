@@ -150,16 +150,17 @@ const actions = {
     },
 
     async fetch({commit, state}){
-        try{
-            let unsubscribe = new Module().fetch((datas,unsubscribe) => {
-                commit('UPDATE_DATA',datas);
-                console.log(state.datas,'DATA')
-           })
-           commit('UPDATE_UNSUBSCRIBE', unsubscribe);
-          
-        }catch(err){
-            snackbar('warning',err.message);
-        }
+       
+        let unsubscribe = new Module().fetch((datas,err) => {
+            if(err){ 
+                snackbar('warning',err.message);
+                return;
+            }
+            commit('UPDATE_DATA',datas);
+            console.log(state.datas,'DATA')
+        })
+        commit('UPDATE_UNSUBSCRIBE', unsubscribe);
+       
        
     },
 

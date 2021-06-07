@@ -117,23 +117,25 @@ const actions = {
             commit("CLEAR_FORM_DATA");
             commit('UPDATE_IS_LOADING', false);
         }catch(err){
+            console.log(err.code);
             snackbar('warning',err.message);
             commit('UPDATE_IS_LOADING', false);
         }
         
     },
 
-    async fetch({commit, state}){
-        try{
-            let unsubscribe = new ModuleCategory().fetch((datas,unsubscribe) => {
-                commit('UPDATE_DATA',datas);
-                console.log(state.datas,'DATA')
-           })
-           commit('UPDATE_UNSUBSCRIBE', unsubscribe);
-          
-        }catch(err){
-            snackbar('warning',err.message);
-        }
+    async fetch({commit, state}, vueInstance){
+        
+        let unsubscribe = new ModuleCategory().fetch((datas,err) => {
+            if(err){ 
+                snackbar('warning',err.message);
+                return;
+            }
+            commit('UPDATE_DATA',datas);
+            console.log(state.datas,'DATA')
+        })
+        commit('UPDATE_UNSUBSCRIBE', unsubscribe);
+        
        
     },
 

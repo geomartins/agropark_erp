@@ -510,19 +510,20 @@ const actions = {
 
     //PERSONALINFORMATION
     async fetchPersonalInformation({ commit, state}){
-        try{
-            commit('UPDATE_SKELETON', true);
-            let unsubscribe = new UserDetail(state.userId).fetchPersonalInformation((data,unsubscribe) => {
-                commit('UPDATE_PERSONAL_INFORMATION_FORM_DATA',data);
-                commit('UPDATE_SETTING_FORM_DATA', data);
+        
+        commit('UPDATE_SKELETON', true);
+        let unsubscribe = new UserDetail(state.userId).fetchPersonalInformation((data,err) => {
+            if(err){ 
+                snackbar('warning',err.message);
                 commit('UPDATE_SKELETON', false);
-           })
-           
-           commit('UPDATE_UNSUBSCRIBE', [...state.unsubscribe, unsubscribe]);
-          
-        }catch(err){
-            snackbar('warning',err.message);
-        }
+                return;
+            }
+            commit('UPDATE_PERSONAL_INFORMATION_FORM_DATA',data);
+            commit('UPDATE_SETTING_FORM_DATA', data);
+            commit('UPDATE_SKELETON', false);
+        })
+        commit('UPDATE_UNSUBSCRIBE', [...state.unsubscribe, unsubscribe]);
+      
     },
 
     async fetchPersonalInformationDependencies({commit, state}){
@@ -563,18 +564,19 @@ const actions = {
 
     //DOCUMENT
     async fetchDocuments({commit, state}){
-        try{
-            commit('UPDATE_DOCUMENT_IS_LOADING', true);
-            let unsubscribe = new UserDetail(state.userId).fetchDocuments((datas,unsubscribe) => {
-                commit('UPDATE_DOCUMENT_DATAS',datas);
-           })
-           commit('UPDATE_UNSUBSCRIBE', [...state.unsubscribe, unsubscribe]);
-           commit('UPDATE_DOCUMENT_IS_LOADING', false);
-          
-        }catch(err){
-            snackbar('warning',err.message);
+       
+        commit('UPDATE_DOCUMENT_IS_LOADING', true);
+        let unsubscribe = new UserDetail(state.userId).fetchDocuments((datas,err) => {
+            if(err){ 
+                snackbar('warning',err.message);
+                commit('UPDATE_DOCUMENT_IS_LOADING', false);
+                return;
+            }
+            commit('UPDATE_DOCUMENT_DATAS',datas);
             commit('UPDATE_DOCUMENT_IS_LOADING', false);
-        }
+        })
+        commit('UPDATE_UNSUBSCRIBE', [...state.unsubscribe, unsubscribe]);
+      
     },
 
     async fetchDocumentDependencies({commit, state}){
@@ -635,18 +637,19 @@ const actions = {
 
     //DEPARTMENT
     async fetchDepartments({commit, state}){
-        try{
+       
             commit('UPDATE_DEPARTMENT_IS_LOADING', true);
-            let unsubscribe = new UserDetail(state.userId).fetchDepartments((datas,unsubscribe) => {
+            let unsubscribe = new UserDetail(state.userId).fetchDepartments((datas,err) => {
+                if(err){ 
+                    snackbar('warning',err.message);
+                    commit('UPDATE_DEPARTMENT_IS_LOADING', false);
+                    return;
+                }
                 commit('UPDATE_DEPARTMENT_DATAS',datas);
+                commit('UPDATE_DEPARTMENT_IS_LOADING', false);
            })
            commit('UPDATE_UNSUBSCRIBE', [...state.unsubscribe, unsubscribe]);
-           commit('UPDATE_DEPARTMENT_IS_LOADING', false);
           
-        }catch(err){
-            snackbar('warning',err.message);
-            commit('UPDATE_DEPARTMENT_IS_LOADING', false);
-        }
     },
 
     async fetchDepartmentDependencies({commit, state}){
@@ -721,18 +724,19 @@ const actions = {
 
     //KIN
     async fetchKins({commit, state}){
-        try{
-            commit('UPDATE_KIN_IS_LOADING', true);
-            let unsubscribe = new UserDetail(state.userId).fetchKins((datas,unsubscribe) => {
-                commit('UPDATE_KIN_DATAS',datas);
-           })
-           commit('UPDATE_UNSUBSCRIBE', [...state.unsubscribe, unsubscribe]);
-           commit('UPDATE_KIN_IS_LOADING', false);
-          
-        }catch(err){
-            snackbar('warning',err.message);
+        
+        commit('UPDATE_KIN_IS_LOADING', true);
+        let unsubscribe = new UserDetail(state.userId).fetchKins((datas,err) => {
+            if(err){ 
+                snackbar('warning',err.message);
+                commit('UPDATE_KIN_IS_LOADING', false);
+                return;
+            }
             commit('UPDATE_KIN_IS_LOADING', false);
-        }
+            commit('UPDATE_KIN_DATAS',datas);
+        })
+        commit('UPDATE_UNSUBSCRIBE', [...state.unsubscribe, unsubscribe]);
+    
     },
     async fetchKinDependencies({commit, state}){
         try{
@@ -809,18 +813,18 @@ const actions = {
 
     //BANK
     async fetchBanks({commit, state}){
-        try{
-            commit('UPDATE_BANK_IS_LOADING', true);
-            let unsubscribe = new UserDetail(state.userId).fetchBanks((datas,unsubscribe) => {
-                commit('UPDATE_BANK_DATAS',datas);
-           })
-           commit('UPDATE_UNSUBSCRIBE', [...state.unsubscribe, unsubscribe]);
-           commit('UPDATE_BANK_IS_LOADING', false);
-          
-        }catch(err){
-            snackbar('warning',err.message);
+       
+        commit('UPDATE_BANK_IS_LOADING', true);
+        let unsubscribe = new UserDetail(state.userId).fetchBanks((datas,err) => {
+            if(err){ 
+                snackbar('warning',err.message);
+                commit('UPDATE_BANK_IS_LOADING', false);
+                return;
+            }
+            commit('UPDATE_BANK_DATAS',datas);
             commit('UPDATE_BANK_IS_LOADING', false);
-        }
+        })
+        commit('UPDATE_UNSUBSCRIBE', [...state.unsubscribe, unsubscribe]);
     },
     async fetchBankDependencies({commit, state}){
         try{

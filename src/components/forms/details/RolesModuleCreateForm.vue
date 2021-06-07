@@ -79,6 +79,10 @@
                   <q-icon name="star" color="info" />
                 </q-item-section>
               </q-item>
+
+
+
+              
              </div>
 
 
@@ -113,6 +117,12 @@ export default {
     return {
        dense: true,
        visible: true,
+       universal_access: {
+         create: false,
+         read: false,
+         update: false,
+         delete: false,
+       },
        selection: []
     };
   },

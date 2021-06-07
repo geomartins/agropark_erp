@@ -164,18 +164,19 @@ const actions = {
 
     //ROLEINFORMATION
     async fetchRoleInformation({ commit, state}){
-        try{
-            commit('UPDATE_SKELETON', true);
-            let unsubscribe = new RoleDetail(state.roleId).fetchRoleInformation((data,unsubscribe) => {
-                commit('UPDATE_ROLE_INFORMATION_FORM_DATA',data);
+     
+        commit('UPDATE_SKELETON', true);
+        let unsubscribe = new RoleDetail(state.roleId).fetchRoleInformation((data,err) => {
+            if(err){ 
+                snackbar('warning',err.message);
                 commit('UPDATE_SKELETON', false);
-           })
-           
-           commit('UPDATE_UNSUBSCRIBE', [...state.unsubscribe, unsubscribe]);
-          
-        }catch(err){
-            snackbar('warning',err.message);
-        }
+                return;
+            }
+            commit('UPDATE_ROLE_INFORMATION_FORM_DATA',data);
+            commit('UPDATE_SKELETON', false);
+        })
+        
+        commit('UPDATE_UNSUBSCRIBE', [...state.unsubscribe, unsubscribe]);
     },
 
     async updateRoleInformation({commit, state},instance){
@@ -208,18 +209,20 @@ const actions = {
 
     //MODULE
     async fetchModules({commit, state}){
-        try{
-            commit('UPDATE_MODULE_IS_LOADING', true);
-            let unsubscribe = new RoleDetail(state.roleId).fetchModules((datas,unsubscribe) => {
-                commit('UPDATE_MODULE_DATAS',datas);
-           })
-           commit('UPDATE_UNSUBSCRIBE', [...state.unsubscribe, unsubscribe]);
-           commit('UPDATE_MODULE_IS_LOADING', false);
-          
-        }catch(err){
-            snackbar('warning',err.message);
+      
+        commit('UPDATE_MODULE_IS_LOADING', true);
+        let unsubscribe = new RoleDetail(state.roleId).fetchModules((datas,err) => {
+            if(err){ 
+                snackbar('warning',err.message);
+                commit('UPDATE_MODULE_IS_LOADING', false);
+                return;
+            }
+            commit('UPDATE_MODULE_DATAS',datas);
             commit('UPDATE_MODULE_IS_LOADING', false);
-        }
+        })
+        commit('UPDATE_UNSUBSCRIBE', [...state.unsubscribe, unsubscribe]);
+        
+      
     },
 
     async fetchModuleDependencies({commit, state}){
