@@ -1,10 +1,10 @@
-import { moduleActivityCollections } from '../boot/firebase'
+import { activityCollections } from '../boot/firebase'
 
-class ModuleActivity{
+class Activity{
     constructor(){}
 
     static fetch(cb){
-        return moduleActivityCollections.orderBy('timestamp','desc').onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
+        return activityCollections.orderBy('timestamp','desc').onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
             let data = [];
             querySnapshot.forEach((doc) => {
                 let ch = { ...doc.data() };
@@ -21,7 +21,7 @@ class ModuleActivity{
 
    
     static async deleteById(id){
-        return moduleActivityCollections.doc(id).delete().then(()=> {
+        return activityCollections.doc(id).delete().then(()=> {
             return null;
         }).catch(err => {
             throw err;
@@ -32,4 +32,4 @@ class ModuleActivity{
 }
 
 
-export default ModuleActivity;
+export default Activity;

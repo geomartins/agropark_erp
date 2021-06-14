@@ -20,10 +20,13 @@ const routes = [
     },
     children: [
       { path: '/admin/dashboard', component: () => import('pages/admin/dashboard.vue') },
-      { path: '/admin/module_categories', component: () => import('pages/admin/module_categories.vue') },
-      { path: '/admin/module_activities', component: () => import('pages/admin/module_activities.vue') },
+      { path: '/admin/module_categories', component: () => import('pages/admin/module_categories.vue') }, 
+      { path: '/admin/activities', component: () => import('pages/admin/activities.vue') },
+      { path: '/admin/extension_categories', component: () => import('pages/admin/extension_categories.vue') },
       { path: '/admin/modules', component: () => import('pages/admin/modules.vue') },
+      { path: '/admin/extensions', component: () => import('pages/admin/extensions.vue') },
       { path: '/admin/departments', component: () => import('src/pages/admin/departments.vue') },
+      { path: '/admin/domains', component: () => import('src/pages/admin/domains.vue') },
       // { path: '/admin/units', component: () => import('src/pages/admin/units.vue') },
       { path: '/admin/roles', component: () => import('src/pages/admin/roles.vue') },
       { path: '/admin/roles/:id', component: () => import('src/pages/admin/roles_details.vue') },
@@ -32,7 +35,7 @@ const routes = [
     ]
   },
 
-  // Always leave this as last one,
+  // Always leave this as last one,b
   // but you can also remove it
   {
     path: '*',

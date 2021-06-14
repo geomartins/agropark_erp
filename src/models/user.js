@@ -30,7 +30,6 @@ class User{
                 // console.log('Inside old data', dataRef)
                 ref = userCollections.orderBy('createdAt','desc').startAfter(dataRef).limit(25);
             }else if(type == 'initial'){
-                data = [];
                 ref = userCollections.orderBy('createdAt','desc').limit(25);
             }
 
@@ -39,7 +38,10 @@ class User{
                 if(lastVisible){
                      dataRef = lastVisible;
                 }
-                console.log('Last Visible', lastVisible)
+                if(!querySnapshot.empty){
+                    data = [];
+                }
+
                 querySnapshot.forEach((doc) => {
                     let ch = { ...doc.data() };
                     ch.id = doc.id;

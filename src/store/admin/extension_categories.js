@@ -1,5 +1,5 @@
 import { snackbar, confirm } from 'src/repositories/plugins';
-import ModuleCategory from '../../models/module_category'
+import ExtensionCategory from '../../models/extension_category'
 import FlexValidators from 'src/repositories/flex_validators';
 const state = {
    id: '',
@@ -81,8 +81,8 @@ const actions = {
             const { name, description } = state.formData;
             const id = null;
             
-            let moduleCategory = new ModuleCategory(name,description,id);
-            await moduleCategory.save();
+            let extensionCategory = new ExtensionCategory(name,description,id);
+            await extensionCategory.save();
 
             snackbar('success','item created successfully')
             commit("CLEAR_FORM_DATA");
@@ -97,7 +97,7 @@ const actions = {
 
     async fetch({commit, state}, vueInstance){
         
-        let unsubscribe = new ModuleCategory().fetch((datas,err) => {
+        let unsubscribe = new ExtensionCategory().fetch((datas,err) => {
             if(err){ 
                 snackbar('warning',err.message);
                 return;
@@ -114,7 +114,7 @@ const actions = {
         let x = (await confirm('Confirm','Would you like to delete the selected item?'));
         x.onOk(()=> {
             console.log(id);
-            ModuleCategory.deleteById(id).then().catch(err => {
+            ExtensionCategory.deleteById(id).then().catch(err => {
                 snackbar('warning',err.message);
             });
         })
@@ -133,8 +133,8 @@ const actions = {
             });
             const { name, description, id } = data;
 
-            let moduleCategory = new ModuleCategory(name,description,id);
-            await moduleCategory.save();
+            let extensionCategory = new ExtensionCategory(name,description,id);
+            await extensionCategory.save();
 
             snackbar('success','item updated successfully')
             commit("CLEAR_FORM_DATA");

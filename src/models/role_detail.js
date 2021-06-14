@@ -119,6 +119,83 @@ class RoleDetail{
     }
 
 
+     //EXTENSIONS
+     fetchExtensions(cb){
+        return roleCollections.doc(this.roleId).collection('extensions').orderBy('createdAt','desc').onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
+            let data = [];
+            querySnapshot.forEach((doc) => {
+                let ch = { ...doc.data() };
+                ch.id = doc.id;
+                data.push(ch);
+                 
+             });
+            return cb(data, null)
+        },(err) => {
+            const errMessage = {message: err.code };
+            return cb([], errMessage);
+        });
+    }
+
+    async extensionDependencies(cb){
+
+        const roles = [];
+        const extensions = [];
+
+        const roleDoc = await configurationCollections.doc('roles').get();
+        if(roleDoc.exists){
+            roles.push(...roleDoc.data().ids);
+        }
+
+        const extensionDoc = await configurationCollections.doc('extensions').get();
+        if(extensionDoc.exists){
+            extensions.push(...extensionDoc.data().ids);
+        }
+
+        return cb(roles, extensions);
+    }
+
+    async deleteExtensionById(extensionId = null){
+        return roleCollections.doc(this.roleId).collection('extensions').doc(extensionId).delete().then(() => {
+            return ;
+        }).catch(err => console.log(err));
+    }
+
+    async saveExtension(data, extensionId = null){
+
+        if(!extensionId){  //add
+            data.createdAt = timestamp; data.creator = firebaseAuth.currentUser.uid;
+            data.deletedAt = null; data.editedAt = null; //default
+            delete data.id;
+
+            var checkDuplicate = (await roleCollections.doc(this.roleId).collection('extensions').doc(data.name).get()).exists;
+            if(checkDuplicate){ throw new Error('Duplicate Data Entry') }
+
+            const updatedData = data;
+
+            await roleCollections.doc(this.roleId).collection('extensions').doc(updatedData.name).set(updatedData).then(()=> {
+                return ;
+            }).catch(err => {
+                throw err;
+            });
+
+        }else{  //update
+            delete data.id;
+            data.editor = firebaseAuth.currentUser.uid; data.editedAt = timestamp;
+
+
+            const updatedData = data;
+
+            return roleCollections.doc(this.roleId).collection('extensions').doc(extensionId).update(updatedData).then((docRef) => {
+                return docRef;
+            }).catch(err => {
+                throw err;
+            });
+        }
+
+    }
+
+
+
    
 
 

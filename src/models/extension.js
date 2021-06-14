@@ -1,10 +1,10 @@
-import { moduleCollections, configurationCollections, firebaseAuth, timestamp, fs } from '../boot/firebase'
+import { extensionCollections, configurationCollections, firebaseAuth, timestamp, fs } from '../boot/firebase'
 import { purifyObject, generateUid } from '../repositories/pick';
 import AlgoliaService from '../services/algolia_service';
 
 let dataRef = null;
 let data = [];
-class Module{
+class Extension{
     constructor(name, description, category, id = null){
         this.name = name;
         this.description = description;
@@ -13,7 +13,7 @@ class Module{
     }
 
     async dependencies(cb){
-        return configurationCollections.doc('module_categories').get().then(doc => {
+        return configurationCollections.doc('extension_categories').get().then(doc => {
             if(!doc.exists){
                return cb([])
             }        
@@ -25,9 +25,10 @@ class Module{
 
         let ref;
         if(dataRef && type == 'next'){
-            ref = moduleCollections.orderBy('createdAt','desc').startAfter(dataRef).limit(25);
+            // console.log('Inside old data', dataRef)
+            ref = extensionCollections.orderBy('createdAt','desc').startAfter(dataRef).limit(25);
         }else if(type == 'initial'){
-            ref = moduleCollections.orderBy('createdAt','desc').limit(25);
+            ref = extensionCollections.orderBy('createdAt','desc').limit(25);
         }
 
         return ref.onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
@@ -35,12 +36,10 @@ class Module{
             if(lastVisible){
                  dataRef = lastVisible;
             }
-            
-            // console.log('Last Visible', lastVisible)
+            console.log('Last Visible', lastVisible)
             if(!querySnapshot.empty){
                 data = [];
             }
-
             querySnapshot.forEach((doc) => {
                 let ch = { ...doc.data() };
                 ch.id = doc.id;
@@ -54,7 +53,6 @@ class Module{
             return cb([],errMessage);
             
         }); 
-        
     }
 
     async save(){
@@ -65,9 +63,9 @@ class Module{
             data.deletedAt = null; data.editedAt = null; //default
             delete data.id;
 
-            var checkDuplicate = (await moduleCollections.doc(generateUid(data.name)).get()).exists;
+            var checkDuplicate = (await extensionCollections.doc(generateUid(data.name)).get()).exists;
             if(checkDuplicate){ throw new Error('Duplicate Data Entry') }
-            await moduleCollections.doc(generateUid(data.name)).set(purifyObject(data)).then(()=> {
+            await extensionCollections.doc(generateUid(data.name)).set(purifyObject(data)).then(()=> {
                 return ;
             }).catch(err => {
                 throw err;
@@ -78,7 +76,7 @@ class Module{
             delete data.id;
             data.editor = firebaseAuth.currentUser.uid; data.editedAt = timestamp;
 
-            return moduleCollections.doc(id).update(purifyObject(data)).then((docRef) => {
+            return extensionCollections.doc(id).update(purifyObject(data)).then((docRef) => {
                 return docRef;
             }).catch(err => {
                 throw err;
@@ -87,7 +85,7 @@ class Module{
     }
 
     static async search(newValue){
-        return new AlgoliaService("modules").search(newValue).then((result) => {
+        return new AlgoliaService("extensions").search(newValue).then((result) => {
             return result;
         }).catch(err => {
             throw err;
@@ -96,7 +94,7 @@ class Module{
 
 
     static async deleteById(id){
-        return moduleCollections.doc(id).delete().then(() => {
+        return extensionCollections.doc(id).delete().then(() => {
             return ;
         }).catch(err => console.log(err));
 
@@ -107,4 +105,4 @@ class Module{
 }
 
 
-export default Module;
+export default Extension;

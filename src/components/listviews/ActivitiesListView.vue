@@ -4,12 +4,12 @@
                     flat
                     
                     :data="datas"
-                    :columns="$store.state.module_activities.columns"
+                    :columns="$store.state.activities.columns"
                     row-key="id"
                     :filter="filter"
-                    :loading="$store.state.module_activities.loading"
+                    :loading="$store.state.activities.loading"
                      :table-header-style="{textTransform: 'uppercase'}"
-                     :pagination="$store.state.module_activities.initialPagination"
+                     :pagination="$store.state.activities.initialPagination"
                     >
 
                     
@@ -53,7 +53,7 @@
                             <q-td colspan="100%">
                                 <div class="text-left">
 
-                                    <app-module-activities-list-tile  :row="props.row"></app-module-activities-list-tile>
+                                    <app-activities-list-tile  :row="props.row"></app-activities-list-tile>
 
                                 </div>
                             </q-td>
@@ -88,13 +88,13 @@
 
 <script>
 import Vue from 'vue'
-import ModuleActivitiesListTile from '../listtiles/ModuleActivitiesListTile'
+import ActivitiesListTile from '../listtiles/ActivitiesListTile'
 import filters from '../../repositories/filters';
 export default Vue.extend({
-    name: "ModuleActivitiesListView",
+    name: "ActivitiesListView",
     mixins: [filters],
     components: {
-        "app-module-activities-list-tile": ModuleActivitiesListTile
+        "app-activities-list-tile": ActivitiesListTile
     },
     data(){
         return {
@@ -103,22 +103,22 @@ export default Vue.extend({
     },
     computed: {
      filter:  {
-        get() { return this.$store.getters["module_activities/fetchFilter"]; },
-        set(value){ this.$store.commit('module_activities/UPDATE_FILTER',value); }   
+        get() { return this.$store.getters["activities/fetchFilter"]; },
+        set(value){ this.$store.commit('activities/UPDATE_FILTER',value); }   
       },
       datas: {
-           get: function() { return this.$store.getters["module_activities/fetchData"]; },
-           set: function(value){ this.$store.commit('module_activities/UPDATE_DATA',value); }
+           get: function() { return this.$store.getters["activities/fetchData"]; },
+           set: function(value){ this.$store.commit('activities/UPDATE_DATA',value); }
       },
        columns: {
-           get() { return this.$store.getters["module_activities/fetchColumns"]; },
-           set(value){ this.$store.commit('module_activities/UPDATE_COLUMNS',value); }
+           get() { return this.$store.getters["activities/fetchColumns"]; },
+           set(value){ this.$store.commit('activities/UPDATE_COLUMNS',value); }
       }
 
    },
    methods: {
       async deleteItem(id){
-         this.$store.dispatch('module_activities/delete', id);
+         this.$store.dispatch('activities/delete', id);
       },
       exportable(){
 

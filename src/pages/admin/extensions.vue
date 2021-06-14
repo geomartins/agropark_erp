@@ -1,52 +1,48 @@
 <template>
     <q-page>
-       <q-pull-to-refresh @refresh="refresh">
+        <q-pull-to-refresh @refresh="refresh">
           <div class="row">
               <div class="col-lg-1 col-xs-0"></div>
               <div class="col-lg-8 col-xs-12">
-                  <app-skeleton :skeleton="skeleton" type="a">
-                    <app-roles-list-view></app-roles-list-view>
-                  </app-skeleton>
+                  <app-extensions-list-view :datas="datas" :loading="is_loading"></app-extensions-list-view>
               </div>
               <div class="col-lg-3 col-xs-0"></div>
           </div>
-       </q-pull-to-refresh>
+        </q-pull-to-refresh>
     </q-page>
 </template>
 
 <script>
-
-
+import ExtensionsListView from '../../components/listviews/ExtensionsListView'
 import { mapState } from 'vuex';
-import RolesListView from '../../components/listviews/RolesListView'
-import Skeleton from '../../components/Skeleton'
 export default {
-  name: "roles",
+  name: "extensions",
   meta: {
-    titleTemplate: title => `Roles - ${title}  `,
+    titleTemplate: title => `Extensions - ${title}  `,
   },
   components: {
-      "app-roles-list-view": RolesListView,
-       "app-skeleton": Skeleton
+      "app-extensions-list-view": ExtensionsListView
   },
   data () {
     return {}
   },
   computed: {
-    ...mapState('roles',['skeleton', 'filter'])
+      ...mapState('extensions',['datas', 'is_loading', 'filter'])
   },
   methods: {
     async main(){
-        this.$store.commit('admin_layout/UPDATE_BREAD_CRUMB', { pageTitle: 'Roles' })
-        this.$store.commit('roles/UPDATE_FILTER','')
-        this.$store.dispatch('roles/fetch', 'initial');
+         this.$store.commit('admin_layout/UPDATE_BREAD_CRUMB', { pageTitle: 'Extensions' })
+         this.$store.commit('extensions/UPDATE_FILTER','')
+        this.$store.dispatch('extensions/fetch', 'initial').then(() => {
+            this.$store.dispatch('extensions/dependencies', this);
+       });
     },
     async getNextData() {
       window.onscroll = () => {
         let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
         if (bottomOfWindow) {
           if(this.filter.length < 1){
-            this.$store.dispatch('roles/fetch', 'next');
+            this.$store.dispatch('extensions/fetch', 'next');
           }
         }
       }
@@ -54,16 +50,15 @@ export default {
     async refresh(done){
        this.main().then(() => done());
     }
-   
   },
-   beforeMount() {
+  beforeMount() {
     this.main();
   },
   mounted() {
     this.getNextData();
   },
   beforeRouteLeave (to, from , next) {
-      this.$store.dispatch('roles/unsubscribe', this);
+      this.$store.dispatch('extensions/unsubscribe', this);
       this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false)
       next();
   }

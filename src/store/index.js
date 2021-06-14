@@ -5,11 +5,14 @@ import password_reset from './auth/password_reset'
 import password_confirmation from './auth/password_confirmation'
 import admin_layout from './admin_layout'
 import module_categories from './admin/module_categories'
-import module_activities from './admin/module_activities'
+import extension_categories from './admin/extension_categories'
+import activities from './admin/activities'
 import departments from './admin/departments';
+import domains from './admin/domains';
 import units from './admin/units';
 import roles from './admin/roles'
 import modules from './admin/modules'
+import extensions from './admin/extensions'
 import users from './admin/users'
 import users_details from './admin/users_details'
 import roles_details from './admin/roles_details'
@@ -38,9 +41,12 @@ export default function (/* { ssrContext } */) {
  
       //admin
       module_categories,
-      module_activities,
+      extension_categories,
+      activities,
       departments,
+      domains,
       modules,
+      extensions,
       units,
       roles,
       roles_details,

@@ -18,6 +18,7 @@
                         <template v-slot:before>
                             <q-tabs v-model="tab" vertical dense indicator-color="primary"  class="text-teal" align="left" :breakpoint="0" style="background: white">
                                 <q-tab name="modules"  label="Modules"  style="text-transform: capitalize"/>
+                                <q-tab name="extensions"  label="Extensions"  style="text-transform: capitalize"/>
                             </q-tabs>
                         </template>
 
@@ -25,6 +26,9 @@
                             <q-tab-panels v-model="tab" animated swipeable vertical transition-prev="jump-up" transition-next="jump-up" style="background: transparent">
                                 <q-tab-panel name="modules">
                                     <app-roles-module-listview :datas='moduleDatas' :loading="module_is_loading"></app-roles-module-listview>
+                                </q-tab-panel>
+                                 <q-tab-panel name="extensions">
+                                    <app-roles-extension-listview :datas='extensionDatas' :loading="extension_is_loading"></app-roles-extension-listview>
                                 </q-tab-panel>
                             </q-tab-panels>
                         </template>
@@ -45,6 +49,7 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
 import RolesModuleListView from '../../components/listviews/details/RolesModuleListView'
+import RolesExtensionListView from '../../components/listviews/details/RolesExtensionListView'
 import Skeleton from '../../components/Skeleton';
 
 import filters from '../../repositories/filters'
@@ -52,6 +57,7 @@ export default {
     name: "roles_details",
     components: {
         "app-roles-module-listview": RolesModuleListView,
+        "app-roles-extension-listview": RolesExtensionListView,
         "app-skeleton": Skeleton
     },
     mixins: [filters],
@@ -65,7 +71,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('roles_details',['skeleton', 'roleInformationFormData','module_is_loading','moduleDatas'])
+        ...mapState('roles_details',['skeleton', 'roleInformationFormData','module_is_loading','moduleDatas', 'extension_is_loading', 'extensionDatas'])
     },
     methods: {
         //MUTATION
@@ -89,6 +95,9 @@ export default {
             this.fetchRoleInformation(this).then(()=> {
                 this.$store.dispatch('roles_details/fetchModules',this).then(() => {
                     this.$store.dispatch('roles_details/fetchModuleDependencies', this);
+                })
+                this.$store.dispatch('roles_details/fetchExtensions',this).then(() => {
+                    this.$store.dispatch('roles_details/fetchExtensionDependencies', this);
                 })
             });
         },

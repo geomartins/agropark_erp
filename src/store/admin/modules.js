@@ -7,40 +7,18 @@ const state = {
       name: '',
       description: '',
       category: '',
-      approval: '',
    },
    is_loading: false,
    unsubscribe: '',
+   skeleton: false,
 
 
-
-   initialPagination: {
-    sortBy: 'name',
-    descending: false,
-    //page: 2,
-    rowsPerPage: 25
-    // rowsNumber: xx if getting data from a server
-  },
   loading: false,
   filter: '',
   rowCount: 10,
-  columns: [
-    { name: 'id', label: 'S/N', field: 'id', sortable: true, style: 'width: 5px', },
-    {
-      name: 'name',
-      required: true,
-      label: 'Modules',
-      align: 'left',
-      field: row => row.name,
-      format: val => `${val}`,
-      sortable: true
-    },
-    { name: 'timestamp', label: '', field: 'created_at', sortable: true }
-  ],
   datas: [],
   dependencies: {
     categories: [],
-    approvals: ['true', 'false'],
   }
    
 }
@@ -53,9 +31,6 @@ const getters = {
      },
      fetchCategory: (state) => {
         return state.formData.category;
-     },
-     fetchApproval: (state) => {
-        return state.formData.approval.toString();
      },
      fetchFilter: (state) => {
         return state.filter;
@@ -78,9 +53,6 @@ const mutations = {
     UPDATE_CATEGORY(state, value){
         state.formData.category = value;
     },
-    UPDATE_APPROVAL(state, value){
-        state.formData.approval = value.toString();
-    },
     UPDATE_IS_LOADING(state, value){
         state.is_loading = value;
     },
@@ -97,7 +69,6 @@ const mutations = {
         state.formData.name = payload.name;
         state.formData.description = payload.description;
         state.formData.category = payload.category;
-        state.formData.approval = payload.approval
         state.id = payload.id;
     },
     UPDATE_DATA(state,value){
@@ -108,11 +79,13 @@ const mutations = {
     UPDATE_D_CATEGORIES(state,value){
        state.dependencies.categories = value; 
     },
+    UPDATE_SKELETON(state, value){
+        state.skeleton = value;
+    },
     CLEAR_FORM_DATA(state){
         state.formData.name = '';
         state.formData.description = '';
         state.formData.category = '';
-        state.formData.approval = '';
         state.id = '';
     },
     
@@ -131,11 +104,10 @@ const actions = {
                 'name': 'required|notNull',
                 'description': 'required|notNull',
                 'category': 'required|notNull',
-                'approval': 'required|notNull',
             });
 
-            const { name, description, approval, category, id } = data;
-            let module = new Module(name,description,category,approval ,id);
+            const { name, description, category, id } = data;
+            let module = new Module(name,description,category ,id);
             await module.save();
 
             snackbar('success','item created successfully')
@@ -149,18 +121,21 @@ const actions = {
         
     },
 
-    async fetch({commit, state}){
-       
-        let unsubscribe = new Module().fetch((datas,err) => {
+    async fetch({commit, state}, type){
+        if(state.datas.length < 1){
+            commit('UPDATE_SKELETON', true);
+        }
+        let unsubscribe = new Module().fetch(type, (datas, err) => {
             if(err){ 
                 snackbar('warning',err.message);
+                commit('UPDATE_SKELETON', false);
                 return;
             }
             commit('UPDATE_DATA',datas);
-            console.log(state.datas,'DATA')
-        })
-        commit('UPDATE_UNSUBSCRIBE', unsubscribe);
-       
+            console.log(state.datas,'NEW DATA')
+            commit('UPDATE_SKELETON', false);
+       })
+       commit('UPDATE_UNSUBSCRIBE', unsubscribe);
        
     },
 
@@ -175,6 +150,19 @@ const actions = {
             snackbar('warning',err.message);
         }
        
+    },
+
+    async search({commit,dispatch, state},value){
+        if(value.length < 1){
+            dispatch('fetch','initial');
+            return ;
+        }
+        
+        Module.search(value).then((datas) => {
+            commit('UPDATE_DATA',datas);
+        }).catch(err => {
+            snackbar('warning',err.message);
+        });
     },
 
     async delete({commit, state},id){
@@ -201,12 +189,11 @@ const actions = {
                 'name': 'required|notNull',
                 'description': 'required|notNull',
                 'category': 'required|notNull',
-                'approval': 'required|notNull',
                 'id': 'required|notNull',
             });
 
-            const { name, description, category, approval, id } = data;
-            let module = new Module(name,description,category, approval,id);
+            const { name, description, category, id } = data;
+            let module = new Module(name,description,category,id);
             await module.save();
 
             snackbar('success','item updated successfully')

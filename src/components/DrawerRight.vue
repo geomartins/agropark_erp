@@ -1,9 +1,7 @@
 <template>
     <q-drawer
      v-model="rightDrawerOpen"
-     
      behavior="default"
-      
       show-if-above
       bordered
       :width="width"
@@ -12,10 +10,7 @@
       
      v-if="rightDrawerOpen == true">
       <q-scroll-area class="fit">
-
           <component :is="$store.state.admin_layout.component_name"></component>
-         
-      
       </q-scroll-area>
     </q-drawer>
 
@@ -27,8 +22,14 @@ import Vue from 'vue'
 import ModuleCategoriesCreateForm from "./forms/ModuleCategoriesCreateForm"
 import ModuleCategoriesUpdateForm from "./forms/ModuleCategoriesUpdateForm"
 
+import ExtensionCategoriesCreateForm from "./forms/ExtensionCategoriesCreateForm"
+import ExtensionCategoriesUpdateForm from "./forms/ExtensionCategoriesUpdateForm"
+
 import DepartmentsCreateForm from "./forms/DepartmentsCreateForm"
 import DepartmentsUpdateForm from "./forms/DepartmentsUpdateForm"
+
+
+import DomainsCreateForm from "./forms/DomainsCreateForm"
 
 import UnitsCreateForm from "./forms/UnitsCreateForm"
 import UnitsUpdateForm from "./forms/UnitsUpdateForm"
@@ -38,6 +39,10 @@ import RolesUpdateForm from "./forms/RolesUpdateForm"
 
 import ModulesCreateForm from "./forms/ModulesCreateForm"
 import ModulesUpdateForm from "./forms/ModulesUpdateForm"
+
+
+import ExtensionsCreateForm from "./forms/ExtensionsCreateForm"
+import ExtensionsUpdateForm from "./forms/ExtensionsUpdateForm"
 
 import UsersCreateForm from "./forms/UsersCreateForm"
 import UsersUpdateForm from "./forms/UsersUpdateForm"
@@ -68,20 +73,29 @@ import RolesModuleCreateForm from "./forms/details/RolesModuleCreateForm"
 import RolesModuleUpdateForm from "./forms/details/RolesModuleUpdateForm"
 
 
+import RolesExtensionCreateForm from "./forms/details/RolesExtensionCreateForm"
+import RolesExtensionUpdateForm from "./forms/details/RolesExtensionUpdateForm"
+
+
 
 export default Vue.extend({
     name: 'Drawer',
     components: {
         "app-module-categories-create-form": ModuleCategoriesCreateForm,
         "app-module-categories-update-form": ModuleCategoriesUpdateForm,
+        "app-extension-categories-create-form": ExtensionCategoriesCreateForm,
+        "app-extension-categories-update-form": ExtensionCategoriesUpdateForm,
         "app-departments-create-form": DepartmentsCreateForm,
         "app-departments-update-form": DepartmentsUpdateForm,
+        "app-domains-create-form": DomainsCreateForm,
         "app-units-create-form": UnitsCreateForm,
         "app-units-update-form": UnitsUpdateForm,
         "app-roles-create-form": RolesCreateForm,
         "app-roles-update-form": RolesUpdateForm,
         "app-modules-create-form": ModulesCreateForm,
         "app-modules-update-form": ModulesUpdateForm,
+        "app-extensions-create-form": ExtensionsCreateForm,
+        "app-extensions-update-form": ExtensionsUpdateForm,
         "app-users-create-form": UsersCreateForm,
         "app-users-update-form": UsersUpdateForm,
         "app-users-department-create-form": UsersDepartmentCreateForm,
@@ -98,6 +112,8 @@ export default Vue.extend({
         "app-role-information-update-form": RoleInformationUpdateForm,
         "app-roles-module-create-form": RolesModuleCreateForm,
         "app-roles-module-update-form": RolesModuleUpdateForm,
+        "app-roles-extension-create-form": RolesExtensionCreateForm,
+        "app-roles-extension-update-form": RolesExtensionUpdateForm,
     },
     data(){
         return {

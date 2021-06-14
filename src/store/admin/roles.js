@@ -14,29 +14,11 @@ const state = {
 
 
 
-   initialPagination: {
-    sortBy: 'name',
-    descending: false,
-    //page: 2,
-    rowsPerPage: 25
-    // rowsNumber: xx if getting data from a server
-  },
+  
   loading: false,
   filter: '',
   rowCount: 10,
-  columns: [
-    { name: 'id', label: 'S/N', field: 'id', sortable: true, style: 'width: 5px', },
-    {
-      name: 'name',
-      required: true,
-      label: 'Roles',
-      align: 'left',
-      field: row => row.name,
-      format: val => `${val}`,
-      sortable: true
-    },
-    { name: 'timestamp', label: '', field: 'created_at', sortable: true }
-  ],
+  
   datas: []
    
 }
@@ -54,9 +36,6 @@ const getters = {
         //.sort(sortBy('name'))
         return state.datas;
      },
-     fetchColumns: (state) => {
-        return state.columns;
-     },
 }
 const mutations = { 
     UPDATE_NAME(state, value){
@@ -70,9 +49,6 @@ const mutations = {
     },
     UPDATE_FILTER(state, value){
         state.filter = value;
-    },
-    UPDATE_COLUMNS(state, value){
-        state.columns = value;
     },
     UPDATE_UNSUBSCRIBE(state,value){
         state.unsubscribe = value;
@@ -125,20 +101,38 @@ const actions = {
         
     },
 
-    async fetch({commit, state}){
-        commit('UPDATE_SKELETON', true);
-        let unsubscribe = new Role().fetch((datas,err) => {
+    async fetch({commit, state}, type){
+
+        if(state.datas.length < 1){
+            commit('UPDATE_SKELETON', true);
+        }
+        let unsubscribe = new Role().fetch(type, (datas, err) => {
             if(err){ 
                 snackbar('warning',err.message);
                 commit('UPDATE_SKELETON', false);
                 return;
             }
             commit('UPDATE_DATA',datas);
-            console.log(state.datas,'DATA')
+            console.log(state.datas,'NEW DATA')
             commit('UPDATE_SKELETON', false);
-        })
-        commit('UPDATE_UNSUBSCRIBE', unsubscribe);
+       })
+       commit('UPDATE_UNSUBSCRIBE', unsubscribe);
+
        
+    },
+
+
+    async search({commit,dispatch, state},value){
+        if(value.length < 1){
+            dispatch('fetch','initial');
+            return ;
+        }
+        
+        Role.search(value).then((datas) => {
+            commit('UPDATE_DATA',datas);
+        }).catch(err => {
+            snackbar('warning',err.message);
+        });
     },
 
     async delete({commit, state},id){

@@ -1,52 +1,51 @@
 <template>
     <q-page>
-       <q-pull-to-refresh @refresh="refresh">
+      <q-pull-to-refresh @refresh="refresh">
           <div class="row">
               <div class="col-lg-1 col-xs-0"></div>
               <div class="col-lg-8 col-xs-12">
-                  <app-skeleton :skeleton="skeleton" type="a">
-                    <app-roles-list-view></app-roles-list-view>
-                  </app-skeleton>
+                   <app-skeleton :skeleton="skeleton" type="a">
+                        <app-domains-list-view :datas="datas" :loading="is_loading"></app-domains-list-view>
+                   </app-skeleton>
               </div>
               <div class="col-lg-3 col-xs-0"></div>
           </div>
-       </q-pull-to-refresh>
+      </q-pull-to-refresh>
     </q-page>
 </template>
 
 <script>
 
-
 import { mapState } from 'vuex';
-import RolesListView from '../../components/listviews/RolesListView'
+import DomainsListView from '../../components/listviews/DomainsListView'
 import Skeleton from '../../components/Skeleton'
 export default {
-  name: "roles",
+  name: "domains",
   meta: {
-    titleTemplate: title => `Roles - ${title}  `,
+    titleTemplate: title => `Domains - ${title}  `,
   },
   components: {
-      "app-roles-list-view": RolesListView,
+      "app-domains-list-view": DomainsListView,
        "app-skeleton": Skeleton
   },
   data () {
     return {}
   },
   computed: {
-    ...mapState('roles',['skeleton', 'filter'])
+    ...mapState('domains',['skeleton', 'filter', 'datas', 'is_loading'])
   },
   methods: {
     async main(){
-        this.$store.commit('admin_layout/UPDATE_BREAD_CRUMB', { pageTitle: 'Roles' })
-        this.$store.commit('roles/UPDATE_FILTER','')
-        this.$store.dispatch('roles/fetch', 'initial');
+        this.$store.commit('admin_layout/UPDATE_BREAD_CRUMB', { pageTitle: 'Domains' })
+        this.$store.commit('domains/UPDATE_FILTER','')
+        this.$store.dispatch('domains/fetch', 'initial');
     },
     async getNextData() {
       window.onscroll = () => {
         let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
         if (bottomOfWindow) {
           if(this.filter.length < 1){
-            this.$store.dispatch('roles/fetch', 'next');
+            this.$store.dispatch('domains/fetch', 'next');
           }
         }
       }
@@ -54,16 +53,15 @@ export default {
     async refresh(done){
        this.main().then(() => done());
     }
-   
   },
-   beforeMount() {
+  beforeMount() {
     this.main();
   },
   mounted() {
     this.getNextData();
   },
   beforeRouteLeave (to, from , next) {
-      this.$store.dispatch('roles/unsubscribe', this);
+      this.$store.dispatch('domains/unsubscribe', this);
       this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false)
       next();
   }

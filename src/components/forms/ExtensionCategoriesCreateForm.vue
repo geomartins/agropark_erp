@@ -1,7 +1,8 @@
 <template>
- <q-expansion-item
+
+   <q-expansion-item
         expand-separator
-        label="Add Module"
+        label="Add Extension Category"
         expand-icon-class="expand"
         header-class="headerClass"
         default-opened
@@ -14,19 +15,9 @@
               
             <div class="q-mt-md"></div>
 
-            <q-card-section class="q-pt-none">
+             <q-card-section class="q-pt-none">
                 <q-input outlined v-model="name" label="Name" :dense="dense" />
               </q-card-section>
-
-              <q-card-section class="q-pt-none">
-                <q-select color="grey-3" outlined :dense="dense"  v-model="category" :options="$store.state.modules.dependencies.categories" label="Category">
-                </q-select>
-              </q-card-section>
-
-               
-
-
-             
 
               <q-card-section class="q-pt-none">
                 <q-input type="textarea" outlined v-model="description" label="Description" :dense="dense" />
@@ -36,25 +27,23 @@
               <q-card-section class="q-pt-none">
                   <div class="editFlex">
                       <q-btn color="primary"   label="Save" @click.prevent="create()" />
-                      <q-btn color="primary" outline label="Close" @click.prevent="close()" />
+                      <q-btn color="primary" outline label="Close" @click.prevent="$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false)" />
                   </div>
               </q-card-section>
 
-                <q-inner-loading :showing="$store.state.modules.is_loading">
+             <q-inner-loading :showing="$store.state.extension_categories.is_loading">
                 <q-spinner-gears size="50px" color="primary" />
               </q-inner-loading>
 
              
             </q-card>
       </q-expansion-item>
-
-
 </template>
 
 
 <script>
 export default {
-    name: "ModulesCreateForm",
+    name: "ExtensionCategoriesCreateForm",
      data() {
     return {
        dense: true,
@@ -63,26 +52,18 @@ export default {
   },
   computed: {
       name:  {
-        get() { return this.$store.getters["modules/fetchName"]; },
-        set(value){ this.$store.commit('modules/UPDATE_NAME',value); }   
+        get() { return this.$store.getters["extension_categories/fetchName"]; },
+        set(value){ this.$store.commit('extension_categories/UPDATE_NAME',value); }   
       },
       description: {
-        get(){ return this.$store.getters["modules/fetchDescription"]; },
-        set(value){ this.$store.commit('modules/UPDATE_DESCRIPTION',value); }   
+        get(){ return this.$store.getters["extension_categories/fetchDescription"]; },
+        set(value){ this.$store.commit('extension_categories/UPDATE_DESCRIPTION',value); }   
       },
-      category: {
-        get(){ return this.$store.getters["modules/fetchCategory"]; },
-        set(value){ this.$store.commit('modules/UPDATE_CATEGORY',value); }   
-      },
-     
   },
   methods: {
-    create(){ 
-      
-      this.$store.dispatch('modules/create',this);
-    },
-    close(){ this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false)}
-  }
+    create(){ this.$store.dispatch('extension_categories/create',this); },
+  },
+
 }
 </script>
 

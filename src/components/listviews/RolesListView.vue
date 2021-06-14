@@ -4,12 +4,12 @@
                     flat
                     
                     :data="datas"
-                    :columns="$store.state.roles.columns"
+                    :columns="columns"
                     row-key="name"
                     :filter="filter"
                     :loading="$store.state.roles.loading"
                      :table-header-style="{textTransform: 'uppercase'}"
-                     :pagination="$store.state.roles.initialPagination"
+                     :pagination="initialPagination"
                     >
 
                     
@@ -84,15 +84,44 @@
 <script>
 import Vue from 'vue';
 import RolesListTile from '../listtiles/RolesListTile'
+import { exportTable } from '../../repositories/plugins'
+import filters from '../../repositories/filters'
 export default Vue.extend({
     name: "RolesListView",
+    mixins: [filters],
     components: {
         "app-roles-list-tile": RolesListTile
     },
     data(){
         return {
+            exportableColumns: [
+                { label: 'UID', field: 'id'},
+                { label: 'ROLE', field: row => row.name},
+                { label: 'CREATED AT', field: row => row.createdAt, format: (val, row) => filters.filters.toRealDate(val)  }
+            ],
+
+            initialPagination: {
+                sortBy: 'name',
+                descending: false,
+                //page: 2,
+                rowsPerPage: 0
+                // rowsNumber: xx if getting data from a server
+            },
+
+            columns: [
+                { name: 'id', label: 'S/N', field: 'id', sortable: true, style: 'width: 5px', },
+                { name: 'name', required: true, label: 'Roles', align: 'left', field: row => row.name, format: val => `${val}`, sortable: true },
+                { name: 'timestamp', label: '', field: 'created_at', sortable: true }
+            ],
+
+
 
             
+        }
+    },
+    watch: {
+        filter(newValue, oldValue) {
+            this.$store.dispatch('roles/search',newValue);
         }
     },
     computed: {
@@ -104,11 +133,7 @@ export default Vue.extend({
            get: function() { return this.$store.getters["roles/fetchData"]; },
            set: function(value){ this.$store.commit('roles/UPDATE_DATA',value); }
       },
-       columns: {
-           get() { return this.$store.getters["roles/fetchColumns"]; },
-           set(value){ this.$store.commit('roles/UPDATE_COLUMNS',value); }
-      }
-
+      
    },
    methods: {
       async deleteItem(id){
@@ -121,7 +146,7 @@ export default Vue.extend({
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true);
       },
       exportable(){
-
+          exportTable(this.exportableColumns, this.datas,'roles-list');
       }
    }
 })

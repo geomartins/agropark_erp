@@ -27,12 +27,15 @@ const uid = firebaseAuth.currentUser ? firebaseAuth.currentUser.uid : null;
 const fs = firebaseApp.firestore();
 const domainCollections = fs.collection('domains')
 const moduleCategoryCollections = fs.collection('module_categories');
-const moduleActivityCollections = fs.collection('module_activities');
+const extensionCategoryCollections = fs.collection('extension_categories');
+const activityCollections = fs.collection('activities');
+const arrayRemove = firebase.firestore.FieldValue.arrayRemove
 const departmentCollections = fs.collection('departments');
 const unitCollections = fs.collection('units');
 const roleCollections = fs.collection('roles');
 const userCollections = fs.collection('users');
 const moduleCollections = fs.collection('modules');
+const extensionCollections = fs.collection('extensions');
 const configurationCollections = fs.collection('configurations')
 const timestamp = firebase.firestore.FieldValue.serverTimestamp()
 const firestoreTimestamp = firebase.firestore.Timestamp;
@@ -53,13 +56,16 @@ export {
   uid,
   domainCollections,
   moduleCategoryCollections,
-  moduleActivityCollections,
+  extensionCategoryCollections,
+  activityCollections,
   departmentCollections,
   unitCollections,
   roleCollections,
   userCollections,
   moduleCollections,
+  extensionCollections,
   configurationCollections,
+  arrayRemove,
   timestamp 
 }
 

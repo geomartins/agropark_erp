@@ -30,11 +30,23 @@ const state = {
     },
     moduleDatas: [],
 
+
+    //EXTENSION
+    extension_is_loading: false,
+    extensionFormData: {
+        id: '',
+        name: '',
+        approval_box: [],
+    },
+    extensionDatas: [],
+
     
 
     //OTHERS
     dependencies: {
         modules: [],
+        extensions: [],
+        roles: [],
     }
 }
 const getters = {
@@ -51,6 +63,16 @@ const getters = {
     fetchModuleTertiaryAccess: (state) => {
         return state.moduleFormData.tertiary_access;
     },
+
+
+     //EXTENSION
+    fetchExtensionName: (state) => {
+        return state.extensionFormData.name;
+    },
+    fetchExtensionApprovalBox: (state) => {
+        return state.extensionFormData.approval_box;
+    },
+    
 
 
 
@@ -133,6 +155,35 @@ const mutations = {
          })
     },
 
+
+
+
+    //EXTENSION
+    UPDATE_EXTENSION_FORM_DATA(state, value){
+        state.extensionFormData.id = value.id;
+        state.extensionFormData.name = value.name;
+        state.extensionFormData.approval_box = value.approval_box ?? [];
+    },
+    UPDATE_EXTENSION_DATAS(state,value){
+        state.extensionDatas = Object.assign([], value)
+    },
+    UPDATE_EXTENSION_NAME(state, value){
+        state.extensionFormData.name = value;
+    },
+    UPDATE_EXTENSION_APPROVAL_BOX(state, value){
+        state.extensionFormData.approval_box = value;
+    },
+    UPDATE_EXTENSION_IS_LOADING(state, value){
+        state.extension_is_loading = value;
+    },
+    CLEAR_EXTENSION_FORM_DATA(state){
+        state.extensionFormData = Object.assign({
+            id: '',
+            name: '',
+            approval_box: [],
+         })
+    },
+
   
 
     //OTHERS
@@ -146,6 +197,14 @@ const mutations = {
     //DEPENDENCY
     UPDATE_D_MODULES(state, value){
         state.dependencies.modules = value;
+    },
+
+    UPDATE_D_ROLES(state, value){
+        state.dependencies.roles = value;
+    },
+
+    UPDATE_D_EXTENSIONS(state, value){
+        state.dependencies.extensions = value;
     },
    
 
@@ -237,10 +296,6 @@ const actions = {
     },
 
     async createModule({commit, state},instance){
-        
-
-
-
         try{
             commit('UPDATE_IS_LOADING', true);
 
@@ -303,6 +358,104 @@ const actions = {
             });
         })
     },
+
+
+
+
+
+    //EXTENSION
+    async fetchExtensions({commit, state}){
+      
+        commit('UPDATE_EXTENSION_IS_LOADING', true);
+        let unsubscribe = new RoleDetail(state.roleId).fetchExtensions((datas,err) => {
+            if(err){ 
+                snackbar('warning',err.message);
+                commit('UPDATE_EXTENSION_IS_LOADING', false);
+                return;
+            }
+            commit('UPDATE_EXTENSION_DATAS',datas);
+            commit('UPDATE_EXTENSION_IS_LOADING', false);
+        })
+        commit('UPDATE_UNSUBSCRIBE', [...state.unsubscribe, unsubscribe]);
+        
+      
+    },
+
+    async fetchExtensionDependencies({commit, state}){
+        try{
+            await new RoleDetail(state.roleId).extensionDependencies((roles,extensions) => {
+                commit('UPDATE_D_EXTENSIONS', extensions);
+                commit('UPDATE_D_ROLES', roles);
+           });
+        }catch(err){
+            snackbar('warning',err.message);
+        }
+       
+    },
+
+    async createExtension({commit, state},instance){
+        try{
+            commit('UPDATE_IS_LOADING', true);
+
+            const data = state.extensionFormData;
+            delete data.id;
+            
+            new FlexValidators(data).check({
+                'name': 'required|notNull',
+            });
+            
+           
+            let roleDetail = new RoleDetail(state.roleId);
+            await roleDetail.saveExtension(data);
+           
+            snackbar('success','item created successfully')
+            commit("CLEAR_EXTENSION_FORM_DATA");
+            commit('UPDATE_IS_LOADING', false);
+            instance.close();
+        }catch(err){
+            snackbar('warning',err.message);
+            commit('UPDATE_IS_LOADING', false);
+        }
+    },
+
+    async updateExtension({commit, state},instance){
+       
+        try{
+            commit('UPDATE_IS_LOADING', true);
+            const extensionId = state.extensionFormData.id;
+            const data = state.extensionFormData;
+            delete data.id;
+
+            
+            new FlexValidators(data).check({
+                'name': 'required|notNull',
+            });
+            
+            let roleDetail = new RoleDetail(state.roleId);
+            await roleDetail.saveExtension(data,extensionId);
+
+            snackbar('success','item updated successfully')
+            commit("CLEAR_EXTENSION_FORM_DATA");
+            commit('UPDATE_IS_LOADING', false);
+            instance.close();
+        }catch(err){
+            snackbar('warning',err.message);
+            commit('UPDATE_IS_LOADING', false);
+        }
+        
+    },
+
+
+    async deleteExtensionById({commit, state},extensionId){
+        let x = (await confirm('Confirm','Would you like to delete the selected item?'));
+        x.onOk(()=> {
+           
+            new RoleDetail(state.roleId).deleteExtensionById(extensionId).then().catch(err => {
+                snackbar('warning',err.message);
+            });
+        })
+    },
+
 
 
 

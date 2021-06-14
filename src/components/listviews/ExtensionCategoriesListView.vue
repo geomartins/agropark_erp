@@ -1,21 +1,7 @@
 <template>
     <div class="q-pa-md">
-                    <q-table
-                    flat
-                    
-                    :data="datas"
-                    :columns="columns"
-                    row-key="name"
-                    :filter="filter"
-                    :loading="$store.state.module_categories.loading"
-                     :table-header-style="{textTransform: 'uppercase'}"
-                     :pagination="initialPagination"
-                    >
-
-                    
-
+                    <q-table flat :data="datas" :columns="columns" row-key="name" :filter="filter" :loading="loading" :table-header-style="{textTransform: 'uppercase'}" :pagination="initialPagination">
                     <template v-slot:body="props">
-                      
 
                         <q-tr :props="props">
                             <q-td key="id" :props="props">
@@ -49,7 +35,7 @@
                             <q-td colspan="100%">
                                 <div class="text-left">
 
-                                    <app-module-categories-list-tile  :row="props.row"></app-module-categories-list-tile>
+                                    <app-extension-categories-list-tile  :row="props.row"></app-extension-categories-list-tile>
 
                                 </div>
                             </q-td>
@@ -88,18 +74,21 @@
 
 <script>
 import Vue from 'vue';
-import ModuleCategoriesListTile from '../listtiles/ModuleCategoriesListTile'
+import ExtensionCategoriesListTile from '../listtiles/ExtensionCategoriesListTile'
 import filters from '../../repositories/filters'
 import { exportTable } from '../../repositories/plugins'
 export default Vue.extend({
-    name: "ModuleCategoriesListView",
-    mixins: [filters],
+    name: "ExtensionCategoriesListView",
+    props: {
+        datas: Array,
+        loading: Boolean,
+    },
     components: {
-        "app-module-categories-list-tile": ModuleCategoriesListTile
+        "app-extension-categories-list-tile": ExtensionCategoriesListTile
     },
     data(){
         return {
-            exportableColumns: [
+             exportableColumns: [
                 { label: 'UID', field: 'id'},
                 { label: 'CATEGORY', field: row => row.name},
                 { label: 'DESCRIPTION', field: row => row.description},
@@ -113,44 +102,39 @@ export default Vue.extend({
                 rowsPerPage: 20
                 // rowsNumber: xx if getting data from a server
             },
-
             columns: [
                 { name: 'id', label: 'S/N', field: 'id', sortable: true, style: 'width: 5px', },
-                { name: 'category', required: true, label: 'Module Categories', align: 'left', field: row => row.name, format: val => `${val}`, sortable: true },
+                { name: 'category', required: true, label: 'Extension Categories', align: 'left', field: row => row.name, format: val => `${val}`, sortable: true},
                 { name: 'timestamp', label: '', field: 'created_at', sortable: true }
             ]
+
         }
     },
     computed: {
      filter:  {
-        get() { return this.$store.getters["module_categories/fetchFilter"]; },
-        set(value){ this.$store.commit('module_categories/UPDATE_FILTER',value); }   
+        get() { return this.$store.getters["extension_categories/fetchFilter"]; },
+        set(value){ this.$store.commit('extension_categories/UPDATE_FILTER',value); }   
       },
-      datas: {
-           get: function() { return this.$store.getters["module_categories/fetchData"]; },
-           set: function(value){ this.$store.commit('module_categories/UPDATE_DATA',value); }
-      },
-     
 
    },
    methods: {
       async deleteItem(id){
-         this.$store.dispatch('module_categories/delete', id);
+         this.$store.dispatch('extension_categories/delete', id);
       },
       editItem(payload){
-          this.$store.commit('module_categories/CLEAR_FORM_DATA');
-          this.$store.commit('module_categories/UPDATE_EDIT_FORM_DATA',payload);
-          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-module-categories-update-form'); 
+          this.$store.commit('extension_categories/CLEAR_FORM_DATA');
+          this.$store.commit('extension_categories/UPDATE_EDIT_FORM_DATA',payload);
+          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-extension-categories-update-form'); 
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true)
 
       },
       showCreateForm(){
-          this.$store.commit('module_categories/CLEAR_FORM_DATA');
-          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-module-categories-create-form'); 
+          this.$store.commit('extension_categories/CLEAR_FORM_DATA');
+          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-extension-categories-create-form'); 
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true)
       },
       exportable(){
-          exportTable(this.exportableColumns, this.datas,'module-categories');
+          exportTable(this.exportableColumns, this.datas,'extension-categories');
 
       }
    }

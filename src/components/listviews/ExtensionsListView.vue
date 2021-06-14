@@ -1,18 +1,7 @@
 <template>
     <div class="q-pa-md">
                     <q-table
-                    flat
-                    
-                    :data="datas"
-                    :columns="columns"
-                    row-key="name"
-                    :filter="filter"
-                    :loading="$store.state.module_categories.loading"
-                     :table-header-style="{textTransform: 'uppercase'}"
-                     :pagination="initialPagination"
-                    >
-
-                    
+                    flat :data="datas" :columns="columns" row-key="name" :filter="filter" :loading="loading" :table-header-style="{textTransform: 'uppercase'}" :pagination="initialPagination" >
 
                     <template v-slot:body="props">
                       
@@ -21,7 +10,7 @@
                             <q-td key="id" :props="props">
                                 {{ props.pageIndex+1 }} 
                             </q-td>
-                            <q-td key="category" :props="props">
+                            <q-td key="name" :props="props">
                                 {{ props.row.name }} 
                             </q-td>
                            
@@ -49,7 +38,7 @@
                             <q-td colspan="100%">
                                 <div class="text-left">
 
-                                    <app-module-categories-list-tile  :row="props.row"></app-module-categories-list-tile>
+                                    <app-extensions-list-tile  :row="props.row"></app-extensions-list-tile>
 
                                 </div>
                             </q-td>
@@ -88,70 +77,73 @@
 
 <script>
 import Vue from 'vue';
-import ModuleCategoriesListTile from '../listtiles/ModuleCategoriesListTile'
+import ExtensionsListTile from '../listtiles/ExtensionsListTile'
 import filters from '../../repositories/filters'
 import { exportTable } from '../../repositories/plugins'
 export default Vue.extend({
-    name: "ModuleCategoriesListView",
+    name: "ExtensionsListView",
+    props: {
+        datas: Array,
+        loading: Boolean,
+    },
     mixins: [filters],
     components: {
-        "app-module-categories-list-tile": ModuleCategoriesListTile
+        "app-extensions-list-tile": ExtensionsListTile
     },
     data(){
         return {
-            exportableColumns: [
+             exportableColumns: [
                 { label: 'UID', field: 'id'},
-                { label: 'CATEGORY', field: row => row.name},
+                { label: 'NAME', field: row => row.name},
+                 { label: 'CATEGORY', field: row => row.category},
                 { label: 'DESCRIPTION', field: row => row.description},
                 { label: 'CREATED AT', field: row => row.createdAt, format: (val, row) => filters.filters.toRealDate(val)  }
             ],
-
             initialPagination: {
                 sortBy: 'name',
                 descending: false,
                 //page: 2,
-                rowsPerPage: 20
+                rowsPerPage: 0
                 // rowsNumber: xx if getting data from a server
             },
-
             columns: [
                 { name: 'id', label: 'S/N', field: 'id', sortable: true, style: 'width: 5px', },
-                { name: 'category', required: true, label: 'Module Categories', align: 'left', field: row => row.name, format: val => `${val}`, sortable: true },
+                { name: 'name', required: true, label: 'Extension', align: 'left', field: row => row.name, format: val => `${val}`, sortable: true},
                 { name: 'timestamp', label: '', field: 'created_at', sortable: true }
-            ]
+            ],
+
+
+        }
+    },
+     watch: {
+        filter(newValue, oldValue) {
+            this.$store.dispatch('extensions/search',newValue);
         }
     },
     computed: {
      filter:  {
-        get() { return this.$store.getters["module_categories/fetchFilter"]; },
-        set(value){ this.$store.commit('module_categories/UPDATE_FILTER',value); }   
+        get() { return this.$store.getters["extensions/fetchFilter"]; },
+        set(value){ this.$store.commit('extensions/UPDATE_FILTER',value); }   
       },
-      datas: {
-           get: function() { return this.$store.getters["module_categories/fetchData"]; },
-           set: function(value){ this.$store.commit('module_categories/UPDATE_DATA',value); }
-      },
-     
-
    },
    methods: {
       async deleteItem(id){
-         this.$store.dispatch('module_categories/delete', id);
+         this.$store.dispatch('extensions/delete', id);
       },
       editItem(payload){
-          this.$store.commit('module_categories/CLEAR_FORM_DATA');
-          this.$store.commit('module_categories/UPDATE_EDIT_FORM_DATA',payload);
-          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-module-categories-update-form'); 
+          this.$store.commit('extensions/CLEAR_FORM_DATA');
+          this.$store.commit('extensions/UPDATE_EDIT_FORM_DATA',payload);
+          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-extensions-update-form'); 
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true)
 
       },
       showCreateForm(){
-          this.$store.commit('module_categories/CLEAR_FORM_DATA');
-          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-module-categories-create-form'); 
-          this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true)
+          this.$store.commit('extensions/CLEAR_FORM_DATA');
+          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-extensions-create-form');
+          this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true);
       },
       exportable(){
-          exportTable(this.exportableColumns, this.datas,'module-categories');
-
+          exportTable(this.exportableColumns, this.datas,'extensions');
       }
    }
 })

@@ -27,6 +27,7 @@
                   <!-- <q-item-label>Single line item</q-item-label> -->
                   <q-item-label caption lines="10">
                     <div class="q-gutter-sm">
+                    
                             <q-checkbox size="xs" v-model="primary_access" val="create" label="Create" color="primary" />
                             <q-checkbox size="xs" v-model="primary_access" val="read" label="Read" color="primary" />
                             <q-checkbox  size="xs" v-model="primary_access" val="edit" label="Edit" color="primary" />

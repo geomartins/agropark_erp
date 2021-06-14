@@ -69,7 +69,7 @@
 <script>
 import filters from '../../repositories/filters'
 export default {
-    name: "ModuleActivitiesListTile",
+    name: "ActivitiesListTile",
     props: ['row'],
     mixins: [filters],
     data(){

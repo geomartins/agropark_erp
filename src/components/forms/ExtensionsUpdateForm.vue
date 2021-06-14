@@ -1,7 +1,7 @@
 <template>
  <q-expansion-item
         expand-separator
-        label="Edit Module"
+        label="Edit Extension"
         expand-icon-class="expand"
         header-class="headerClass"
         default-opened
@@ -21,12 +21,12 @@
 
               <q-card-section class="q-pt-none">
                  <div v-if="typeof category === 'string' ">
-                      <q-select color="grey-3" readonly  outlined :dense="dense" emit-value v-model="category" :options="$store.state.modules.dependencies.categories" label="Category">
+                      <q-select color="grey-3" readonly  outlined :dense="dense" emit-value v-model="category" :options="$store.state.extensions.dependencies.categories" label="Category">
                       </q-select>
                  </div>
 
                  <div v-if="typeof category == 'object' ">
-                      <q-select color="grey-3"  readonly outlined :dense="dense" emit-value v-model="category.id" :options="$store.state.modules.dependencies.categories" label="Category">
+                      <q-select color="grey-3"  readonly outlined :dense="dense" emit-value v-model="category.id" :options="$store.state.extensions.dependencies.categories" label="Category">
                       </q-select>
                  </div>
                
@@ -34,7 +34,7 @@
                
               </q-card-section>
 
-             
+            
 
               <q-card-section class="q-pt-none">
                 <q-input type="textarea" outlined v-model="description" label="Description" :dense="dense" />
@@ -48,7 +48,7 @@
                   </div>
               </q-card-section>
 
-             <q-inner-loading :showing="$store.state.modules.is_loading">
+             <q-inner-loading :showing="$store.state.extensions.is_loading">
                 <q-spinner-gears size="50px" color="primary" />
               </q-inner-loading>
 
@@ -64,7 +64,7 @@
 
 <script>
 export default {
-    name: "ModulesUpdateForm",
+    name: "ExtensionsUpdateForm",
      data() {
     return {
        dense: true,
@@ -73,22 +73,22 @@ export default {
   },
   computed: {
       name:  {
-        get() { return this.$store.getters["modules/fetchName"]; },
-        set(value){ this.$store.commit('modules/UPDATE_NAME',value); }   
+        get() { return this.$store.getters["extensions/fetchName"]; },
+        set(value){ this.$store.commit('extensions/UPDATE_NAME',value); }   
       },
       description: {
-        get(){ return this.$store.getters["modules/fetchDescription"]; },
-        set(value){ this.$store.commit('modules/UPDATE_DESCRIPTION',value); }   
+        get(){ return this.$store.getters["extensions/fetchDescription"]; },
+        set(value){ this.$store.commit('extensions/UPDATE_DESCRIPTION',value); }   
       },
       category: {
-        get(){ return this.$store.getters["modules/fetchCategory"]; },
-        set(value){ this.$store.commit('modules/UPDATE_CATEGORY',value); }   
+        get(){ return this.$store.getters["extensions/fetchCategory"]; },
+        set(value){ this.$store.commit('extensions/UPDATE_CATEGORY',value); }   
       },
       
       
   },
   methods: {
-    update(){ this.$store.dispatch('modules/update',this); },
+    update(){ this.$store.dispatch('extensions/update',this); },
     close(){ this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false) }
   }
 }

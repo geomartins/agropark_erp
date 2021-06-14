@@ -1,3 +1,4 @@
+import { date } from 'quasar'
 const filters =  {
     filters: {
         removeDash: (value) => {
@@ -6,12 +7,22 @@ const filters =  {
             return replaceDash.replace('_',' ')
 
         },
+        calculateDateDifference:  (date1, date2, unit) => {
+            if(isNaN(date1._seconds) == false){
+                  date1 =  new Date(date1._seconds * 1000);
+            }else{
+                 date1 = date1.toDate();
+            }
+            return date.getDateDiff(date1, date2, unit)
+          
+        },
+          
         toRealDate: (value) => {
             if (!value) return ''
             if(isNaN(value._seconds) == false){
-                return new Date(value._seconds * 1000)
+                return date.formatDate(new Date(value._seconds * 1000), 'YYYY-MM-DD HH:mm:ss.SSSZ')
             }else{
-                return value.toDate();
+                return date.formatDate(value.toDate(), 'YYYY-MM-DD HH:mm:ss.SSSZ')
             }
         },
         capitalizer:  (value)  => {

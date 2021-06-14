@@ -2,18 +2,14 @@
     <div class="q-pa-md">
                     <q-table
                     flat
-                    
                     :data="datas"
-                    :columns="$store.state.modules.columns"
+                    :columns="columns"
                     row-key="name"
                     :filter="filter"
-                    :loading="$store.state.modules.loading"
+                    :loading="loading"
                      :table-header-style="{textTransform: 'uppercase'}"
-                     :pagination="$store.state.modules.initialPagination"
+                     :pagination="initialPagination"
                     >
-
-                    
-
                     <template v-slot:body="props">
                       
 
@@ -89,14 +85,45 @@
 <script>
 import Vue from 'vue';
 import ModulesListTile from '../listtiles/ModulesListTile'
+import filters from '../../repositories/filters'
+import { exportTable } from '../../repositories/plugins'
 export default Vue.extend({
     name: "ModulesListView",
+    props: {
+        datas: Array,
+        loading: Boolean,
+    },
+    mixins: [filters],
     components: {
         "app-modules-list-tile": ModulesListTile
     },
     data(){
         return {
+            exportableColumns: [
+                { label: 'UID', field: 'id'},
+                { label: 'NAME', field: row => row.name},
+                 { label: 'CATEGORY', field: row => row.category},
+                { label: 'DESCRIPTION', field: row => row.description},
+                { label: 'CREATED AT', field: row => row.createdAt, format: (val, row) => filters.filters.toRealDate(val)  }
+            ],
+            initialPagination: {
+                sortBy: 'name',
+                descending: false,
+                //page: 2,
+                rowsPerPage: 0
+                // rowsNumber: xx if getting data from a server
+            },
+            columns: [
+                { name: 'id', label: 'S/N', field: 'id', sortable: true, style: 'width: 5px', },
+                { name: 'name', required: true, label: 'Modules', align: 'left', field: row => row.name, format: val => `${val}`, sortable: true},
+                { name: 'timestamp', label: '', field: 'created_at', sortable: true }
+            ],
 
+        }
+    },
+    watch: {
+        filter(newValue, oldValue) {
+            this.$store.dispatch('modules/search',newValue);
         }
     },
     computed: {
@@ -104,15 +131,6 @@ export default Vue.extend({
         get() { return this.$store.getters["modules/fetchFilter"]; },
         set(value){ this.$store.commit('modules/UPDATE_FILTER',value); }   
       },
-      datas: {
-           get: function() { return this.$store.getters["modules/fetchData"]; },
-           set: function(value){ this.$store.commit('modules/UPDATE_DATA',value); }
-      },
-       columns: {
-           get() { return this.$store.getters["modules/fetchColumns"]; },
-           set(value){ this.$store.commit('modules/UPDATE_COLUMNS',value); }
-      }
-
    },
    methods: {
       async deleteItem(id){
@@ -131,7 +149,7 @@ export default Vue.extend({
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true);
       },
       exportable(){
-
+          exportTable(this.exportableColumns, this.datas,'modules');
       }
    }
 })

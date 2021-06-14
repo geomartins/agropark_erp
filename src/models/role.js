@@ -1,5 +1,9 @@
 import { roleCollections, firebaseAuth, timestamp, fs } from '../boot/firebase'
 import { purifyObject, generateUid } from '../repositories/pick';
+import AlgoliaService from '../services/algolia_service';
+
+let dataRef = null;
+let data = [];
 
 class Role{
     constructor(name, description, id = null){
@@ -8,21 +12,39 @@ class Role{
         this.id = id;
     }
 
-    fetch(cb){
-        
-        return roleCollections.orderBy('createdAt','desc').onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
-            let data = [];
-            querySnapshot.forEach((doc) => {
-                let ch = { ...doc.data() };
-                ch.id = doc.id;
-                data.push(ch);
-                 
-             });
-            return cb(data, null)
-        },(err) => {
-            const errMessage = {message: err.code };
-            return cb([], errMessage);
-        });
+    fetch(type, cb){
+
+            let ref;
+            if(dataRef && type == 'next'){
+                // console.log('Inside old data', dataRef)
+                ref = roleCollections.orderBy('createdAt','desc').startAfter(dataRef).limit(25);
+            }else if(type == 'initial'){
+                ref = roleCollections.orderBy('createdAt','desc').limit(25);
+            }
+
+            return ref.onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
+                var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+                if(lastVisible){
+                     dataRef = lastVisible;
+                }
+                if(!querySnapshot.empty){
+                    data = [];
+                    querySnapshot.forEach((doc) => {
+                        let ch = { ...doc.data() };
+                        ch.id = doc.id;
+                        data.push(ch);
+                         
+                    });
+                }else{
+                    console.log('No data available');
+                }
+                
+                return cb(data, null)
+            },(err) => {
+                const errMessage = {message: err.code };
+                return cb([],errMessage);
+                
+            }); 
     }
 
     async save(){
@@ -44,6 +66,14 @@ class Role{
             });
 
         }
+    }
+
+    static async search(newValue){
+        return new AlgoliaService("roles").search(newValue).then((result) => {
+            return result;
+        }).catch(err => {
+            throw err;
+        })
     }
 
 

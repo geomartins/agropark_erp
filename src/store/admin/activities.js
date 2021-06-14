@@ -1,5 +1,5 @@
 import { snackbar, confirm } from 'src/repositories/plugins';
-import ModuleActivity from '../../models/module_activity'
+import Activity from '../../models/activity'
 const state = {
    id: '',
    unsubscribe: '',
@@ -92,7 +92,7 @@ const actions = {
    
     async fetch({commit, state}){
        
-        let unsubscribe = new ModuleActivity.fetch((datas,err) => {
+        let unsubscribe = new Activity.fetch((datas,err) => {
             if(err){ 
                 snackbar('warning',err.message);
                 return;
@@ -108,7 +108,7 @@ const actions = {
         let x = (await confirm('Confirm','Would you like to delete the selected item?'));
         x.onOk(()=> {
             console.log(id);
-            ModuleActivity.deleteById(id).then().catch(err => {
+            Activity.deleteById(id).then().catch(err => {
                 snackbar('warning',err.message);
             });
         })

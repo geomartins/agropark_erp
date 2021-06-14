@@ -1,16 +1,30 @@
 <template>
     <q-list class="myFlex">
-    <q-item>
+    <q-item >
         <q-item-section>
           <q-item-label>Name</q-item-label>
-          <q-item-label caption lines="2">{{  row.name ? row.name : '' }}</q-item-label>
+          <q-item-label caption lines="2">{{  row.name  }}</q-item-label>
+        </q-item-section>
+    </q-item>
+
+    <q-item >
+        <q-item-section>
+          <q-item-label>Description</q-item-label>
+          <q-item-label caption lines="2">{{  row.description  }}</q-item-label>
+        </q-item-section>
+    </q-item>
+
+     <q-item >
+        <q-item-section>
+          <q-item-label>Category</q-item-label>
+          <q-item-label caption lines="2">{{  row.category.name ? row.category.name : row.category  }}</q-item-label>
         </q-item-section>
     </q-item>
 
     <q-item>
         <q-item-section>
-          <q-item-label>Description</q-item-label>
-          <q-item-label caption lines="2">{{  row.description ? row.description : ''  }}</q-item-label>
+          <q-item-label>Approval</q-item-label>
+          <q-item-label caption lines="2">{{  row.approval ? row.approval : ''  }}</q-item-label>
         </q-item-section>
     </q-item>
 
@@ -32,12 +46,7 @@
      <q-item>
         <q-item-section>
           <q-item-label>Unique ID</q-item-label>
-          <q-item-label caption lines="2">{{  row.id ? row.id : ''  }}</q-item-label>
-        </q-item-section>
-
-        <q-item-section side top @click.prevent="$router.push('/admin/roles/'+row.id)">
-          <q-item-label caption style="color: teal; cursor: pointer">View details</q-item-label>
-          <q-icon name="arrow_right" color="primary" />
+          <q-item-label caption lines="2">{{  row.id  }}</q-item-label>
         </q-item-section>
     </q-item>
 
@@ -49,7 +58,7 @@
 <script>
 import filters from '../../repositories/filters'
 export default {
-    name: "RolesListTile",
+    name: "ExtensionsListTile",
     props: ['row'],
     mixins: [filters],
     data(){
@@ -59,3 +68,4 @@ export default {
     }
 }
 </script>
+
