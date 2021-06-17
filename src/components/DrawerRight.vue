@@ -78,6 +78,16 @@ import RolesExtensionUpdateForm from "./forms/details/RolesExtensionUpdateForm"
 
 
 
+import SeedBanksCropCategoriesCreateForm from "./forms/SeedBanksCropCategoriesCreateForm"
+import SeedBanksCropCategoriesUpdateForm from "./forms/SeedBanksCropCategoriesUpdateForm"
+
+
+
+import SeedBanksCropTypesCreateForm from "./forms/SeedBanksCropTypesCreateForm"
+import SeedBanksCropTypesUpdateForm from "./forms/SeedBanksCropTypesUpdateForm"
+
+
+
 export default Vue.extend({
     name: 'Drawer',
     components: {
@@ -114,6 +124,10 @@ export default Vue.extend({
         "app-roles-module-update-form": RolesModuleUpdateForm,
         "app-roles-extension-create-form": RolesExtensionCreateForm,
         "app-roles-extension-update-form": RolesExtensionUpdateForm,
+        "app-seed-banks-crop-categories-create-form": SeedBanksCropCategoriesCreateForm,
+        "app-seed-banks-crop-categories-update-form": SeedBanksCropCategoriesUpdateForm,
+        "app-seed-banks-crop-types-create-form": SeedBanksCropTypesCreateForm,
+        "app-seed-banks-crop-types-update-form": SeedBanksCropTypesUpdateForm
     },
     data(){
         return {

@@ -25,12 +25,16 @@ const firebaseAuth = firebaseApp.auth();
 const firebaseStorage = firebaseApp.storage();
 const uid = firebaseAuth.currentUser ? firebaseAuth.currentUser.uid : null;
 const fs = firebaseApp.firestore();
+
+//Collections
 const domainCollections = fs.collection('domains')
 const moduleCategoryCollections = fs.collection('module_categories');
 const extensionCategoryCollections = fs.collection('extension_categories');
 const activityCollections = fs.collection('activities');
 const arrayRemove = firebase.firestore.FieldValue.arrayRemove
 const departmentCollections = fs.collection('departments');
+const seedBankCollections = fs.collection('seed_banks');
+const seedBankCropCategoryCollections = fs.collection('seed_bank_crop_categories');
 const unitCollections = fs.collection('units');
 const roleCollections = fs.collection('roles');
 const userCollections = fs.collection('users');
@@ -39,6 +43,11 @@ const extensionCollections = fs.collection('extensions');
 const configurationCollections = fs.collection('configurations')
 const timestamp = firebase.firestore.FieldValue.serverTimestamp()
 const firestoreTimestamp = firebase.firestore.Timestamp;
+
+
+//CollectionGroups
+const requestCollectionGroups = fs.collectionGroup('requests');
+const inventoryCollectionGroups = fs.collectionGroup('inventories');
 
 // firebase.analytics();
 
@@ -59,12 +68,17 @@ export {
   extensionCategoryCollections,
   activityCollections,
   departmentCollections,
+  seedBankCollections,
+  seedBankCropCategoryCollections,
   unitCollections,
   roleCollections,
   userCollections,
   moduleCollections,
   extensionCollections,
   configurationCollections,
+
+  requestCollectionGroups,
+  inventoryCollectionGroups,
   arrayRemove,
   timestamp 
 }

@@ -1,30 +1,33 @@
 <template>
     <div class="q-pa-md">
-
                     <q-table
                     flat
-                    
                     :data="datas"
                     :columns="columns"
-                    row-key="id"
-                    separator="cell"
-                   
-                    :loading="$store.state.users.loading"
+                    row-key="name"
+                    :filter="filter"
                      :table-header-style="{textTransform: 'uppercase'}"
                      :pagination="initialPagination"
+                      :separator="separator"
                     >
+
+                    
+
+                    
+
                     <template v-slot:body="props">
+                      
 
                         <q-tr :props="props">
                             <q-td key="id" :props="props">
                                 {{ props.pageIndex+1 }} 
                             </q-td>
-                            <q-td key="name" :props="props">
-                                {{ props.row.firstname+' '+ props.row.middlename+' '+props.row.lastname }} 
+                            <q-td key="category" :props="props">
+                                {{ props.row.name }} 
                             </q-td>
 
-                            <q-td key="role" :props="props">
-                                {{ props.row.role }} 
+                             <q-td key="measurement" :props="props">
+                                {{ props.row.measurement }} 
                             </q-td>
                            
                             <q-td key="timestamp" :props="props">
@@ -51,7 +54,7 @@
                             <q-td colspan="100%">
                                 <div class="text-left">
 
-                                    <app-users-list-tile  :row="props.row"></app-users-list-tile>
+                                    <app-seed-banks-crop-categories-list-tile  :row="props.row"></app-seed-banks-crop-categories-list-tile>
 
                                 </div>
                             </q-td>
@@ -90,84 +93,64 @@
 
 <script>
 import Vue from 'vue';
-import UsersListTile from '../listtiles/UsersListTile'
-import { exportTable } from '../../repositories/plugins'
+import SeedBanksCropCategoriesListTile from '../listtiles/SeedBanksCropCategoriesListTile'
 import filters from '../../repositories/filters'
+import { exportTable } from '../../repositories/plugins'
 export default Vue.extend({
-    name: "UsersListView",
+    name: "SeedBanksCropCategoriesListView",
     mixins: [filters],
+    props: {
+        datas: Array,
+    },
     components: {
-        "app-users-list-tile": UsersListTile
+        "app-seed-banks-crop-categories-list-tile": SeedBanksCropCategoriesListTile
     },
     data(){
         return {
+            separator: 'cell',
+            filter: '',
             exportableColumns: [
                 { label: 'UID', field: 'id'},
-                { label: 'FIRSTNAME', field: row => row.firstname},
-                { label: 'MIDDLENAME', field: row => row.middlename},
-                { label: 'LASTNAME', field: row => row.lastname},
-                { label: 'EMAIL', field: row => row.email},
-                { label: 'ROLE', field: row => row.role },
+                { label: 'CATEGORY', field: row => row.name},
+                { label: 'MEASUREMENT', field: row => row.measurement},
                 { label: 'CREATED AT', field: row => row.createdAt, format: (val, row) => filters.filters.toRealDate(val)  }
             ],
-            columns: [
-                { name: 'id', label: 'S/N', field: 'id', sortable: true, style: 'width: 5px', align: 'left'},
-                {
-                name: 'name',
-                required: true,
-                label: 'Fullname',
-                align: 'left',
-                field: row => row.firstname,
-                format: val => `${val}`,
-                sortable: true
-                },
-                { name: 'role', label: 'Role', field: 'role', sortable: true, align: 'left', },
-                { name: 'timestamp', label: '', field: 'created_at', sortable: true, align: 'left', }
-            ],
+
             initialPagination: {
                 sortBy: 'name',
                 descending: false,
                 //page: 2,
-                rowsPerPage: 0
+                rowsPerPage: 20
                 // rowsNumber: xx if getting data from a server
             },
 
+            columns: [
+                { name: 'id', label: 'S/N', field: 'id', sortable: true, style: 'width: 5px', },
+                { name: 'category', required: true, label: 'Crop Categories', align: 'left', field: row => row.name, format: val => `${val}`, sortable: true },
+                { name: 'measurement', required: true, label: 'Measurement', align: 'left', field: row => row.measurement, format: val => `${val}`, sortable: true },
+                { name: 'timestamp', label: '', field: 'created_at', sortable: true }
+            ]
         }
     },
-    watch: {
-        filter(newValue, oldValue) {
-            this.$store.dispatch('users/search',newValue);
-        }
-    },
-    computed: {
-      filter: {
-           get: function() { return this.$store.getters["users/fetchFilter"]; },
-           set: function(value){ this.$store.commit('users/UPDATE_FILTER',value); }
-      },
-      datas: {
-           get: function() { return this.$store.getters["users/fetchData"]; },
-           set: function(value){ this.$store.commit('users/UPDATE_DATA',value); }
-      },
-
-   },
+   
    methods: {
       async deleteItem(id){
-         this.$store.dispatch('users/delete', id);
+         this.$store.dispatch('seed_banks/deleteCropCategory', id);
       },
       editItem(payload){
-          this.$store.commit('users/CLEAR_FORM_DATA');
-          this.$store.commit('users/UPDATE_EDIT_FORM_DATA',payload);
-          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-users-update-form'); 
+          this.$store.commit('seed_banks/CLEAR_CROP_CATEGORIES_FORM_DATA');
+          this.$store.commit('seed_banks/UPDATE_EDIT_CROP_CATEGORIES_FORM_DATA',payload);
+          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-seed-banks-crop-categories-update-form'); 
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true)
 
       },
       showCreateForm(){
-          this.$store.commit('users/CLEAR_FORM_DATA');
-          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-users-create-form');
-          this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true);
+          this.$store.commit('seed_banks/CLEAR_CROP_CATEGORIES_FORM_DATA');
+          this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-seed-banks-crop-categories-create-form'); 
+          this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true)
       },
       exportable(){
-          exportTable(this.exportableColumns, this.datas,'users-list');
+          exportTable(this.exportableColumns, this.datas,'seed-banks-crop-categories');
 
       }
    }

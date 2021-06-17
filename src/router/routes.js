@@ -27,6 +27,7 @@ const routes = [
       { path: '/admin/extensions', component: () => import('pages/admin/extensions.vue') },
       { path: '/admin/departments', component: () => import('src/pages/admin/departments.vue') },
       { path: '/admin/domains', component: () => import('src/pages/admin/domains.vue') },
+      { path: '/admin/seed_banks', component: () => import('src/pages/admin/seed_banks.vue') },
       // { path: '/admin/units', component: () => import('src/pages/admin/units.vue') },
       { path: '/admin/roles', component: () => import('src/pages/admin/roles.vue') },
       { path: '/admin/roles/:id', component: () => import('src/pages/admin/roles_details.vue') },

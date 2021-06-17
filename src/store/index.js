@@ -8,6 +8,7 @@ import module_categories from './admin/module_categories'
 import extension_categories from './admin/extension_categories'
 import activities from './admin/activities'
 import departments from './admin/departments';
+import seed_banks from './admin/seed_banks'
 import domains from './admin/domains';
 import units from './admin/units';
 import roles from './admin/roles'
@@ -52,6 +53,7 @@ export default function (/* { ssrContext } */) {
       roles_details,
       users,
       users_details,
+      seed_banks,
 
 
 
