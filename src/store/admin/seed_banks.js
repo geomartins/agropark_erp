@@ -5,7 +5,7 @@ import SeedBank from 'src/models/seed_bank';
 const state = {
    skeleton: false,
    is_loading: false,
-   unsubscribe: '',
+   unsubscribe: {},
 
    //CROP_TYPES
    cropTypesFormData: {
@@ -14,7 +14,7 @@ const state = {
       category: '',
       measurement: '',
       description: '',
-      price: '',
+      price: 0,
    },
    cropTypesDatas: [],
 
@@ -35,6 +35,7 @@ const state = {
 
    dependencies: {
     measurements: ['unit','bundle','kg'],
+    names: ['seeds','seedlings','mustard'],
     category: [],
   }
 
@@ -76,8 +77,8 @@ const mutations = {
     UPDATE_IS_LOADING(state, value){
         state.is_loading = value;
     },
-    UPDATE_UNSUBSCRIBE(state,value){
-        state.unsubscribe = value;
+    UPDATE_UNSUBSCRIBE(state,payload){
+        state.unsubscribe[payload.type] = payload.value
     },
 
     //CROP_TYPES
@@ -97,7 +98,7 @@ const mutations = {
        
     },
     UPDATE_CROP_TYPES_PRICE(state, value){
-        state.cropTypesFormData.price = value.trim().toLowerCase();
+        state.cropTypesFormData.price = +value;
     },
     UPDATE_CROP_TYPES_DATA(state,value){
         state.cropTypesDatas = Object.assign([], value)
@@ -183,7 +184,7 @@ const actions = {
             }
             commit('UPDATE_CROP_REQUESTS_DATA',datas);
        })
-       commit('UPDATE_UNSUBSCRIBE', unsubscribe);
+       commit('UPDATE_UNSUBSCRIBE', { type: 'fetchCropRequests', value: unsubscribe});
     },
 
 
@@ -197,7 +198,7 @@ const actions = {
             }
             commit('UPDATE_CROP_INVENTORIES_DATA',datas);
        })
-       commit('UPDATE_UNSUBSCRIBE', unsubscribe);
+       commit('UPDATE_UNSUBSCRIBE', { type: 'fetchCropInventories', value: unsubscribe});
     },
 
 
@@ -239,7 +240,7 @@ const actions = {
             commit('UPDATE_D_CATEGORIES', datas);
             commit('UPDATE_SKELETON', false);
        })
-       commit('UPDATE_UNSUBSCRIBE', unsubscribe);
+       commit('UPDATE_UNSUBSCRIBE', { type: 'fetchCropCategories', value: unsubscribe});
     },
 
     async updateCropCategory({commit, state},instance){
@@ -318,7 +319,7 @@ const actions = {
             commit('UPDATE_CROP_TYPES_DATA',datas);
             commit('UPDATE_SKELETON', false);
        })
-       commit('UPDATE_UNSUBSCRIBE', unsubscribe);
+       commit('UPDATE_UNSUBSCRIBE', { type: 'fetchCropTypes', value: unsubscribe});
     },
 
     async updateCropType({commit, state},instance){
@@ -376,8 +377,9 @@ const actions = {
     // },
 
     async unsubscribe({commit, state},instance){
-        if(state.unsubscribe){
-            state.unsubscribe();
+        for(let x in state.unsubscribe){
+            let endListener = await state.unsubscribe[x];
+            endListener();
         }
     },
 

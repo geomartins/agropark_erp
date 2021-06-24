@@ -10,7 +10,7 @@
                         <q-tab name="mails" label="Crop Types"  />
                         <q-tab name="alarms" label="Crop Categories" />
                         <q-tab name="movies" label="Requests" />
-                        <q-tab name="inventories" label="Inventories" />
+                        <!-- <q-tab name="inventories" label="Inventories" /> -->
                     </q-tabs>
                     
                     <q-tab-panels v-model="tab" animated>
@@ -27,10 +27,10 @@
                             Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         </q-tab-panel>
 
-                        <q-tab-panel name="inventories">
+                        <!-- <q-tab-panel name="inventories">
                             <div class="text-h6">Movies</div>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        </q-tab-panel>
+                        </q-tab-panel> -->
                     </q-tab-panels>
 
                 
@@ -89,13 +89,3 @@ export default {
 }
 </script>
 
-
-<style scoped>
-.q-tab.q-tab--inactive{
-    border-radius: 0px 100px;
-}
-
-.q-tab--active{
-     border-radius: 0px 100px;
-}
-</style>

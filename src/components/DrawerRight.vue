@@ -87,6 +87,9 @@ import SeedBanksCropTypesCreateForm from "./forms/SeedBanksCropTypesCreateForm"
 import SeedBanksCropTypesUpdateForm from "./forms/SeedBanksCropTypesUpdateForm"
 
 
+import SeedBankInventoryCreateForm from "./forms/details/SeedBankInventoryCreateForm.vue"
+
+
 
 export default Vue.extend({
     name: 'Drawer',
@@ -127,7 +130,8 @@ export default Vue.extend({
         "app-seed-banks-crop-categories-create-form": SeedBanksCropCategoriesCreateForm,
         "app-seed-banks-crop-categories-update-form": SeedBanksCropCategoriesUpdateForm,
         "app-seed-banks-crop-types-create-form": SeedBanksCropTypesCreateForm,
-        "app-seed-banks-crop-types-update-form": SeedBanksCropTypesUpdateForm
+        "app-seed-banks-crop-types-update-form": SeedBanksCropTypesUpdateForm,
+        "app-seed-bank-inventory-create-form": SeedBankInventoryCreateForm
     },
     data(){
         return {

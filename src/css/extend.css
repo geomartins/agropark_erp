@@ -135,6 +135,29 @@ justify-content: flex-start;
   border-bottom: 1px solid #a5d1d1;
 }
 
+
+
+.q-tabs__content .q-tab{
+  border-bottom: 1px solid #e0e0e0 !important;
+}
+
+.q-tabs__content > .q-tab:first-child{
+  border-top: 1px solid #e0e0e0 !important;
+}
+
+.q-tab.q-tab--inactive{
+  border-radius: 0px 100px;
+}
+
+.q-tab--active{
+   border-radius: 0px 100px;
+}
+
+.q-splitter__separator{
+  background-color: transparent!important;
+
+}
+
 @media (min-width: 0px) and (max-width: 700px){
   .myFlex{
     display: flex;

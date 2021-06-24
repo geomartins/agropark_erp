@@ -11,6 +11,7 @@ const fs = require('fs')
 const packageJson = fs.readFileSync('./package.json')
 const version = JSON.parse(packageJson).version || 0
 const name = JSON.parse(packageJson).name || 'quasar'
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = function (/* ctx */) {
   return {
@@ -223,7 +224,13 @@ module.exports = function (/* ctx */) {
       // More info: https://v1.quasar.dev/quasar-cli/developing-electron-apps/node-integration
       nodeIntegration: true,
 
-      extendWebpack (/* cfg */) {
+      extendWebpack (cfg ) {
+        // Copy the firebase service worker file
+        cfg.plugins.push(new CopyWebpackPlugin({
+          patterns: [
+            { from: 'src/firebase/', to: '' }
+          ]
+        }))
         // do something with Electron main process Webpack cfg
         // chainWebpack also available besides this extendWebpack
       }

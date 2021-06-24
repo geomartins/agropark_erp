@@ -86,9 +86,25 @@ class SeedBank{
     }
 
     static async deleteCropCategoryById(id){
-        return seedBankCropCategoryCollections.doc(id).delete().then(() => {
+        return seedBankCropCategoryCollections.doc(id).get().then(async (sbcDoc) => {
+            if (sbcDoc.exists) {
+                let measurement = sbcDoc.data().measurement;
+                let category = sbcDoc.data().name;
+                return seedBankCollections.where('measurement',"==",measurement).where("category","==",category).get().then((sbDoc)=> {
+                    if(!sbDoc.empty){
+                        throw new Error("Item has crop-type depenedencies");
+                    }else{
+                        sbcDoc.ref.delete();
+                    }
+                })
+            }
             return ;
-        }).catch(err => console.log(err));
+        }).then((_) => {
+            return ;
+        }).catch(err => {
+            throw err;
+        });
+
     }
 
 
@@ -120,7 +136,7 @@ class SeedBank{
             data.request_refs = { approved: 0, declined: 0, unattended: 0 }
             delete data.id;
 
-            var checkDuplicate = (await seedBankCollections.where('name','==',data.name).where('category','==', data.category).get()).empty;
+            var checkDuplicate = (await seedBankCollections.where('name','==',data.name).where('category','==', data.category).where('price','==',data.price).get()).empty;
             if(!checkDuplicate){ throw new Error('Duplicate Data Entry') }
             await seedBankCollections.add(purifyObject(data)).then(()=> {
                 return ;
@@ -143,9 +159,21 @@ class SeedBank{
 
 
     static async deleteCropTypeById(id){
-        return seedBankCollections.doc(id).delete().then(() => {
+        return seedBankCollections.doc(id).collection('inventories').get().then(docs => {
+            if(!docs.empty){
+                throw new Error("Item has inventory dependencies");
+            }
+            return seedBankCollections.doc(id).delete();
+        })
+        .then(() => {
             return ;
-        }).catch(err => console.log(err));
+        }).catch(err => {
+            throw err;
+        })
+
+        
+
+
     }
 
 

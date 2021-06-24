@@ -50,6 +50,24 @@ const snackbar = (type, message, position='bottom-right') => {
 
 }
 
+
+const fcmSnackbar = (title, description) => {
+      Notify.create({
+        // type: 'positive',
+        message: title,
+        caption: description,
+        icon: 'tag_faces',
+        position: 'top-right',
+        // color: 'primary',
+        //avatar: 'https://cdn.quasar.dev/img/boy-avatar.png',
+        actions: [
+          { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+        ]
+
+    })
+
+}
+
 const showLoading = (message) => {
     Loading.show({
         message: message
@@ -141,6 +159,7 @@ const  wrapCsvValue = (val, formatFn) =>{
 
 export {
     snackbar,
+    fcmSnackbar,
     showLoading,
     hideLoading,
     showLoadingBar,

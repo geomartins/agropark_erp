@@ -8,6 +8,7 @@
 import electronDebug from 'electron-debug'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 import { app, BrowserWindow } from 'electron'
+const Pushy = require('pushy-electron');
 
 app.whenReady().then(() => {
   // allow for a small delay for mainWindow to be created
@@ -22,9 +23,24 @@ app.whenReady().then(() => {
         // get main window
         const win = BrowserWindow.getFocusedWindow()
         if (win) {
+          win.webContents.on('did-finish-load', () => {
+              Pushy.listen();
+              Pushy.register({ appId: '60d3d019be50e00f1b8f5924' }).then((deviceToken) => {
+                // Display an alert with device token
+                  Pushy.alert(win, 'Pushy device token: vvvvvvvvvvvvvvvvvvvvvv ' + deviceToken);
+              }).catch((err) => {
+                  // Display error dialog
+                  Pushy.alert(win, 'Pushy registration error: ' + err.message);
+              });
+              Pushy.setNotificationListener((data) => {
+                // Display an alert with the "message" payload value
+                Pushy.alert(win, 'Received notification: ' + data.message);
+             });
+          })
           win.webContents.on('did-frame-finish-load', () => {
             win.webContents.once('devtools-opened', () => {
               win.webContents.focus()
+             
             })
             // open electron debug
             console.log('Opening dev tools')

@@ -1,6 +1,7 @@
 <template>
     <div class="q-pa-md">
-      <q-table grid :card-container-class="cardContainerClass" title="Treats" :data="datas" :columns="columns" row-key="name" :filter="filter" hide-header :pagination="initialPagination">
+        <!-- :card-container-class="cardContainerClass" -->
+      <q-table grid  title="" :data="datas" :columns="columns" row-key="name" :filter="filter" hide-header :pagination="initialPagination">
         <template v-slot:top>
             <q-icon name="file_download" style="color: #ccc; font-size: 1.8em;" @click.prevent="exportable()">
                 <q-tooltip> Export </q-tooltip>
@@ -23,7 +24,7 @@
               <q-list>
                     <q-item style="padding: 4px 8px">
                         <q-item-section avatar>
-                            <q-icon color="primary" name="whatshot" />
+                            <q-icon :color="props.row.inventory_refs.available_stock < 1 ? 'red' : 'primary' " name="whatshot" />
                         </q-item-section>
 
                         <q-item-section>
@@ -60,11 +61,19 @@
                             <q-item-section>Stocks</q-item-section>
                         </q-item>
                         <q-separator />
-                        <q-item clickable v-close-popup>
+                        <q-item clickable v-close-popup @click.prevent="$router.push('/admin/seed_banks/'+props.row.id+'?tab=inventories')">
                             <q-item-section>Add Stock</q-item-section>
                         </q-item>
-                        <q-item clickable v-close-popup>
+                        <q-item clickable v-close-popup @click.prevent="$router.push('/admin/seed_banks/'+props.row.id+'?tab=inventories')">
                             <q-item-section>Remove Stock</q-item-section>
+                        </q-item>
+                        <q-separator />
+                        <q-item clickable v-close-popup disable>
+                            <q-item-section>Requests</q-item-section>
+                        </q-item>
+                        <q-separator />
+                        <q-item clickable v-close-popup @click.prevent="$router.push('/admin/seed_banks/'+props.row.id+'?tab=requests')">
+                            <q-item-section>View Requests</q-item-section>
                         </q-item>
                         
                         </q-list>

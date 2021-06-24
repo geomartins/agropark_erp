@@ -16,7 +16,8 @@
             <div class="q-mt-md"></div>
 
              <q-card-section class="q-pt-none">
-                <q-input outlined v-model="name" label="Name" :dense="dense" />
+                 <q-select color="grey-3" outlined :dense="dense"  v-model="name" :options="$store.state.seed_banks.dependencies.names" label="Name">
+                </q-select>
               </q-card-section>
 
               <q-card-section class="q-pt-none">

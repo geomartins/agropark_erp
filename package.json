@@ -24,6 +24,8 @@
     "electron-log": "^4.3.2",
     "electron-updater": "^4.3.8",
     "firebase": "^8.3.1",
+    "pushy-electron": "^1.0.8",
+    "pushy-sdk-web": "^1.0.8",
     "quasar": "^1.0.0",
     "uuid": "^8.3.2",
     "v-offline": "^1.3.0",
