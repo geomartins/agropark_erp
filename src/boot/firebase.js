@@ -1,15 +1,9 @@
 
 import firebase from 'firebase/app'
-
-// import "firebase/analytics";
-
 // Add the Firebase products that you want to use
 import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
-import 'firebase/messaging'
-import Pushy from 'pushy-sdk-web';
-import { snackbar, fcmSnackbar } from '../repositories/plugins'
 
 var firebaseConfig = {
     apiKey: "AIzaSyAvvHd4hsC_EoDzSJu-KfrUBrmiRWFfMTs",
@@ -28,57 +22,6 @@ const firebaseAuth = firebaseApp.auth();
 const firebaseStorage = firebaseApp.storage();
 const uid = firebaseAuth.currentUser ? firebaseAuth.currentUser.uid : null;
 const fs = firebaseApp.firestore();
-
-
-// Register visitor's browser for push notifications
-Pushy.register({ appId: '60d3d019be50e00f1b8f5924' }).then(function (deviceToken) {
-    // Print device token to console
-    console.log('Pushy device token: ' + deviceToken);
-
-    // Send the token to your backend server via an HTTP GET request
-    //fetch('https://your.api.hostname/register/device?token=' + deviceToken);
-
-    // Succeeded, optionally do something to alert the user
-}).catch(function (err) {
-    // Handle registration errors
-    console.error(err);
-});
-
-Pushy.setNotificationListener(function (data) {
-  // Print notification payload data
-  console.log('Received notification: ' + JSON.stringify(data));
-
-  // Attempt to extract the "message" property from the payload: {"message":"Hello World!"}
-  let message = data.message || 'Test notification';
-
-  // Display an alert with message sent from server
-  alert('Received notification 3: ' + message);
-});
-
-// const messaging = firebase.messaging();
-// messaging.requestPermission().then(()=> {
-//   console.log('I have permission')
-//   return messaging.getToken();
-// }).then((token)=> {
-//   console.log(token)
-// })
-// .catch((err)=>{
-//   console.log(err)
-
-
-// })
-
-// messaging.onMessage((payload) => {
-//   console.log('OnMessage', payload)
-//   fcmSnackbar(payload.notification.title, payload.notification.body);
-//   //snackbar("success",payload.notification.title, 'top-right');
-// })
-
-
-// messaging.onBackgroundMessage((payload) => {
-//   console.log('BGMessage', payload)
-// })
-
 
 
 

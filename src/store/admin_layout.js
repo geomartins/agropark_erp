@@ -104,7 +104,6 @@ const mutations = {
         let categories = state.modules.map(a => a.category);
         state.moduleCategories = Object.assign([], [...new Set(categories)])
     },
-
   
     UPDATE_LEFT_DRAWER_OPEN(state, value){
         console.log('Left value', value)

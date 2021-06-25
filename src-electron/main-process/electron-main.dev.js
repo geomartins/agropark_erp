@@ -7,7 +7,7 @@
 
 import electronDebug from 'electron-debug'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, Notification } from 'electron'
 const Pushy = require('pushy-electron');
 
 app.whenReady().then(() => {
@@ -27,19 +27,20 @@ app.whenReady().then(() => {
               Pushy.listen();
               Pushy.register({ appId: '60d3d019be50e00f1b8f5924' }).then((deviceToken) => {
                 // Display an alert with device token
-                  Pushy.alert(win, 'Pushy device token: vvvvvvvvvvvvvvvvvvvvvv ' + deviceToken);
+                  new Notification({ title: 'Pushy device token ', body: 'this is it : vvvvvvvvvvvvvvvvvvvvvv' + deviceToken, icon: 'src-electron/icons/icon.ico' }).show()
               }).catch((err) => {
                   // Display error dialog
                   Pushy.alert(win, 'Pushy registration error: ' + err.message);
               });
               Pushy.setNotificationListener((data) => {
                 // Display an alert with the "message" payload value
-                Pushy.alert(win, 'Received notification: ' + data.message);
+                new Notification({ title: data.title ?? 'lolz', body: data.message, icon: 'src-electron/icons/icon.ico' }).show()
              });
           })
           win.webContents.on('did-frame-finish-load', () => {
             win.webContents.once('devtools-opened', () => {
               win.webContents.focus()
+              
              
             })
             // open electron debug

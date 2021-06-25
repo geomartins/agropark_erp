@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center">
-     <p> Dashboard Under Construction</p>
+     <p @click="$router.push('/admin/seed_banks')"> Dashboard Under Construction</p>
   </q-page>
 </template>
 
