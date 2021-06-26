@@ -23,6 +23,10 @@ const calculateDateDifference = (date1, date2, unit) => {
 
 }
 
+const subtractFromDate = (dateObj, hrs) => {
+  return date.subtractFromDate(dateObj, { hours: hrs, milliseconds: 10000 })
+}
+
 
 
 const convertAccessArrayToObject = (dataArray) => {
@@ -105,4 +109,5 @@ export {
     convertAccessArrayToObject,
     convertAccessObjectToArray,
     calculateDateDifference,
+    subtractFromDate,
 }

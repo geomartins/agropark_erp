@@ -116,7 +116,7 @@ export default {
         logout(){
             const x = this;
            AuthService.logout().then(()=> {
-              //  x.$router.replace('/auth/login');
+              x.$router.replace('/auth/login');
            }).catch(err => console.log(err));
         }
     }

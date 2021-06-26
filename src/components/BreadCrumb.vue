@@ -1,5 +1,5 @@
 <template>
-    <div >
+    <div class="gt-sm" >
     <q-banner inline-actions rounded class="bg-transparent">
       <div style="font-size: 0.95rem;">
        {{ $store.state.admin_layout.breadCrumb.pageTitle}}

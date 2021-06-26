@@ -176,7 +176,6 @@ const actions = {
 
     //CROP_REQUESTS
     async fetchCropRequests({commit, state}, type){
-        
         let unsubscribe = SeedBank.fetchCropRequests(type, (datas, err) => {
             if(err){ 
                 snackbar('warning',err.message);
@@ -185,6 +184,8 @@ const actions = {
             commit('UPDATE_CROP_REQUESTS_DATA',datas);
        })
        commit('UPDATE_UNSUBSCRIBE', { type: 'fetchCropRequests', value: unsubscribe});
+
+       
     },
 
 
@@ -228,17 +229,17 @@ const actions = {
         
     },
 
-    async fetchCropCategories({commit, state}){
-        commit('UPDATE_SKELETON', true);
-        let unsubscribe = SeedBank.fetchCropCategories((datas, err) => {
+    async fetchCropCategories({commit, state}, type){
+        // commit('UPDATE_SKELETON', true);
+        let unsubscribe = SeedBank.fetchCropCategories(type,(datas, err) => {
             if(err){ 
                 snackbar('warning',err.message);
-                commit('UPDATE_SKELETON', false);
+                //commit('UPDATE_SKELETON', false);
                 return;
             }
             commit('UPDATE_CROP_CATEGORIES_DATA',datas);
             commit('UPDATE_D_CATEGORIES', datas);
-            commit('UPDATE_SKELETON', false);
+            //commit('UPDATE_SKELETON', false);
        })
        commit('UPDATE_UNSUBSCRIBE', { type: 'fetchCropCategories', value: unsubscribe});
     },
@@ -308,9 +309,9 @@ const actions = {
         
     },
 
-    async fetchCropTypes({commit, state}){
+    async fetchCropTypes({commit, state}, type){
         commit('UPDATE_SKELETON', true);
-        let unsubscribe = SeedBank.fetchCropTypes((datas, err) => {
+        let unsubscribe = SeedBank.fetchCropTypes(type, (datas, err) => {
             if(err){ 
                 snackbar('warning',err.message);
                 commit('UPDATE_SKELETON', false);

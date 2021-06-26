@@ -1,7 +1,8 @@
 import { firebaseAuth } from './firebase';
 import { api, axios } from './axios';
-import { setData } from '../repositories/plugins'
+import { setData,getData } from '../repositories/plugins'
 import PushyService from 'src/services/pushy_service';
+import FirestoreService from 'src/services/firestore_service';
 
 export default async ({ app, router, store, Vue, urlPath, redirect }) => {
   
@@ -13,21 +14,21 @@ export default async ({ app, router, store, Vue, urlPath, redirect }) => {
       let avatar = user.photoURL;
       let token = await user.getIdToken();
       let role = (await user.getIdTokenResult()).claims.role;
+      
+      setData('token', token);
+      setData('role', role)
+      setData("uid", user.uid)
+     
 
-      let modules = (await api.post('/modules', { role: role }, {
-        headers: { 
-          Authorization: `Bearer ${token}`
-        }
-      })).data ?? [];
-
-      //////////////////////////////////////
-
-      let pushyService = new PushyService(token);
+      ///////////////[PUSHER]///////////////////////
+      let modules = (await new FirestoreService(token, role).fetchModuleRefs()).data ?? []
+      let pushyService = new PushyService(token, role);
       await pushyService.register();
       await pushyService.listener();
       ///////////////////////////////////////////
       
-      setData('token', token);
+      
+      store.dispatch('module_notifiers/fetch', 'initial')
       store.commit('admin_layout/UPDATE_MODULES', modules)
       store.commit('admin_layout/UPDATE_DISPLAY_NAME', displayName);
       store.commit('admin_layout/UPDATE_AVATAR', avatar);
@@ -41,6 +42,11 @@ export default async ({ app, router, store, Vue, urlPath, redirect }) => {
 
     if(!user){
       setData('token', '');
+      setData('role', '');
+      setData('uid', '')
+
+      store.dispatch('module_notifiers/unsubscribe')
+
       store.commit('admin_layout/UPDATE_MODULES',[])
       store.commit('admin_layout/UPDATE_DISPLAY_NAME', '');
       store.commit('admin_layout/UPDATE_AVATAR', '');

@@ -69,6 +69,7 @@ class User{
             data.createdAt = timestamp; data.creator = firebaseAuth.currentUser.uid;
             data.deletedAt = null; data.editedAt = null; //default
             data.visibility = true;
+            data.device_tokens = []
             data.avatar = '';
             delete data.id;
     

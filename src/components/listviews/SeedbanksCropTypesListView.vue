@@ -1,5 +1,5 @@
 <template>
-    <div class="q-pa-md">
+    <div class="">
         <!-- :card-container-class="cardContainerClass" -->
       <q-table grid  title="" :data="datas" :columns="columns" row-key="name" :filter="filter" hide-header :pagination="initialPagination">
         <template v-slot:top>
@@ -19,7 +19,7 @@
 
       <template v-slot:item="props">
         <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4">
-          <q-card>
+          <q-card >
             <q-card-section style="padding: 0.5rem" >
               <q-list>
                     <q-item style="padding: 4px 8px">

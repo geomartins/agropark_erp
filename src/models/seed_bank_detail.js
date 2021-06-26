@@ -36,6 +36,7 @@ class SeedBankDetail{
         if(inventoryDataRef && type == 'next'){
             ref = seedBankCollections.doc(this.seedBankId).collection('inventories').orderBy('createdAt','desc').startAfter(inventoryDataRef).limit(25);
         }else if(type == 'initial'){
+            inventoryData = [];
             ref = seedBankCollections.doc(this.seedBankId).collection('inventories').orderBy('createdAt','desc').limit(25);
         }
 
@@ -73,6 +74,7 @@ class SeedBankDetail{
         if(requestDataRef && type == 'next'){
             ref = seedBankCollections.doc(this.seedBankId).collection('requests').orderBy('createdAt','desc').startAfter(requestDataRef).limit(25);
         }else if(type == 'initial'){
+            requestData = [];
             ref = seedBankCollections.doc(this.seedBankId).collection('requests').orderBy('createdAt','desc').limit(25);
         }
 

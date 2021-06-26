@@ -1,58 +1,127 @@
 import { seedBankCollections, requestCollectionGroups, inventoryCollectionGroups, seedBankCropCategoryCollections, firebaseAuth, timestamp, fs } from '../boot/firebase'
 import { purifyObject } from '../repositories/pick';
 
+
+let requestDataRef = null;
+let requestData = [];
+
+let inventoryDataRef = null;
+let inventoryData = [];
+
+
+let cropCategoryDataRef = null;
+let cropCategoryData = [];
+
+let cropTypeDataRef = null;
+let cropTypeData = [];
+
+
+
 class SeedBank{
     constructor(){}
 
     //CROP_REQUEST
-    static async fetchCropRequests(cb){
-        return requestCollectionGroups.where('ref','==','seed_banks').orderBy('createdAt','desc').onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
-            let data = [];
+    static async fetchCropRequests(type, cb){
+        let ref;
+        if(requestDataRef && type == 'next'){
+            ref = requestCollectionGroups.where('ref','==','seed_banks').orderBy('createdAt','desc').startAfter(requestDataRef).limit(10);
+        }else if(type == 'initial'){
+            requestData = [];
+            ref = requestCollectionGroups.where('ref','==','seed_banks').orderBy('createdAt','desc').limit(10);
+        }
+
+        return ref.onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
+            var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+            if(lastVisible){
+                 requestDataRef = lastVisible;
+            }
+            if(!querySnapshot.empty){
+                requestData = [];
+            }
+
             querySnapshot.forEach((doc) => {
                 let ch = { ...doc.data() };
                 ch.id = doc.id;
-                data.push(ch);
+                requestData.push(ch);
                  
              });
-            return cb(data, null)
+             console.log(requestData,'yes ooo')
+            return cb(requestData, null)
         },(err) => {
             const errMessage = {message: err.code };
-            return cb([], errMessage);
-        });
+            return cb([],errMessage);
+            
+        }); 
     }
 
     //CROP_INVENTORIES
-    static async fetchCropInventories(cb){
-        return inventoryCollectionGroups.where('ref','==','seed_banks').orderBy('createdAt','desc').onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
-            let data = [];
+    static async fetchCropInventories(type,cb){
+        let ref;
+        if(inventoryDataRef && type == 'next'){
+            ref = inventoryCollectionGroups.where('ref','==','seed_banks').orderBy('createdAt','desc').startAfter(inventoryDataRef).limit(10);
+        }else if(type == 'initial'){
+            inventoryData = [];
+            ref = inventoryCollectionGroups.where('ref','==','seed_banks').orderBy('createdAt','desc').limit(10);
+        }
+
+        return ref.onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
+            var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+            if(lastVisible){
+                 inventoryDataRef = lastVisible;
+            }
+            if(!querySnapshot.empty){
+                inventoryData = [];
+            }
+
             querySnapshot.forEach((doc) => {
                 let ch = { ...doc.data() };
                 ch.id = doc.id;
-                data.push(ch);
+                inventoryData.push(ch);
                  
              });
-            return cb(data, null)
+             console.log(inventoryData,'yes ooo')
+            return cb(inventoryData, null)
         },(err) => {
             const errMessage = {message: err.code };
-            return cb([], errMessage);
-        });
+            return cb([],errMessage);
+            
+        }); 
     }
 
     //CROP_CATEGORY
-    static async fetchCropCategories(cb){
-        return seedBankCropCategoryCollections.orderBy('createdAt','desc').onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
-            let data = [];
+    static async fetchCropCategories(type,cb){
+        let ref;
+        if(cropCategoryDataRef && type == 'next'){
+            console.log('crop category next')
+            ref = seedBankCropCategoryCollections.orderBy('createdAt','desc').startAfter(cropCategoryDataRef).limit(10);
+        }else if(type == 'initial'){
+            console.log('crop category initial')
+            cropCategoryData = [];
+            ref = seedBankCropCategoryCollections.orderBy('createdAt','desc').limit(10);
+        }
+
+        return ref.onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
+            var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+            if(lastVisible){
+                cropCategoryDataRef = lastVisible;
+            }
+            if(!querySnapshot.empty){
+                cropCategoryData = [];
+            }
+
             querySnapshot.forEach((doc) => {
                 let ch = { ...doc.data() };
                 ch.id = doc.id;
-                data.push(ch);
+                cropCategoryData.push(ch);
                  
              });
-            return cb(data, null)
+             console.log(cropCategoryData,'yes ooo')
+            return cb(cropCategoryData, null)
         },(err) => {
             const errMessage = {message: err.code };
-            return cb([], errMessage);
-        });
+            return cb([],errMessage);
+            
+        }); 
     }
 
     
@@ -110,20 +179,38 @@ class SeedBank{
 
 
     //CROP_TYPE
-    static async fetchCropTypes(cb){
-        return seedBankCollections.orderBy('createdAt','desc').onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
-            let data = [];
+    static async fetchCropTypes(type, cb){
+        let ref;
+        if(cropTypeDataRef && type == 'next'){
+            ref = seedBankCollections.orderBy('createdAt','desc').startAfter(cropTypeDataRef).limit(10);
+        }else if(type == 'initial'){
+            cropTypeData = [];
+            ref = seedBankCollections.orderBy('createdAt','desc').limit(10);
+        }
+
+        return ref.onSnapshot({ includeMetadataChanges: true},(querySnapshot) => {
+            var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+            if(lastVisible){
+                cropTypeDataRef = lastVisible;
+            }
+            if(!querySnapshot.empty){
+                cropTypeData = [];
+            }
+
             querySnapshot.forEach((doc) => {
                 let ch = { ...doc.data() };
                 ch.id = doc.id;
-                data.push(ch);
+                cropTypeData.push(ch);
                  
              });
-            return cb(data, null)
+             console.log(cropTypeData,'yes ooo')
+            return cb(cropTypeData, null)
         },(err) => {
             const errMessage = {message: err.code };
-            return cb([], errMessage);
-        });
+            return cb([],errMessage);
+            
+        }); 
+
     }
 
     static async saveCropType(obj){

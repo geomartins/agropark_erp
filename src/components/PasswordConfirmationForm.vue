@@ -1,6 +1,6 @@
 <template>
  <div class="form">
-            <q-card >
+            <q-card  class="form__card">
               
               <q-card-section>
                   <q-list bordered padding>

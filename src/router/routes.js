@@ -22,6 +22,7 @@ const routes = [
       { path: '/admin/dashboard', component: () => import('pages/admin/dashboard.vue') },
       { path: '/admin/module_categories', component: () => import('pages/admin/module_categories.vue') }, 
       { path: '/admin/activities', component: () => import('pages/admin/activities.vue') },
+      { path: '/admin/module_notifiers', component: () => import('pages/admin/module_notifiers.vue') },
       { path: '/admin/extension_categories', component: () => import('pages/admin/extension_categories.vue') },
       { path: '/admin/modules', component: () => import('pages/admin/modules.vue') },
       { path: '/admin/extensions', component: () => import('pages/admin/extensions.vue') },

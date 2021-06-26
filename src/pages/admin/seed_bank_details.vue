@@ -20,25 +20,22 @@
 
                   
 
-                    <q-splitter v-model="splitterModel" style="max-height: 100%;">
-                        <template v-slot:before>
-                            <q-tabs v-model="tab" vertical dense active-color="white" active-bg-color="secondary" indicator-color="transparent" align="justify" narrow-indicator no-caps  class="text-teal"  :breakpoint="0" style="background: white">
+                            <q-tabs v-model="tab" dense active-color="white" active-bg-color="secondary" indicator-color="transparent" align="justify" narrow-indicator no-caps  class="text-teal"  :breakpoint="0" style="background: white">
                                 <q-tab name="requests"  label="Request"  style="text-transform: capitalize"/>
                                 <q-tab name="inventories"  label="Inventory"  style="text-transform: capitalize"/>
                             </q-tabs>
-                        </template>
+                        
 
-                        <template v-slot:after>
-                            <q-tab-panels v-model="tab" animated swipeable vertical transition-prev="jump-up" transition-next="jump-up" style="background: transparent">
-                                <q-tab-panel name="requests">
+                        
+                            <q-tab-panels v-model="tab" animated  transition-prev="jump-up" transition-next="jump-up" style="background: transparent">
+                                <q-tab-panel name="requests" style="padding: 0px">
                                     <app-seed-bank-detail-requests-listview></app-seed-bank-detail-requests-listview>
                                 </q-tab-panel>
-                                 <q-tab-panel name="inventories">
+                                 <q-tab-panel name="inventories" style="padding: 0px">
                                      <app-seed-bank-detail-inventories-listview :datas="inventoryDatas" :docFormData="docFormData"></app-seed-bank-detail-inventories-listview>
                                 </q-tab-panel>
                             </q-tab-panels>
-                        </template>
-                    </q-splitter>
+                       
 
                 </app-skeleton>
 
@@ -85,7 +82,9 @@ export default {
             this.$store.commit('seed_bank_details/UPDATE_DOC_ID',this.$route.params.id)
             this.$store.commit('seed_bank_details/CLEAR_DOC_FORM_DATA')
             this.$store.dispatch('seed_bank_details/fetchDoc',this).then(()=> {
-                this.$store.dispatch('seed_bank_details/fetchInventories','initial').then(() => {})
+                this.$store.dispatch('seed_bank_details/fetchInventories','initial').then(() => {
+                    console.log('Inventory DOc')
+                })
                 this.$store.dispatch('seed_bank_details/fetchRequests','initial').then(() => {})
             });
         },

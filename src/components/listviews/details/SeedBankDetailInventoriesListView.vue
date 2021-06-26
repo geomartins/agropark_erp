@@ -1,5 +1,5 @@
 <template>
-    <div class="q-pa-sm" >
+    <div class="" >
     <q-list padding >
        <q-card flat>
           <q-card-section>
@@ -14,7 +14,7 @@
                         </q-icon>
                         <q-space />
                        
-                       <div>
+                       <div class="stocklabel">
                             <q-chip square>
                                 <q-avatar color="secondary" text-color="white">{{ docFormData.inventory_refs.available_stock }}</q-avatar>
                                 Available Stock 
@@ -138,3 +138,16 @@ export default {
     }
 }
 </script>
+
+<style>
+.stocklabel{
+    display: flex; 
+    flex-direction: row;
+}
+
+@media (min-width: 0px) and (max-width: 600px){
+    .stocklabel{
+        flex-direction: column;
+    }
+}
+</style>

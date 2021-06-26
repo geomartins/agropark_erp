@@ -19,6 +19,7 @@ class Role{
                 // console.log('Inside old data', dataRef)
                 ref = roleCollections.orderBy('createdAt','desc').startAfter(dataRef).limit(25);
             }else if(type == 'initial'){
+                data = [];
                 ref = roleCollections.orderBy('createdAt','desc').limit(25);
             }
 

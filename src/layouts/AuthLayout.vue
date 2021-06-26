@@ -70,7 +70,7 @@ export default {
    height: 100%;
 }
 
-  .q-card{
+  .form > .form__card{
     box-shadow: 0px 0px white!important;
     
   }
@@ -94,9 +94,10 @@ export default {
     border: 1px solid white;
   }
 
-  .q-card{
+  .form > .form__card{
     box-shadow: 0px 0px white!important;
     background: #fff;
+    
   }
 
   

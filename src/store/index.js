@@ -7,6 +7,7 @@ import admin_layout from './admin_layout'
 import module_categories from './admin/module_categories'
 import extension_categories from './admin/extension_categories'
 import activities from './admin/activities'
+import module_notifiers from './admin/module_notifiers'
 import departments from './admin/departments';
 import seed_banks from './admin/seed_banks'
 import seed_bank_details from './admin/seed_bank_details'
@@ -45,6 +46,7 @@ export default function (/* { ssrContext } */) {
       module_categories,
       extension_categories,
       activities,
+      module_notifiers,
       departments,
       domains,
       modules,

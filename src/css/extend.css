@@ -153,6 +153,8 @@ justify-content: flex-start;
    border-radius: 0px 100px;
 }
 
+
+
 .q-splitter__separator{
   background-color: transparent!important;
 
@@ -163,6 +165,10 @@ justify-content: flex-start;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+  }
+
+  .q-tab-panels{
+    background: transparent;
   }
 
 

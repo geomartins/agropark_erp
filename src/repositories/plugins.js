@@ -90,7 +90,7 @@ const setData = (key, value) => {
 }
 
 const getData = (key) => {
-    LocalStorage.getItem(key);
+    return LocalStorage.getItem(key);
 }
 
 const confirm = async (title, message) => {

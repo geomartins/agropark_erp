@@ -30,6 +30,7 @@ const domainCollections = fs.collection('domains')
 const moduleCategoryCollections = fs.collection('module_categories');
 const extensionCategoryCollections = fs.collection('extension_categories');
 const activityCollections = fs.collection('activities');
+const moduleNotifierCollections = fs.collection('module_notifiers');
 const arrayRemove = firebase.firestore.FieldValue.arrayRemove
 const departmentCollections = fs.collection('departments');
 const seedBankCollections = fs.collection('seed_banks');
@@ -66,6 +67,7 @@ export {
   moduleCategoryCollections,
   extensionCategoryCollections,
   activityCollections,
+  moduleNotifierCollections,
   departmentCollections,
   seedBankCollections,
   seedBankCropCategoryCollections,
@@ -75,6 +77,7 @@ export {
   moduleCollections,
   extensionCollections,
   configurationCollections,
+  
 
   requestCollectionGroups,
   inventoryCollectionGroups,

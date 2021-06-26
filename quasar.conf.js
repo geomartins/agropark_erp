@@ -114,7 +114,7 @@ module.exports = function (/* ctx */) {
 
       // Quasar plugins
       plugins: [
-        
+
         'Notify',
         'Loading',
         'LoadingBar',
@@ -227,11 +227,11 @@ module.exports = function (/* ctx */) {
 
       extendWebpack (cfg ) {
         // Copy the firebase service worker file
-        cfg.plugins.push(new CopyWebpackPlugin({
-          patterns: [
-            { from: 'src/firebase/', to: '' }
-          ]
-        }))
+        // cfg.plugins.push(new CopyWebpackPlugin({
+        //   patterns: [
+        //     { from: 'src/firebase/', to: '' }
+        //   ]
+        // }))
         // do something with Electron main process Webpack cfg
         // chainWebpack also available besides this extendWebpack
       }
