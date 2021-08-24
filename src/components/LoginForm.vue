@@ -1,38 +1,58 @@
 <template>
- <div class="form">
-            <q-card class="form__card">
-              
-              <q-card-section>
-                  <q-list bordered padding>
-                    <q-item>
-                      <q-item-section>
-                        <q-item-label overline>Sign In to your account</q-item-label>
-                        <q-item-label>Enter your email & password to login</q-item-label>
-                      </q-item-section>
-                    </q-item>
-                  </q-list>
-              </q-card-section>
+  <div class="form">
+    <q-card class="form__card">
+      <q-card-section>
+        <q-list bordered padding>
+          <q-item>
+            <q-item-section>
+              <q-item-label overline>Sign In to your account</q-item-label>
+              <q-item-label>Enter your email & password to login</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-card-section>
 
-              <q-card-section class="q-pt-none">
-               
-                <q-input outlined v-model="email" label="Email Address" :dense="dense" />
-              </q-card-section>
+      <q-card-section class="q-pt-none">
+        <q-input
+          outlined
+          v-model="email"
+          label="Email Address"
+          :dense="dense"
+        />
+      </q-card-section>
 
-              <q-card-section class="q-pt-none">
-                <q-input type="password" outlined v-model="password" label="Password" :dense="dense" />
-              </q-card-section>
+      <q-card-section class="q-pt-none">
+        <q-input
+          type="password"
+          outlined
+          v-model="password"
+          label="Password"
+          :dense="dense"
+        />
+      </q-card-section>
 
-              <q-separator inset />
+      <q-separator inset />
 
-              <q-card-section>
-                <q-btn color="teal" class="full-width" label="Sign In" @click.prevent="login()" />
-              </q-card-section>
+      <q-card-section>
+        <q-btn
+          color="teal"
+          class="full-width"
+          label="Sign In"
+          @click.prevent="login()"
+        />
+      </q-card-section>
 
-               <q-card-section class="q-pt-none">
-                <div class="text-overline text-weight-regular text-center" style="cursor: pointer" @click.prevent="$router.push('/auth/password_reset')">Forget password?? Reset Now</div>
-              </q-card-section>
-            </q-card>
-          </div>
+      <q-card-section class="q-pt-none">
+        <div
+          class="text-overline text-weight-regular text-center"
+          style="cursor: pointer"
+          @click.prevent="$router.push('/auth/password_reset')"
+        >
+          Forget password?? Reset Now
+        </div>
+      </q-card-section>
+    </q-card>
+  </div>
 </template>
 
 <script>
@@ -40,21 +60,31 @@ export default {
   name: "LoginForm",
   data() {
     return {
-       dense: true,
+      dense: true
     };
   },
   computed: {
-      email:  {
-        get() { return this.$store.getters["login/fetchEmail"]; },
-        set(value){ this.$store.commit('login/UPDATE_EMAIL',value); }   
+    email: {
+      get() {
+        return this.$store.getters["login/fetchEmail"];
       },
-      password: {
-        get(){ return this.$store.getters["login/fetchPassword"]; },
-        set(value){ this.$store.commit('login/UPDATE_PASSWORD',value); }   
+      set(value) {
+        this.$store.commit("login/UPDATE_EMAIL", value);
+      }
+    },
+    password: {
+      get() {
+        return this.$store.getters["login/fetchPassword"];
       },
+      set(value) {
+        this.$store.commit("login/UPDATE_PASSWORD", value);
+      }
+    }
   },
   methods: {
-    login(){ this.$store.dispatch('login/login',this); },
+    login() {
+      this.$store.dispatch("login/login", this);
+    }
   }
 };
 </script>

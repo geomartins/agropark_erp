@@ -1,5 +1,5 @@
 import { firebaseAuth } from './firebase';
-export default async ({ app, router, Vue, urlPath, redirect }) => {
+export default async ({ app, router, store, Vue, urlPath, redirect }) => {
   // router.beforeEach((to, from, next) => {
   //   const requiresAuth = to.matched.some(x => x.meta.requiresAuth)
   //   const currentUser = firebaseAuth.currentUser;
@@ -13,5 +13,19 @@ export default async ({ app, router, Vue, urlPath, redirect }) => {
   //     next()
   //   }
   // })
+
+  router.beforeEach((to, from, next) => {
+    if(to.name){
+      store.dispatch(to.name+'/clearAll');
+      store.dispatch(to.name+'/unsubscribe');
+    }
+    
+    if(from.name){
+      store.dispatch(to.name+'/clearAll');
+      store.dispatch(to.name+'/unsubscribe');
+    }
+    store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false)
+    next()
+  })
   
 }

@@ -19,7 +19,7 @@ class FirestoreService{
     }
 
     async fetchModuleRefs(){
-        return api.post('/modules', { role: this.role }, {
+        return await api.post('/modules', { role: this.role }, {
             headers: { 
               Authorization: `Bearer ${this.token}`
             }

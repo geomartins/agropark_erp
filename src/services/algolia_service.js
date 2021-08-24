@@ -3,7 +3,7 @@ import { getData } from '../repositories/plugins'
 class AlgoliaService{
     constructor(db){
         this.db = db;
-        this.token = getData(token);
+        this.token = getData("token");
     }
     async search(input){
         return api.post('/search', {
@@ -14,7 +14,6 @@ class AlgoliaService{
                 Authorization: `Bearer ${this.token}`
             }
         }).then((response) => {
-            console.log(response,'yeeeeeeeeeee')
             return response.data;
         }).catch(err => {
             return err;

@@ -1,62 +1,52 @@
 <template>
-  <q-layout view="lHr lpR fFf" class="bg-grey-1" >
-    
-   
-    <app-header ></app-header>
-    
-    
+  <q-layout view="lHr lpR fFf" class="bg-grey-1">
+    <app-header></app-header>
+
     <app-drawer></app-drawer>
-    
+
     <app-drawer-right></app-drawer-right>
 
-    
-
     <q-page-container>
-       <app-bread-crumb></app-bread-crumb>
-     
-     
+      <app-bread-crumb></app-bread-crumb>
+
       <router-view />
     </q-page-container>
-
-
   </q-layout>
 </template>
 
 <script>
-import Drawer from '../components/Drawer';
-import DrawerRight from '../components/DrawerRight';
-import Header from '../components/Header';
-import BreadCrumb from '../components/BreadCrumb'
+import Drawer from "../components/Drawer";
+import DrawerRight from "../components/DrawerRight";
+import Header from "../components/Header";
+import BreadCrumb from "../components/BreadCrumb";
 export default {
-  name: 'GoogleNewsLayout',
+  name: "GoogleNewsLayout",
   components: {
     "app-drawer": Drawer,
     "app-drawer-right": DrawerRight,
     "app-header": Header,
-    "app-bread-crumb": BreadCrumb,
+    "app-bread-crumb": BreadCrumb
   },
-  data () {
+  data() {
     return {
       right: true
-    }
+    };
   },
   methods: {
-    onClear () {
-      this.exactPhrase = ''
-      this.hasWords = ''
-      this.excludeWords = ''
-      this.byWebsite = ''
-      this.byDate = 'Any time'
+    onClear() {
+      this.exactPhrase = "";
+      this.hasWords = "";
+      this.excludeWords = "";
+      this.byWebsite = "";
+      this.byDate = "Any time";
     },
-    changeDate (option) {
-      this.byDate = option
-      this.showDateOptions = false
+    changeDate(option) {
+      this.byDate = option;
+      this.showDateOptions = false;
     }
   },
-  created(){
-    
-  }
-}
+  created() {}
+};
 </script>
 
 <style lang="sass">

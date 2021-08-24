@@ -1,4 +1,4 @@
-import { moduleNotifierCollections } from '../boot/firebase'
+import { notifierCollectionGroups } from '../boot/firebase'
 import { getData } from '../repositories/plugins'
 import { subtractFromDate } from '../repositories/pick'
 
@@ -17,12 +17,11 @@ class ModuleNotifier{
     async fetch(type, cb){
         let ref;
         if(dataRef && type == 'next'){
-            // console.log('Inside old data', dataRef)
-            ref = moduleNotifierCollections.where("roles","array-contains",this.role)
+            ref = notifierCollectionGroups.where('ref','==','modules').where("roles","array-contains",this.role)
                 .where("timestamp",">=",this.date).orderBy('timestamp','desc').startAfter(dataRef).limit(10);
         }else if(type == 'initial'){
             data = [];
-            ref = moduleNotifierCollections.where("roles","array-contains",this.role)
+            ref =notifierCollectionGroups.where('ref','==','modules').where("roles","array-contains",this.role)
                 .where("timestamp",">=",this.date).orderBy('timestamp','desc').limit(10);
         }
 
@@ -40,6 +39,7 @@ class ModuleNotifier{
                     }else{
                         ch.seen = false;
                     }
+                    console.log(data,'---------------')
                     ch.id = doc.id;
                     data.push(ch);
                      
@@ -47,6 +47,12 @@ class ModuleNotifier{
             }else{
                 console.log('No data available');
             }
+
+            querySnapshot.docChanges().forEach((change) => {
+                if(querySnapshot.empty && change.type === "removed"){
+                    data = [];
+                }
+            });
             
             return cb(data, null)
         },(err) => {

@@ -10,7 +10,7 @@ const state = {
       description: '',
    },
    is_loading: false,
-   unsubscribe: '',
+   unsubscribe: {},
 
 
 
@@ -50,8 +50,8 @@ const mutations = {
     UPDATE_FILTER(state, value){
         state.filter = value;
     },
-    UPDATE_UNSUBSCRIBE(state,value){
-        state.unsubscribe = value;
+    UPDATE_UNSUBSCRIBE(state,payload){
+        state.unsubscribe[payload.type] = payload.value
     },
     UPDATE_DATA(state,value){
         state.datas = Object.assign([], value)
@@ -113,10 +113,9 @@ const actions = {
                 return;
             }
             commit('UPDATE_DATA',datas);
-            console.log(state.datas,'NEW DATA')
             commit('UPDATE_SKELETON', false);
        })
-       commit('UPDATE_UNSUBSCRIBE', unsubscribe);
+       commit('UPDATE_UNSUBSCRIBE', { type: 'fetch', value: unsubscribe});
 
        
     },
@@ -138,7 +137,6 @@ const actions = {
     async delete({commit, state},id){
         let x = (await confirm('Confirm','Would you like to delete the selected item?'));
         x.onOk(()=> {
-            console.log(id);
             Role.deleteById(id).then().catch(err => {
                 snackbar('warning',err.message);
             });
@@ -147,8 +145,9 @@ const actions = {
 
 
     async unsubscribe({commit, state},instance){
-        if(state.unsubscribe){
-            state.unsubscribe();
+        for(let x in state.unsubscribe){
+            let endListener = await state.unsubscribe[x];
+            endListener();
         }
     },
 

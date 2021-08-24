@@ -1,5 +1,5 @@
 <template>
-    <div class="q-pa-md">
+    <div class="">
         <q-table flat grid separator="cell" :data="datas" :columns="columns" row-key="id"  :loading="$store.state.module_notifiers.loading"  :table-header-style="{textTransform: 'uppercase'}" :pagination="initialPagination">
             <template v-slot:item="props">
                 <div class="q-pa-xs col-xs-12 col-sm-12 col-md-12">

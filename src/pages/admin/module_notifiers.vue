@@ -57,10 +57,5 @@ export default {
   mounted() {
     this.getNextData();
   },
-  beforeRouteLeave (to, from , next) {
-      this.$store.dispatch('module_notifiers/unsubscribe', this);
-      this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false)
-      next();
-  }
 }
 </script>

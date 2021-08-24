@@ -1,74 +1,88 @@
 <template>
-    
-      <q-expansion-item
-        expand-separator
-        label="Edit Department"
-        expand-icon-class="expand"
-        header-class="headerClass"
-        default-opened
-        style="border-bottom: 1px solid #00808057; background: #fafafa"
-        class="q-pb-md"
-       
+  <q-expansion-item
+    expand-separator
+    label="Edit Department"
+    expand-icon-class="expand"
+    header-class="headerClass"
+    default-opened
+    style="border-bottom: 1px solid #00808057; background: #fafafa"
+    class="q-pb-md"
+  >
+    <q-card flat>
+      <div class="q-mt-md"></div>
 
-      >
-       <q-card flat >
-              
-            <div class="q-mt-md"></div>
+      <q-card-section class="q-pt-none">
+        <q-select
+          color="grey-3"
+          outlined
+          :dense="dense"
+          emit-value
+          v-model="name"
+          :options="$store.state.users_details.dependencies.user.departments.split(',')"
+          label="Department"
+        >
+        </q-select>
+      </q-card-section>
 
-            <q-card-section class="q-pt-none">
-                <q-select color="grey-3" outlined :dense="dense" emit-value  v-model="name" :options="$store.state.users_details.dependencies.departments" label="Department">
-                </q-select>
-              </q-card-section>
+      <q-card-section class="q-pt-none">
+        <div class="editFlex">
+          <q-btn color="primary" label="Update" @click.prevent="update()" />
+          <q-btn
+            color="primary"
+            outline
+            label="Close"
+            @click.prevent="
+              $store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN', false)
+            "
+          />
+        </div>
+      </q-card-section>
 
-
-              <q-card-section class="q-pt-none">
-                  <div class="editFlex">
-                      <q-btn color="primary"   label="Update" @click.prevent="update()" />
-                      <q-btn color="primary" outline label="Close" @click.prevent="$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false)" />
-                  </div>
-              </q-card-section>
-
-              <q-inner-loading :showing="$store.state.users_details.is_loading">
-                <q-spinner-gears size="50px" color="primary" />
-              </q-inner-loading>
-
-             
-            </q-card>
-      </q-expansion-item>
+      <q-inner-loading :showing="$store.state.users_details.is_loading">
+        <q-spinner-gears size="50px" color="primary" />
+      </q-inner-loading>
+    </q-card>
+  </q-expansion-item>
 </template>
-
 
 <script>
 export default {
-    name: "UsersDepartmentUpdateForm",
-     data() {
+  name: "UsersDepartmentUpdateForm",
+  data() {
     return {
-       dense: true,
-       visible: true,
+      dense: true,
+      visible: true
     };
   },
   computed: {
-      name:  {
-        get() { return this.$store.getters["users_details/fetchDepartmentName"]; },
-        set(value){ this.$store.commit('users_details/UPDATE_DEPARTMENT_NAME',value); }   
+    name: {
+      get() {
+        return this.$store.getters["users_details/fetchDepartmentName"];
       },
-     
+      set(value) {
+        this.$store.commit("users_details/UPDATE_DEPARTMENT_NAME", value);
+      }
+    }
   },
   methods: {
-    update(){ this.$store.dispatch('users_details/updateDepartment',this); },
-    close(){ this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false) }
+    update() {
+      this.$store.dispatch("users_details/updateDepartment", this);
+    },
+    close() {
+      this.$store.commit("admin_layout/UPDATE_RIGHT_DRAWER_OPEN", false);
+    }
   }
-}
+};
 </script>
 
 <style>
-.editFlex{
-    display: flex;
-flex-direction: row;
-justify-content: flex-start;
+.editFlex {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
-.editFlex button{
-    margin-right: 10px;
+.editFlex button {
+  margin-right: 10px;
 }
 </style>

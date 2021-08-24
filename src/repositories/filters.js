@@ -22,7 +22,9 @@ const filters =  {
             if(isNaN(value._seconds) == false){
                 return date.formatDate(new Date(value._seconds * 1000), 'YYYY-MM-DD HH:mm:ss.SSSZ')
             }else{
-                return date.formatDate(value.toDate(), 'YYYY-MM-DD HH:mm:ss.SSSZ')
+                console.log(value.toDate(), 'yyyyyyyyyyyyyyyyyyyyyyyyyyyyy')
+                let k =  value.toDate();
+                return date.formatDate(k, 'YYYY-MM-DD HH:mm:ss.SSSZ')
             }
         },
         capitalizer:  (value)  => {

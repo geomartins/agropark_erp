@@ -1,4 +1,4 @@
-import { userCollections, configurationCollections, firebaseAuth, timestamp, fs, firebaseStorage } from '../boot/firebase'
+import { userCollections, dependencyCollections, firebaseAuth, timestamp, fs, firebaseStorage } from '../boot/firebase'
 import { convertJSDateToServerTimestamp, convertServerTimestampToJSDate } from '../repositories/pick'
 
 class UserDetail{
@@ -9,7 +9,6 @@ class UserDetail{
     //PERSONAL_INFORMATION
     fetchPersonalInformation(cb){
         return userCollections.doc(this.userId).onSnapshot((doc) => {
-
             let data = {};
 
             if(doc.exists){
@@ -24,46 +23,34 @@ class UserDetail{
             return cb([], errMessage);
         });
     }
-    async personalInformationDependencies(cb){
-        const nationalities = [];
-        const religions = [];
-        const blood_types = [];
-        const marital_status = [];
-        const roles = [];
-        const genders = [];
+    static async fetchRoleDependency(cb){
+        return dependencyCollections.doc('roles').onSnapshot((querySnapshot) => {
+            if(querySnapshot.exists){
+               return cb(querySnapshot.data(), null);
+            }else{
+                return cb({}, null);
+            }
 
-        const nationalityDoc = await configurationCollections.doc('nationalities').get();
-        if(nationalityDoc.exists){
-            nationalities.push(...nationalityDoc.data().ids);
-        }
-
-        const religionDoc = await configurationCollections.doc('religions').get();
-        if(religionDoc.exists){
-            religions.push(...religionDoc.data().ids);
-        }
-       
-        const bloodTypeDoc = await configurationCollections.doc('blood_types').get();
-        if(bloodTypeDoc.exists){
-            blood_types.push(...bloodTypeDoc.data().ids);
-        }
-
-        const maritalStatusDoc = await configurationCollections.doc('marital_status').get();
-        if(maritalStatusDoc.exists){
-            marital_status.push(...maritalStatusDoc.data().ids);
-        }
-
-        const roleDoc = await configurationCollections.doc('roles').get();
-        if(roleDoc.exists){
-            roles.push(...roleDoc.data().ids);
-        }
-
-        const genderDoc = await configurationCollections.doc('genders').get();
-        if(genderDoc.exists){
-            genders.push(...genderDoc.data().ids);
-        }
-       
-        return cb(nationalities, religions, blood_types, marital_status, roles, genders);
+        }, (err) => {
+            const errMessage = {message: err.code };
+            return cb({},errMessage);
+        })
     }
+    static async fetchUserDependency(cb){
+        return dependencyCollections.doc('users').onSnapshot((querySnapshot) => {
+            if(querySnapshot.exists){
+               return cb(querySnapshot.data(), null);
+            }else{
+                return cb({}, null);
+            }
+
+        }, (err) => {
+            const errMessage = {message: err.code };
+            return cb({},errMessage);
+        })
+       
+    }
+
 
     async savePersonalInformation(data, personalInformationId = null){
         delete data.id;
@@ -71,9 +58,6 @@ class UserDetail{
         data.editor = firebaseAuth.currentUser.uid; data.editedAt = timestamp;
         delete data.dob;
         if(dob){ data.dob = convertJSDateToServerTimestamp(new Date(dob));}
-        console.log(data, 'ccccccccccccccc')
-
-
 
         return userCollections.doc(personalInformationId).update(data).then((docRef) => {
             return docRef;
@@ -101,16 +85,12 @@ class UserDetail{
         });
     }
 
-    async bankDependencies(cb){
-        return configurationCollections.doc('banks').get().then(doc => {
-            if(!doc.exists){
-               return cb([])
-            }        
-            return cb(doc.data().ids);
-        })
-    }
 
     async deleteBankById(bankId = null){
+        let data = {};
+        data.deletedAt = timestamp; data.deleter = firebaseAuth.currentUser.displayName;
+        await userCollections.doc(this.userId).collection('banks').doc(bankId).update(data);
+
         return userCollections.doc(this.userId).collection('banks').doc(bankId).delete().then(() => {
             return ;
         }).catch(err => console.log(err));
@@ -165,16 +145,12 @@ class UserDetail{
             return cb([], errMessage);
         });
     }
-    async kinDependencies(cb){
-        return configurationCollections.doc('relationships').get().then(doc => {
-            if(!doc.exists){
-               return cb([])
-            }        
-            return cb(doc.data().ids);
-        })
-    }
 
     async deleteKinById(kinId = null){
+        let data = {};
+        data.deletedAt = timestamp; data.deleter = firebaseAuth.currentUser.displayName;
+        await userCollections.doc(this.userId).collection('kins').doc(kinId).update(data);
+
         return userCollections.doc(this.userId).collection('kins').doc(kinId).delete().then(() => {
             return ;
         }).catch(err => console.log(err));
@@ -227,16 +203,12 @@ class UserDetail{
         });
     }
 
-    async departmentDependencies(cb){
-        return configurationCollections.doc('departments').get().then(doc => {
-            if(!doc.exists){
-               return cb([])
-            }        
-            return cb(doc.data().ids);
-        })
-    }
 
     async deleteDepartmentById(deptId = null){
+        let data = {};
+        data.deletedAt = timestamp; data.deleter = firebaseAuth.currentUser.displayName;
+        await userCollections.doc(this.userId).collection('departments').doc(deptId).update(data);
+
         return userCollections.doc(this.userId).collection('departments').doc(deptId).delete().then(() => {
             return ;
         }).catch(err => console.log(err));
@@ -306,16 +278,11 @@ class UserDetail{
             });
     }
 
-    async documentDependencies(cb){
-        return configurationCollections.doc('documents').get().then(doc => {
-            if(!doc.exists){
-               return cb([])
-            }        
-            return cb(doc.data().ids);
-        })
-    }
-
     async deleteDocumentById(docId = null, url){
+        let data = {};
+        data.deletedAt = timestamp; data.deleter = firebaseAuth.currentUser.displayName;
+        await userCollections.doc(this.userId).collection('documents').doc(docId).update(data);
+
         return firebaseStorage.refFromURL(url).delete().then(() => {
             return userCollections.doc(this.userId).collection('documents').doc(docId).delete();
         }).then(()=> {
@@ -339,16 +306,7 @@ class UserDetail{
     }
 
 
-    //SETTING
-    async saveSetting(data){
-        data.editor = firebaseAuth.currentUser.uid; data.editedAt = timestamp;
-
-        return userCollections.doc(this.userId).update(data).then((docRef) => {
-            return docRef;
-        }).catch(err => {
-            throw err;
-        });
-    }
+    
 
 
 

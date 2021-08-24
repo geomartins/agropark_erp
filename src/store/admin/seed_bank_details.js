@@ -195,7 +195,6 @@ const actions = {
             commit('UPDATE_IS_LOADING', false);
             instance.close();
         }catch(err){
-            console.log(err);
             snackbar('warning',err.message);
             commit('UPDATE_IS_LOADING', false);
         }

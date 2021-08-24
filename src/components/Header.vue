@@ -43,27 +43,26 @@
 
         <div class="q-gutter-sm row items-center no-wrap">
          
-          <q-btn round dense flat color="grey-8" icon="notifications" @click="$router.push('/admin/module_notifiers')">
+          <q-btn round dense flat color="grey-8" icon="notifications_active" @click="$router.push('/admin/module_notifiers')">
             <q-badge color="red" text-color="white" v-if="fetchModuleNotifierCount > 0" floating>
               {{ fetchModuleNotifierCount }}
             </q-badge>
-            <q-tooltip>Module Notifiers</q-tooltip>
-            
+            <q-tooltip class="gt-sm">Module log</q-tooltip>
           </q-btn>
 
-           <q-btn round dense flat color="grey-8" icon="notifications" @click="$router.push('/admin/extension_notifiers')">
-            <q-badge color="red" text-color="white" floating>
-              3
+          <q-btn round dense flat color="grey-8" icon="notifications" @click="$router.push('/admin/extension_notifiers')">
+            <q-badge color="red" text-color="white" v-if="fetchExtensionNotifierCount > 0" floating>
+              {{ fetchExtensionNotifierCount }}
             </q-badge>
-           <q-tooltip>Extension Notifiers</q-tooltip>
+            <q-tooltip class="gt-sm">Extension log</q-tooltip>
           </q-btn>
 
-          <q-btn round flat class="gt-md">
+          <!-- <q-btn round flat class="gt-md">
             <q-avatar size="26px">
               <img src="https://cdn.quasar.dev/img/boy-avatar.png">
             </q-avatar>
             <q-tooltip>Account</q-tooltip>
-          </q-btn>
+          </q-btn> -->
         </div>
 
       </q-toolbar>
@@ -113,6 +112,7 @@ export default Vue.extend({
       ...mapState('admin_layout',['searchResult']),
       ...mapGetters('admin_layout',['fetchModulesBySearchValue']),
       ...mapGetters('module_notifiers',['fetchModuleNotifierCount']),
+      ...mapGetters('extension_notifiers',['fetchExtensionNotifierCount']),
       
       search:  {
         get() { return this.$store.getters["admin_layout/fetchSearch"]; },

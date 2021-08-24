@@ -169,6 +169,11 @@ justify-content: flex-start;
 
   .q-tab-panels{
     background: transparent;
+    
+  }
+
+  .q-tab-panel{
+    padding: 0px;
   }
 
 

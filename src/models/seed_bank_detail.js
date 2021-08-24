@@ -55,6 +55,12 @@ class SeedBankDetail{
                 inventoryData.push(ch);
                  
              });
+
+             querySnapshot.docChanges().forEach((change) => {
+                if(querySnapshot.empty && change.type === "removed"){
+                    inventoryData = [];
+                }
+            });
              console.log(inventoryData,'yes ooo')
             return cb(inventoryData, null)
         },(err) => {
@@ -93,6 +99,12 @@ class SeedBankDetail{
                 requestData.push(ch);
                  
              });
+
+             querySnapshot.docChanges().forEach((change) => {
+                if(querySnapshot.empty && change.type === "removed"){
+                    requestData = [];
+                }
+            });
              console.log(requestData,'yes ooo')
             return cb(requestData, null)
         },(err) => {

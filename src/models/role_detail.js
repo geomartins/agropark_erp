@@ -1,9 +1,51 @@
-import { roleCollections, configurationCollections, firebaseAuth, timestamp, fs } from '../boot/firebase'
+import { roleCollections, firebaseAuth, timestamp, dependencyCollections,  fs } from '../boot/firebase'
 import { convertAccessArrayToObject, convertAccessObjectToArray } from '../repositories/pick'
 
 class RoleDetail{
     constructor(roleId){
         this.roleId = roleId;
+    }
+
+    static async fetchModuleDependency(cb){
+        return dependencyCollections.doc('modules').onSnapshot((querySnapshot) => {
+            if(querySnapshot.exists){
+               return cb(querySnapshot.data(), null);
+            }else{
+                return cb({}, null);
+            }
+
+        }, (err) => {
+            const errMessage = {message: err.code };
+            return cb({},errMessage);
+        })
+    }
+
+    static async fetchExtensionDependency(cb){
+        return dependencyCollections.doc('extensions').onSnapshot((querySnapshot) => {
+            if(querySnapshot.exists){
+               return cb(querySnapshot.data(), null);
+            }else{
+                return cb({}, null);
+            }
+
+        }, (err) => {
+            const errMessage = {message: err.code };
+            return cb({},errMessage);
+        })
+    }
+
+    static async fetchRoleDependency(cb){
+        return dependencyCollections.doc('roles').onSnapshot((querySnapshot) => {
+            if(querySnapshot.exists){
+               return cb(querySnapshot.data(), null);
+            }else{
+                return cb({}, null);
+            }
+
+        }, (err) => {
+            const errMessage = {message: err.code };
+            return cb({},errMessage);
+        })
     }
 
     //ROLE_INFORMATION
@@ -60,17 +102,13 @@ class RoleDetail{
         });
     }
 
-    async moduleDependencies(cb){
-        return configurationCollections.doc('modules').get().then(doc => {
-            if(!doc.exists){
-               return cb([])
-            }        
-            return cb(doc.data().ids);
-        })
-    }
-
+  
 
     async deleteModuleById(moduleId = null){
+        let data = {};
+        data.deletedAt = timestamp; data.deleter = firebaseAuth.currentUser.displayName;
+        await roleCollections.doc(this.roleId).collection('modules').doc(moduleId).update(data);
+
         return roleCollections.doc(this.roleId).collection('modules').doc(moduleId).delete().then(() => {
             return ;
         }).catch(err => console.log(err));
@@ -136,25 +174,13 @@ class RoleDetail{
         });
     }
 
-    async extensionDependencies(cb){
-
-        const roles = [];
-        const extensions = [];
-
-        const roleDoc = await configurationCollections.doc('roles').get();
-        if(roleDoc.exists){
-            roles.push(...roleDoc.data().ids);
-        }
-
-        const extensionDoc = await configurationCollections.doc('extensions').get();
-        if(extensionDoc.exists){
-            extensions.push(...extensionDoc.data().ids);
-        }
-
-        return cb(roles, extensions);
-    }
+   
 
     async deleteExtensionById(extensionId = null){
+        let data = {};
+        data.deletedAt = timestamp; data.deleter = firebaseAuth.currentUser.displayName;
+        await roleCollections.doc(this.roleId).collection('extensions').doc(extensionId).update(data);
+
         return roleCollections.doc(this.roleId).collection('extensions').doc(extensionId).delete().then(() => {
             return ;
         }).catch(err => console.log(err));

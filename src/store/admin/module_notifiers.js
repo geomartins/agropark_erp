@@ -42,11 +42,11 @@ const actions = {
             if(err){ 
                 commit('UPDATE_SKELETON', false);
                 snackbar('warning',err.message);
+                console.log(err)
                 return;
             }
             commit('UPDATE_DATA',datas);
             commit('UPDATE_SKELETON', false);
-            console.log(state.datas,'DATA')
         })
         commit('UPDATE_UNSUBSCRIBE', { type: 'fetchModuleNotifiers', value: unsubscribe});
        

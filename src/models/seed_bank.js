@@ -45,6 +45,12 @@ class SeedBank{
                 requestData.push(ch);
                  
              });
+
+             querySnapshot.docChanges().forEach((change) => {
+                if(querySnapshot.empty && change.type === "removed"){
+                    requestData = [];
+                }
+            });
              console.log(requestData,'yes ooo')
             return cb(requestData, null)
         },(err) => {
@@ -68,6 +74,7 @@ class SeedBank{
             var lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
             if(lastVisible){
                  inventoryDataRef = lastVisible;
+                
             }
             if(!querySnapshot.empty){
                 inventoryData = [];
@@ -79,6 +86,12 @@ class SeedBank{
                 inventoryData.push(ch);
                  
              });
+
+             querySnapshot.docChanges().forEach((change) => {
+                if(querySnapshot.empty && change.type === "removed"){
+                    inventoryData = [];
+                }
+            });
              console.log(inventoryData,'yes ooo')
             return cb(inventoryData, null)
         },(err) => {
@@ -115,6 +128,12 @@ class SeedBank{
                 cropCategoryData.push(ch);
                  
              });
+
+             querySnapshot.docChanges().forEach((change) => {
+                if(querySnapshot.empty && change.type === "removed"){
+                    cropCategoryData = [];
+                }
+            });
              console.log(cropCategoryData,'yes ooo')
             return cb(cropCategoryData, null)
         },(err) => {
@@ -203,6 +222,12 @@ class SeedBank{
                 cropTypeData.push(ch);
                  
              });
+
+             querySnapshot.docChanges().forEach((change) => {
+                if(querySnapshot.empty && change.type === "removed"){
+                    cropTypeData = [];
+                }
+            });
              console.log(cropTypeData,'yes ooo')
             return cb(cropTypeData, null)
         },(err) => {

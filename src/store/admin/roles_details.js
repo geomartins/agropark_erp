@@ -1,14 +1,13 @@
-import UserDetail from "../../models/user_detail";
+
 import RoleDetail from "../../models/role_detail";
 import { snackbar, confirm } from 'src/repositories/plugins';
 import FlexValidators from "src/repositories/flex_validators";
-import ChainValidators from '../../repositories/chain_validators'
 
 const state = {
     roleId: '',
     is_loading: false,
     skeleton: false,
-    unsubscribe: [],
+    unsubscribe: {},
 
     //PERSONAL
     role_information_is_loading: false,
@@ -44,10 +43,10 @@ const state = {
 
     //OTHERS
     dependencies: {
-        modules: [],
-        extensions: [],
-        roles: [],
-    }
+        module: {},
+        extension: {},
+        role: {}
+    },
 }
 const getters = {
     //MODULE
@@ -94,6 +93,15 @@ const getters = {
 const mutations = {
     UPDATE_ROLE_ID(state, value){
         state.roleId = value;
+    },
+    UPDATE_D_MODULE(state, value) {
+        state.dependencies.module = value;
+    },
+    UPDATE_D_EXTENSION(state, value) {
+        state.dependencies.extension = value;
+    },
+    UPDATE_D_ROLE(state, value) {
+        state.dependencies.role = value;
     },
     //PERSONAL INFORMATION
     UPDATE_ROLE_INFORMATION_FORM_DATA(state,value){
@@ -190,23 +198,11 @@ const mutations = {
     UPDATE_IS_LOADING(state, value){
         state.is_loading = value;
     },
-    UPDATE_UNSUBSCRIBE(state,value){
-        state.unsubscribe = Object.assign([], value)
+    UPDATE_UNSUBSCRIBE(state,payload){
+        state.unsubscribe[payload.type] = payload.value
     },
    
-    //DEPENDENCY
-    UPDATE_D_MODULES(state, value){
-        state.dependencies.modules = value;
-    },
 
-    UPDATE_D_ROLES(state, value){
-        state.dependencies.roles = value;
-    },
-
-    UPDATE_D_EXTENSIONS(state, value){
-        state.dependencies.extensions = value;
-    },
-   
 
     //
     UPDATE_SKELETON(state, value){
@@ -220,6 +216,48 @@ const mutations = {
 
 }
 const actions = {
+
+    async fetchModuleDependency({ commit, state }) {
+        let unsubscribe = await RoleDetail.fetchModuleDependency((module, err) => {
+          if (err) {
+            snackbar("warning", err.message);
+            return;
+          }
+          commit("UPDATE_D_MODULE", module);
+        });
+        commit("UPDATE_UNSUBSCRIBE", {
+          type: "fetchModuleDependency",
+          value: unsubscribe
+        });
+    },
+    async fetchExtensionDependency({ commit, state }) {
+        let unsubscribe = await RoleDetail.fetchExtensionDependency((extension, err) => {
+          if (err) {
+            snackbar("warning", err.message);
+            return;
+          }
+          commit("UPDATE_D_EXTENSION", extension);
+        });
+        commit("UPDATE_UNSUBSCRIBE", {
+          type: "fetchExtensionDependency",
+          value: unsubscribe
+        });
+    },
+
+    async fetchRoleDependency({ commit, state }) {
+        let unsubscribe = await RoleDetail.fetchRoleDependency((role, err) => {
+          if (err) {
+            snackbar("warning", err.message);
+            return;
+          }
+          commit("UPDATE_D_ROLE", role);
+          
+        });
+        commit("UPDATE_UNSUBSCRIBE", {
+          type: "fetchRoleDependency",
+          value: unsubscribe
+        });
+    },
 
     //ROLEINFORMATION
     async fetchRoleInformation({ commit, state}){
@@ -235,7 +273,7 @@ const actions = {
             commit('UPDATE_SKELETON', false);
         })
         
-        commit('UPDATE_UNSUBSCRIBE', [...state.unsubscribe, unsubscribe]);
+       commit('UPDATE_UNSUBSCRIBE', { type: 'fetchInformation', value: unsubscribe})
     },
 
     async updateRoleInformation({commit, state},instance){
@@ -279,21 +317,12 @@ const actions = {
             commit('UPDATE_MODULE_DATAS',datas);
             commit('UPDATE_MODULE_IS_LOADING', false);
         })
-        commit('UPDATE_UNSUBSCRIBE', [...state.unsubscribe, unsubscribe]);
+        commit('UPDATE_UNSUBSCRIBE', { type: 'fetchModules', value: unsubscribe});
         
       
     },
 
-    async fetchModuleDependencies({commit, state}){
-        try{
-            await new RoleDetail(state.roleId).moduleDependencies((modules) => {
-                commit('UPDATE_D_MODULES', modules);
-           });
-        }catch(err){
-            snackbar('warning',err.message);
-        }
-       
-    },
+    
 
     async createModule({commit, state},instance){
         try{
@@ -376,22 +405,12 @@ const actions = {
             commit('UPDATE_EXTENSION_DATAS',datas);
             commit('UPDATE_EXTENSION_IS_LOADING', false);
         })
-        commit('UPDATE_UNSUBSCRIBE', [...state.unsubscribe, unsubscribe]);
+       commit('UPDATE_UNSUBSCRIBE', { type: 'fetchExtensions', value: unsubscribe});
         
       
     },
 
-    async fetchExtensionDependencies({commit, state}){
-        try{
-            await new RoleDetail(state.roleId).extensionDependencies((roles,extensions) => {
-                commit('UPDATE_D_EXTENSIONS', extensions);
-                commit('UPDATE_D_ROLES', roles);
-           });
-        }catch(err){
-            snackbar('warning',err.message);
-        }
-       
-    },
+   
 
     async createExtension({commit, state},instance){
         try{
@@ -459,11 +478,21 @@ const actions = {
 
 
 
-  
+   async clearAll({commit, state},instance){
+       commit("UPDATE_SKELETON", false)
+       commit("UPDATE_IS_LOADING", false);
+       commit("CLEAR_EXTENSION_FORM_DATA")
+       commit("CLEAR_MODULE_FORM_DATA")
+       commit("CLEAR_ROLE_INFORMATION_FORM_DATA")
+       commit("UPDATE_MODULE_DATAS", []);
+       commit("UPDATE_EXTENSION_DATAS", []);
+
+   },
 
     async unsubscribe({commit, state},instance){
         for(let x in state.unsubscribe){
-            x.unsubscribe();
+            let endListener = await state.unsubscribe[x];
+            endListener();
         }
     },
 

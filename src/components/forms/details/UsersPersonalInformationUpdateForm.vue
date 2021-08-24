@@ -1,251 +1,382 @@
 <template>
-    
-      <q-expansion-item
-        expand-separator
-        label="Edit Personal Information"
-        expand-icon-class="expand"
-        header-class="headerClass"
-        default-opened
-        style="border-bottom: 1px solid #00808057; background: #fafafa"
-        class="q-pb-md"
-       
+  <q-expansion-item
+    expand-separator
+    label="Edit Personal Information"
+    expand-icon-class="expand"
+    header-class="headerClass"
+    default-opened
+    style="border-bottom: 1px solid #00808057; background: #fafafa"
+    class="q-pb-md"
+  >
+    <q-card flat>
+      <div class="q-mt-md"></div>
 
-      >
-       <q-card flat >
-              
-            <div class="q-mt-md"></div>
-
-              <!-- <q-card-section class="q-pt-none">
+      <!-- <q-card-section class="q-pt-none">
                 <q-select color="grey-3" outlined :dense="dense"  v-model="name" :options="$store.state.users_details.dependencies.banks" label="Bank Name">
                 </q-select>
             </q-card-section> -->
 
-             <q-card-section class="q-pt-none">
-                <q-input type="email" outlined v-model="email" label="Email Address" :dense="dense" />
-              </q-card-section>
+      <q-card-section class="q-pt-none">
+        <q-input
+          type="email"
+          outlined
+          v-model="email"
+          label="Email Address"
+          :dense="dense"
+        />
+      </q-card-section>
 
+      <q-card-section class="q-pt-none">
+        <q-input
+          outlined
+          v-model="firstname"
+          label="FirstName"
+          :dense="dense"
+        />
+      </q-card-section>
 
+      <q-card-section class="q-pt-none">
+        <q-input
+          outlined
+          v-model="middlename"
+          label="MiddleName"
+          :dense="dense"
+        />
+      </q-card-section>
 
-             <q-card-section class="q-pt-none">
-                <q-input outlined v-model="firstname" label="FirstName" :dense="dense" />
-              </q-card-section>
+      <q-card-section class="q-pt-none">
+        <q-input outlined v-model="lastname" label="LastName" :dense="dense" />
+      </q-card-section>
 
-              <q-card-section class="q-pt-none">
-                <q-input outlined v-model="middlename" label="MiddleName" :dense="dense" />
-              </q-card-section>
+      <div class="splitTwoFlex">
+        <q-card-section class="q-pt-none">
+          <q-select
+            color="grey-3"
+            outlined
+            :dense="dense"
+            v-model="role"
+            :options="$store.state.users_details.dependencies.role.ids"
+            label="Role"
+          >
+          </q-select>
+        </q-card-section>
 
-              <q-card-section class="q-pt-none">
-                <q-input outlined v-model="lastname" label="LastName" :dense="dense" />
-              </q-card-section>
+        <q-card-section class="q-pt-none">
+          <q-select
+            color="grey-3"
+            outlined
+            :dense="dense"
+            v-model="gender"
+            :options="
+              $store.state.users_details.dependencies.user.genders.split(',')
+            "
+            label="Gender"
+          >
+          </q-select>
+        </q-card-section>
+      </div>
 
-            <div class="splitTwoFlex">
-                <q-card-section class="q-pt-none">
-                <q-select color="grey-3" outlined :dense="dense"  v-model="role" :options="$store.state.users_details.dependencies.roles" label="Role">
-                </q-select>
-            </q-card-section>
-
-             <q-card-section class="q-pt-none">
-                <q-select color="grey-3" outlined :dense="dense"  v-model="gender" :options="$store.state.users_details.dependencies.genders" label="Gender">
-                </q-select>
-            </q-card-section>
-            </div>
-            
-           
-
-            <q-card-section class="q-pt-none">
-               <q-input outlined v-model="dob" :dense="dense" readonly stack-label label="Date Of Birth">
-                <template v-slot:append>
-                    <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy transition-show="scale" transition-hide="scale">
-                        <q-date v-model="dob" mask="YYYY-MM-DD">
-                        <div class="row items-center justify-end">
-                            <q-btn v-close-popup label="Close" color="primary" flat />
-                        </div>
-                        </q-date>
-                    </q-popup-proxy>
-                    </q-icon>
-                </template>
-
-                </q-input>
-            </q-card-section>
-
-            <q-card-section class="q-pt-none">
-                <q-input outlined v-model="pob" label="Place Of Birth" :dense="dense" />
-            </q-card-section>
-
-            <q-card-section class="q-pt-none">
-               
-                <q-input outlined v-model="telephone" label="Telephone" :dense="dense" mask="(###) ### - #####"
-                fill-mask
-                unmasked-value
-                hint="Mask: (###) ### - ####" />
-            </q-card-section>
-
-             <q-card-section class="q-pt-none">
-                <q-select color="grey-3" outlined :dense="dense"  v-model="marital_status" :options="$store.state.users_details.dependencies.marital_status" label="Marital Status">
-                </q-select>
-            </q-card-section>
-
-            <div class="splitTwoFlex">
-                <q-card-section class="q-pt-none">
-                <q-select color="grey-3"  outlined :dense="dense"  v-model="nationality" :options="$store.state.users_details.dependencies.nationalities" label="Nationality" >
-                </q-select>
-            </q-card-section>
-
-            <q-card-section class="q-pt-none">
-                <q-select color="grey-3" outlined :dense="dense"  v-model="religion" :options="$store.state.users_details.dependencies.religions" label="Religious Affiliation">
-                </q-select>
-            </q-card-section>
-            </div>
-             
-
-             <div class="splitTwoFlex">
-                    <q-card-section class="q-pt-none">
-                    <q-input outlined v-model="height" label="Height" :dense="dense" />
-                </q-card-section>
-
-                <q-card-section class="q-pt-none">
-                    <q-input outlined v-model="weight" label="Weight" :dense="dense" />
-                </q-card-section>
-             </div>
-
-             <q-card-section class="q-pt-none">
-                <q-select color="grey-3" outlined :dense="dense"  v-model="blood_type" :options="$store.state.users_details.dependencies.blood_types" label="Blood Type">
-                </q-select>
-            </q-card-section>
-
-
-
-
-
-             <q-card-section class="q-pt-none">
-                  <div class="editFlex">
-                      <q-btn color="primary"   label="Update" @click.prevent="update()" />
-                      <q-btn color="primary" outline label="Close" @click.prevent="$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false)" />
+      <q-card-section class="q-pt-none">
+        <q-input
+          outlined
+          v-model="dob"
+          :dense="dense"
+          readonly
+          stack-label
+          label="Date Of Birth"
+        >
+          <template v-slot:append>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy transition-show="scale" transition-hide="scale">
+                <q-date v-model="dob" mask="YYYY-MM-DD">
+                  <div class="row items-center justify-end">
+                    <q-btn v-close-popup label="Close" color="primary" flat />
                   </div>
-              </q-card-section>
+                </q-date>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+      </q-card-section>
 
+      <q-card-section class="q-pt-none">
+        <q-input outlined v-model="pob" label="Place Of Birth" :dense="dense" />
+      </q-card-section>
 
-              <q-inner-loading :showing="$store.state.users_details.is_loading">
-                <q-spinner-gears size="50px" color="primary" />
-              </q-inner-loading>
+      <q-card-section class="q-pt-none">
+        <q-input
+          outlined
+          v-model="telephone"
+          label="Telephone"
+          :dense="dense"
+          mask="(###) ### - ### - ####"
+          fill-mask
+          unmasked-value
+          hint="Mask: (###) ### - ### - ####"
+        />
+      </q-card-section>
 
-             
-            </q-card>
-      </q-expansion-item>
+      <q-card-section class="q-pt-none">
+        <q-select
+          color="grey-3"
+          outlined
+          :dense="dense"
+          v-model="marital_status"
+          :options="
+            $store.state.users_details.dependencies.user.marital_status.split(
+              ','
+            )
+          "
+          label="Marital Status"
+        >
+        </q-select>
+      </q-card-section>
+
+      <div class="splitTwoFlex">
+        <q-card-section class="q-pt-none">
+          <q-select
+            color="grey-3"
+            outlined
+            :dense="dense"
+            v-model="nationality"
+            :options="
+              $store.state.users_details.dependencies.user.nationalities.split(
+                ','
+              )
+            "
+            label="Nationality"
+          >
+          </q-select>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-select
+            color="grey-3"
+            outlined
+            :dense="dense"
+            v-model="religion"
+            :options="
+              $store.state.users_details.dependencies.user.religions.split(',')
+            "
+            label="Religious Affiliation"
+          >
+          </q-select>
+        </q-card-section>
+      </div>
+
+      <div class="splitTwoFlex">
+        <q-card-section class="q-pt-none">
+          <q-input outlined v-model="height" label="Height" :dense="dense" />
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-input outlined v-model="weight" label="Weight" :dense="dense" />
+        </q-card-section>
+      </div>
+
+      <q-card-section class="q-pt-none">
+        <q-select
+          color="grey-3"
+          outlined
+          :dense="dense"
+          v-model="blood_type"
+          :options="
+            $store.state.users_details.dependencies.user.blood_types.split(',')
+          "
+          label="Blood Type"
+        >
+        </q-select>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+        <div class="editFlex">
+          <q-btn color="primary" label="Update" @click.prevent="update()" />
+          <q-btn
+            color="primary"
+            outline
+            label="Close"
+            @click.prevent="
+              $store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN', false)
+            "
+          />
+        </div>
+      </q-card-section>
+
+      <q-inner-loading :showing="is_loading">
+        <q-spinner-gears size="50px" color="primary" />
+      </q-inner-loading>
+    </q-card>
+  </q-expansion-item>
 </template>
 
-
 <script>
+import { mapState, mapMutations } from "vuex";
 export default {
-    name: "UsersPersonalInformationUpdateForm",
-     data() {
+  name: "UsersPersonalInformationUpdateForm",
+  data() {
     return {
-       dense: true,
-       visible: true,
-       date:  '2019/02/01'
+      dense: true,
+      visible: true,
+      date: "2019/02/01"
     };
   },
   computed: {
-      email:  {
-        get() { return this.$store.getters["users_details/fetchPersonalInformationEmail"]; },
-        set(value){ this.$store.commit('users_details/UPDATE_PERSONAL_INFORMATION_EMAIL',value); }   
+    ...mapState("users_details", ["is_loading", "personalInformationFormData"]),
+    email: {
+      get() {
+        return this.personalInformationFormData.email;
       },
-      firstname:  {
-        get() { return this.$store.getters["users_details/fetchPersonalInformationFirstname"]; },
-        set(value){ this.$store.commit('users_details/UPDATE_PERSONAL_INFORMATION_FIRSTNAME',value); }   
+      set(value) {
+        this.UPDATE_PERSONAL_INFORMATION_FORM_DATA({ email: value });
+      }
+    },
+    firstname: {
+      get() {
+        return this.personalInformationFormData.firstname;
       },
-      middlename:  {
-        get() { return this.$store.getters["users_details/fetchPersonalInformationMiddlename"]; },
-        set(value){ this.$store.commit('users_details/UPDATE_PERSONAL_INFORMATION_MIDDLENAME',value); }   
+      set(value) {
+        this.UPDATE_PERSONAL_INFORMATION_FORM_DATA({ firstname: value });
+      }
+    },
+    middlename: {
+      get() {
+        return this.personalInformationFormData.middlename;
       },
-      lastname:  {
-        get() { return this.$store.getters["users_details/fetchPersonalInformationLastname"]; },
-        set(value){ this.$store.commit('users_details/UPDATE_PERSONAL_INFORMATION_LASTNAME',value); }   
+      set(value) {
+        this.UPDATE_PERSONAL_INFORMATION_FORM_DATA({ middlename: value });
+      }
+    },
+    lastname: {
+      get() {
+        return this.personalInformationFormData.lastname;
       },
-      role:  {
-        get() { return this.$store.getters["users_details/fetchPersonalInformationRole"]; },
-        set(value){ this.$store.commit('users_details/UPDATE_PERSONAL_INFORMATION_ROLE',value); }   
+      set(value) {
+        this.UPDATE_PERSONAL_INFORMATION_FORM_DATA({ lastname: value });
+      }
+    },
+    role: {
+      get() {
+        return this.personalInformationFormData.role;
       },
-      gender:  {
-        get() { return this.$store.getters["users_details/fetchPersonalInformationGender"]; },
-        set(value){ this.$store.commit('users_details/UPDATE_PERSONAL_INFORMATION_GENDER',value); }   
+      set(value) {
+        this.UPDATE_PERSONAL_INFORMATION_FORM_DATA({ role: value });
+      }
+    },
+    gender: {
+      get() {
+        return this.personalInformationFormData.gender;
       },
-      pob:  {
-        get() { return this.$store.getters["users_details/fetchPersonalInformationPob"]; },
-        set(value){ this.$store.commit('users_details/UPDATE_PERSONAL_INFORMATION_POB',value); }   
+      set(value) {
+        this.UPDATE_PERSONAL_INFORMATION_FORM_DATA({ gender: value });
+      }
+    },
+    pob: {
+      get() {
+        return this.personalInformationFormData.pob;
       },
-      dob:  {
-        get() { return this.$store.getters["users_details/fetchPersonalInformationDob"]; },
-        set(value){ 
-            console.log(value, 'final')
-            this.$store.commit('users_details/UPDATE_PERSONAL_INFORMATION_DOB',value);
-             }   
+      set(value) {
+        this.UPDATE_PERSONAL_INFORMATION_FORM_DATA({ pob: value });
+      }
+    },
+    dob: {
+      get() {
+        return this.personalInformationFormData.dob;
       },
-      telephone:  {
-        get() { return this.$store.getters["users_details/fetchPersonalInformationTelephone"]; },
-        set(value){ 
-            this.$store.commit('users_details/UPDATE_PERSONAL_INFORMATION_TELEPHONE',value); }   
+      set(value) {
+        this.UPDATE_PERSONAL_INFORMATION_FORM_DATA({ dob: value });
+      }
+    },
+    telephone: {
+      get() {
+        return this.personalInformationFormData.telephone;
       },
-      marital_status:  {
-        get() { return this.$store.getters["users_details/fetchPersonalInformationMaritalStatus"]; },
-        set(value){ this.$store.commit('users_details/UPDATE_PERSONAL_INFORMATION_MARITAL_STATUS',value); }   
+      set(value) {
+        this.UPDATE_PERSONAL_INFORMATION_FORM_DATA({ telephone: value });
+      }
+    },
+    marital_status: {
+      get() {
+        return this.personalInformationFormData.marital_status;
       },
-      nationality:  {
-        get() { return this.$store.getters["users_details/fetchPersonalInformationNationality"]; },
-        set(value){ this.$store.commit('users_details/UPDATE_PERSONAL_INFORMATION_NATIONALITY',value); }   
+      set(value) {
+        this.UPDATE_PERSONAL_INFORMATION_FORM_DATA({ marital_status: value });
+      }
+    },
+    nationality: {
+      get() {
+        return this.personalInformationFormData.marital_status;
       },
-      religion:  {
-        get() { return this.$store.getters["users_details/fetchPersonalInformationReligion"]; },
-        set(value){ this.$store.commit('users_details/UPDATE_PERSONAL_INFORMATION_RELIGION',value); }   
+      set(value) {
+        this.UPDATE_PERSONAL_INFORMATION_FORM_DATA({ nationality: value });
+      }
+    },
+    religion: {
+      get() {
+        return this.personalInformationFormData.religion;
       },
-      height:  {
-        get() { return this.$store.getters["users_details/fetchPersonalInformationHeight"]; },
-        set(value){ this.$store.commit('users_details/UPDATE_PERSONAL_INFORMATION_HEIGHT',value); }   
+      set(value) {
+        this.UPDATE_PERSONAL_INFORMATION_FORM_DATA({ religion: value });
+      }
+    },
+    height: {
+      get() {
+        return this.personalInformationFormData.height;
       },
-      weight:  {
-        get() { return this.$store.getters["users_details/fetchPersonalInformationWeight"]; },
-        set(value){ this.$store.commit('users_details/UPDATE_PERSONAL_INFORMATION_WEIGHT',value); }   
+      set(value) {
+        this.UPDATE_PERSONAL_INFORMATION_FORM_DATA({ height: value });
+      }
+    },
+    weight: {
+      get() {
+        return this.personalInformationFormData.weight;
       },
-      blood_type:  {
-        get() { return this.$store.getters["users_details/fetchPersonalInformationBloodType"]; },
-        set(value){ this.$store.commit('users_details/UPDATE_PERSONAL_INFORMATION_BLOOD_TYPE',value); }   
+      set(value) {
+        this.UPDATE_PERSONAL_INFORMATION_FORM_DATA({ weight: value });
+      }
+    },
+    blood_type: {
+      get() {
+        return this.personalInformationFormData.blood_type;
       },
-
-
-     
-
+      set(value) {
+        this.UPDATE_PERSONAL_INFORMATION_FORM_DATA({ blood_type: value });
+      }
+    }
   },
   methods: {
-    update(){ this.$store.dispatch('users_details/updatePersonalInformation',this); },
-    close(){ this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false) },
+    ...mapMutations("users_details", ["UPDATE_PERSONAL_INFORMATION_FORM_DATA"]),
+    update() {
+      this.$store.dispatch("users_details/updatePersonalInformation", this);
+    },
+    close() {
+      this.$store.commit("admin_layout/UPDATE_RIGHT_DRAWER_OPEN", false);
+    }
   }
-}
+};
 </script>
 
 <style>
-.editFlex{
-    display: flex;
-flex-direction: row;
-justify-content: flex-start;
+.editFlex {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
-.editFlex button{
-    margin-right: 10px;
+.editFlex button {
+  margin-right: 10px;
 }
 
-.splitTwoFlex{
-    display: flex;
-    width: 100%;
-    max-height: 100%;
-
+.splitTwoFlex {
+  display: flex;
+  width: 100%;
+  max-height: 100%;
 }
 
-.splitTwoFlex > .q-card__section{
-    width: 50%;
+.splitTwoFlex > .q-card__section {
+  width: 50%;
 }
 
-.splitTwoFlex > .q-card__section:first-child{
-    padding-right: 0px;
+.splitTwoFlex > .q-card__section:first-child {
+  padding-right: 0px;
 }
 </style>

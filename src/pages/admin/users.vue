@@ -5,6 +5,7 @@
               <div class="col-lg-1 col-xs-0"></div>
               <div class="col-lg-8 col-xs-12">
                   <app-skeleton :skeleton="skeleton" type="a">
+                     <app-users-toolbar></app-users-toolbar>
                      <app-users-list-view></app-users-list-view>
                   </app-skeleton>
               </div>
@@ -19,6 +20,8 @@
 import { mapState } from 'vuex';
 import UsersListView from '../../components/listviews/UsersListView'
 import Skeleton from '../../components/Skeleton'
+import FirestoreService from '../../services/firestore_service'
+import UsersToolbar from '../../components/toolbar/UsersToolbar'
 
 export default {
   name: "users",
@@ -27,6 +30,7 @@ export default {
   },
   components: {
       "app-users-list-view": UsersListView,
+      "app-users-toolbar": UsersToolbar,
       "app-skeleton": Skeleton
   },
   data () {
@@ -39,9 +43,10 @@ export default {
     async main(){
         this.$store.commit('admin_layout/UPDATE_BREAD_CRUMB', { pageTitle: 'Users' })
         this.$store.commit('users/UPDATE_FILTER','')
-        this.$store.dispatch('users/fetch', 'initial').then(() => {
-        this.$store.dispatch('users/dependencies', this);
-       });
+        this.$store.dispatch('users/fetch', 'initial')
+        this.$store.dispatch('users/fetchUserDependency', this);
+        this.$store.dispatch('users/fetchRoleDependency', this);
+       
     },
     async getNextData() {
       window.onscroll = () => {
@@ -58,15 +63,11 @@ export default {
     }
   },
   beforeMount() {
+    new FirestoreService().moduleNotifierCleaner("users");
     this.main();
   },
   mounted() {
     this.getNextData();
   },
-  beforeRouteLeave (to, from , next) {
-      this.$store.dispatch('users/unsubscribe', this);
-      this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false)
-      next();
-  }
 }
 </script>

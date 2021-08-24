@@ -64,20 +64,9 @@ const getters = {
         let result  = state.modules.filter(function (e) {
             return e.category == category;
         });
-        console.log(result,category)
         return result;
     },
-    // fetchModulesBySearchValue: (state) => (value) =>{
-    //     if(value.length < 1){
-    //         return []
-    //     }
-    //     console.log('In ', value)
-    //     let result  = state.modules.filter(function (e) {
-    //         return e.name.includes(value);
-    //     });
-    //     console.log(result,value)
-    //     return result;
-    // }
+   
 
    
     
@@ -106,7 +95,6 @@ const mutations = {
     },
   
     UPDATE_LEFT_DRAWER_OPEN(state, value){
-        console.log('Left value', value)
        
         if(value == true){
             if(Screen.lt.xl){
@@ -150,16 +138,16 @@ const mutations = {
         if(value == false){
             if(Screen.lt.xl){
                 state.rightDrawerOpen = false;
-                state.leftDrawerOpen = true;
+                //state.leftDrawerOpen = true;
             }else if(Screen.lt.lg || Screen.lt.md){
                 state.rightDrawerOpen = false;
-                state.leftDrawerOpen = true;
+                //state.leftDrawerOpen = true;
             }else if(Screen.lt.xs || Screen.lt.sm){
                 state.rightDrawerOpen = false;
-                state.leftDrawerOpen = false;
+                //state.leftDrawerOpen = false;
             }else{
                 state.rightDrawerOpen = false;
-                state.leftDrawerOpen = true;
+                //state.leftDrawerOpen = true;
             }
         }
     },
@@ -167,7 +155,6 @@ const mutations = {
     UPDATE_SEARCH(state, value){
         state.search = value;
         if(value.length < 2){
-            console.log('less than 2')
             state.searchResult = [];
             return;
         }

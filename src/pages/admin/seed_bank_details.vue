@@ -118,11 +118,6 @@ export default {
     mounted() {
         this.getNextData();
     },
-    beforeRouteLeave (to, from , next) {
-        this.$store.dispatch('seed_bank_details/unsubscribe',this)
-        this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false)
-        next();
-    }
 }
 
 </script>

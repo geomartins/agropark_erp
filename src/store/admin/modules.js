@@ -3,28 +3,47 @@ import Module from '../../models/module'
 import FlexValidators from 'src/repositories/flex_validators';
 const state = {
    id: '',
+    moduleDependencyFormData: {
+        categories: "",
+    },
+    dependencies: {
+        module: {}
+    },
    formData: {
       name: '',
+      alt_name: '',
       description: '',
       category: '',
+      
+      whatzapp_channel: '',
+      mail_channel: '',
+      slack_channel: '',
+      sms_channel: '',
+      app_channel: false,
+      pushy_channel: false,
    },
    is_loading: false,
-   unsubscribe: '',
+   unsubscribe: {},
    skeleton: false,
 
 
   loading: false,
   filter: '',
-  rowCount: 10,
   datas: [],
-  dependencies: {
-    categories: [],
-  }
+  
+
+  
+ //MODULE_NOTIFIER
+ moduleNotifierFilter: '',
+ moduleNotifierDatas: []
    
 }
 const getters = { 
      fetchName: (state) => {
         return state.formData.name;
+     },
+     fetchAltName: (state) => {
+        return state.formData.alt_name;
      },
      fetchDescription: (state) => {
          return state.formData.description;
@@ -32,20 +51,72 @@ const getters = {
      fetchCategory: (state) => {
         return state.formData.category;
      },
+     
+     fetchWhatzappChannel: (state) => {
+         return state.formData.whatzapp_channel;
+     },
+     fetchMailChannel: (state) => {
+        return state.formData.mail_channel;
+     },
+     fetchSlackChannel: (state) => {
+        return state.formData.slack_channel;
+     },
+     fetchSmsChannel: (state) => {
+        return state.formData.sms_channel;
+     },
+     fetchPushyChannel: (state) => {
+        return state.formData.pushy_channel;
+     },
+     fetchAppChannel: (state) => {
+        return state.formData.app_channel;
+     },
+
      fetchFilter: (state) => {
         return state.filter;
     },
     fetchData: (state) => {
-        //.sort(sortBy('name'))
         return state.datas;
-     },
-     fetchColumns: (state) => {
-        return state.columns;
-     },
+    },
+
+
+     //MODULE_NOTIFIER
+    fetchModuleNotifierData: (state) => {
+        return state.moduleNotifierDatas;
+    },
+    fetchModuleNotifierFilter: (state) => {
+        return state.moduleNotifierFilter;
+    },
+
+
 }
 const mutations = { 
+    UPDATE_UNSUBSCRIBE(state,payload){
+        state.unsubscribe[payload.type] = payload.value
+    },
+    UPDATE_D_MODULE(state,value){
+        state.dependencies.module = value; 
+    },
+    UPDATE_MODULE_DEPENDENCY_FORM_DATA(state, payload) {
+        const [key, value] = Object.entries(payload)[0];
+        state.moduleDependencyFormData[key] = value.toLowerCase().trim();
+    },
+    UPDATE_EDIT_MODULE_DEPENDENCY_FORM_DATA(state, payload) {
+        state.moduleDependencyFormData = {
+          categories: payload.categories ?? "",
+        };
+    },
+    CLEAR_MODULE_DEPENDENCY_FORM_DATA(state) {
+        state.moduleDependencyFormData = {
+          categories: "",
+         
+        };
+    },
+
     UPDATE_NAME(state, value){
         state.formData.name = value;
+    },
+    UPDATE_ALT_NAME(state, value){
+        state.formData.alt_name = value;
     },
     UPDATE_DESCRIPTION(state, value){
         state.formData.description = value;
@@ -53,41 +124,83 @@ const mutations = {
     UPDATE_CATEGORY(state, value){
         state.formData.category = value;
     },
+
+    UPDATE_WHATZAPP_CHANNEL(state, value){
+        state.formData.whatzapp_channel = value;
+    },
+    UPDATE_MAIL_CHANNEL(state, value){
+        state.formData.mail_channel = value;
+    },
+    UPDATE_SLACK_CHANNEL(state, value){
+        state.formData.slack_channel = value;
+    },
+    UPDATE_SMS_CHANNEL(state, value){
+        state.formData.sms_channel = value;
+    },
+    UPDATE_APP_CHANNEL(state, value){
+        state.formData.app_channel = value;
+    },
+    UPDATE_PUSHY_CHANNEL(state, value){
+        state.formData.pushy_channel = value;
+    },
+
+
     UPDATE_IS_LOADING(state, value){
         state.is_loading = value;
     },
     UPDATE_FILTER(state, value){
         state.filter = value;
     },
-    UPDATE_COLUMNS(state, value){
-        state.columns = value;
-    },
-    UPDATE_UNSUBSCRIBE(state,value){
-        state.unsubscribe = value;
-    },
+  
     UPDATE_EDIT_FORM_DATA(state, payload){
-        state.formData.name = payload.name;
-        state.formData.description = payload.description;
-        state.formData.category = payload.category;
+        state.formData = {
+            name: payload.name ?? '',
+            alt_name: payload.alt_name ?? '',
+            description: payload.description ?? '',
+            category:  payload.category ?? '',
+            whatzapp_channel: payload.whatzapp_channel ?? '',
+            mail_channel: payload.mail_channel ?? '',
+            slack_channel: payload.slack_channel ?? '',
+            sms_channel: payload.sms_channel ?? '',
+            app_channel: payload.app_channel ?? false,
+            pushy_channel: payload.pushy_channel ?? false,
+        }
         state.id = payload.id;
     },
     UPDATE_DATA(state,value){
         state.datas = Object.assign([], value)
-        // state.datas.length = 0;
-        // state.datas.push(...value);
     },
-    UPDATE_D_CATEGORIES(state,value){
-       state.dependencies.categories = value; 
-    },
+   
     UPDATE_SKELETON(state, value){
         state.skeleton = value;
     },
     CLEAR_FORM_DATA(state){
-        state.formData.name = '';
-        state.formData.description = '';
-        state.formData.category = '';
         state.id = '';
+        state.formData =  {
+            name: '',
+            alt_name: '',
+            description: '',
+            category: '',
+            whatzapp_channel: '',
+            mail_channel: '',
+            slack_channel: '',
+            sms_channel: '',
+            app_channel: false,
+            pushy_channel: false,
+         };
     },
+
+    
+    //MODULE CATEGORY
+    UPDATE_MODULE_NOTIFIER_FILTER(state, value){
+        state.moduleNotifierFilter = value;
+    },
+    UPDATE_MODULE_NOTIFIER_DATA(state,value){
+        state.moduleNotifierDatas = Object.assign([], value)
+    },
+
+
+    
     
 
 
@@ -102,13 +215,15 @@ const actions = {
            
             new FlexValidators(data).check({
                 'name': 'required|notNull',
+                'alt_name': 'required|notNull',
                 'description': 'required|notNull',
                 'category': 'required|notNull',
+                'pushy_channel': 'required|notNull',
+                'app_channel': 'required|notNull'
             });
 
-            const { name, description, category, id } = data;
-            let module = new Module(name,description,category ,id);
-            await module.save();
+            let module = new Module();
+            await module.save(data);
 
             snackbar('success','item created successfully')
             commit("CLEAR_FORM_DATA");
@@ -132,25 +247,52 @@ const actions = {
                 return;
             }
             commit('UPDATE_DATA',datas);
-            console.log(state.datas,'NEW DATA')
             commit('UPDATE_SKELETON', false);
        })
-       commit('UPDATE_UNSUBSCRIBE', unsubscribe);
+       commit('UPDATE_UNSUBSCRIBE', { type: 'fetchModules', value: unsubscribe});
+      
        
     },
 
-    async dependencies({commit, state}){
-        try{
-            
-            await new Module().dependencies((categories) => {
-                console.log(categories)
-                commit('UPDATE_D_CATEGORIES', categories);
-           });
-        }catch(err){
-            snackbar('warning',err.message);
-        }
-       
+    async fetchModuleDependency({ commit, state }) {
+        let unsubscribe = await Module.fetchModuleDependency((module, err) => {
+          if (err) {
+            snackbar("warning", err.message);
+            return;
+          }
+          console.log("modueeeeeeeee",module)
+          commit("UPDATE_D_MODULE", module);
+          commit("UPDATE_EDIT_MODULE_DEPENDENCY_FORM_DATA", module);
+        });
+        commit("UPDATE_UNSUBSCRIBE", {
+          type: "fetchModuleDependency",
+          value: unsubscribe
+        });
     },
+
+    
+  async updateModuleDependency({ commit, state }, instance) {
+    let data = state.moduleDependencyFormData;
+    data.id = "modules";
+    try {
+      commit("UPDATE_IS_LOADING", true);
+
+      new FlexValidators(data).check({
+        categories: "required|notNull",
+        id: "required|notNull"
+      });
+
+      await Module.updateModuleDependency(data);
+
+      snackbar("success", "item updated successfully");
+      commit("CLEAR_MODULE_DEPENDENCY_FORM_DATA");
+      commit("UPDATE_IS_LOADING", false);
+      instance.close();
+    } catch (err) {
+      snackbar("warning", err.message);
+      commit("UPDATE_IS_LOADING", false);
+    }
+  },
 
     async search({commit,dispatch, state},value){
         if(value.length < 1){
@@ -168,7 +310,6 @@ const actions = {
     async delete({commit, state},id){
         let x = (await confirm('Confirm','Would you like to delete the selected item?'));
         x.onOk(()=> {
-            console.log(id);
             Module.deleteById(id).then().catch(err => {
                 snackbar('warning',err.message);
             });
@@ -187,14 +328,17 @@ const actions = {
 
             new FlexValidators(data).check({
                 'name': 'required|notNull',
+                'alt_name': 'required|notNull',
                 'description': 'required|notNull',
                 'category': 'required|notNull',
+                'pushy_channel': 'required|notNull',
+                'app_channel': 'required|notNull',
                 'id': 'required|notNull',
             });
 
-            const { name, description, category, id } = data;
-            let module = new Module(name,description,category,id);
-            await module.save();
+        
+            let module = new Module();
+            await module.save(data);
 
             snackbar('success','item updated successfully')
             commit("CLEAR_FORM_DATA");
@@ -207,11 +351,88 @@ const actions = {
         
     },
 
+
+
+
+    async createModuleCategory({commit, state},instance){
+
+        try{
+            commit('UPDATE_IS_LOADING', true);
+            let data = state.moduleCategoryFormData;
+            delete data.id;
+            new FlexValidators(data).check({
+                'name': 'required|notNull',
+                'description': 'required|notNull'
+            });
+
+            console.log(data);
+            let moduleCategory = Module.saveModuleCategory(data);
+            await moduleCategory.save();
+
+
+            snackbar('success','item created successfully')
+            commit("CLEAR_FORM_DATA");
+            commit('UPDATE_IS_LOADING', false);
+        }catch(err){
+            snackbar('warning',err.message);
+            commit('UPDATE_IS_LOADING', false);
+        }
+        
+    },
+
+   
+
+   
+
+
+    //MODULE_NOTIFIER
+    async searchModuleNotifier({commit,dispatch, state},value){
+        console.log('inside life', value)
+        if(value.length < 1){
+            dispatch('fetchModuleNotifiers','initial');
+            return ;
+        }
+        
+        Module.searchModuleNotifier(value).then((datas) => {
+            commit('UPDATE_MODULE_NOTIFIER_DATA',datas);
+        }).catch(err => {
+            snackbar('warning',err.message);
+        });
+    },
+
+    async fetchModuleNotifiers({commit, state}, type){
+        
+        let unsubscribe = Module.fetchModuleNotifiers(type, (datas,err) => {
+            if(err){ 
+                snackbar('warning',err.message);
+                commit('UPDATE_SKELETON', false);
+                return;
+            }
+            commit('UPDATE_MODULE_NOTIFIER_DATA',datas);
+            commit('UPDATE_SKELETON', false);
+        })
+        commit('UPDATE_UNSUBSCRIBE', { type: 'fetchModuleNotifiers', value: unsubscribe});
+        
+       
+    },
+
+
+    async clearAll({commit, state}){
+        commit("CLEAR_FORM_DATA");
+        commit("CLEAR_MODULE_DEPENDENCY_FORM_DATA");
+        commit("UPDATE_DATA", []);
+        //commit("UPDATE_IS_LOADING", false);
+        commit("UPDATE_D_MODULE", {});
+    },
+
     async unsubscribe({commit, state},instance){
-        if(state.unsubscribe){
-            state.unsubscribe();
+        for(let x in state.unsubscribe){
+            let endListener = await state.unsubscribe[x];
+            endListener();
         }
     },
+
+  
 
 }
 

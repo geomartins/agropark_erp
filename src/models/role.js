@@ -1,4 +1,4 @@
-import { roleCollections, firebaseAuth, timestamp, fs } from '../boot/firebase'
+import { roleCollections, firebaseAuth, timestamp, dependencyCollections, fs } from '../boot/firebase'
 import { purifyObject, generateUid } from '../repositories/pick';
 import AlgoliaService from '../services/algolia_service';
 
@@ -11,6 +11,21 @@ class Role{
         this.description = description;
         this.id = id;
     }
+    static async fetchRoleDependency(cb){
+        return dependencyCollections.doc('roles').onSnapshot((querySnapshot) => {
+            if(querySnapshot.exists){
+               return cb(querySnapshot.data(), null);
+            }else{
+                return cb({}, null);
+            }
+
+        }, (err) => {
+            const errMessage = {message: err.code };
+            return cb({},errMessage);
+        })
+    }
+
+    
 
     fetch(type, cb){
 
@@ -39,6 +54,12 @@ class Role{
                 }else{
                     console.log('No data available');
                 }
+
+                querySnapshot.docChanges().forEach((change) => {
+                    if(querySnapshot.empty && change.type === "removed"){
+                        data = [];
+                    }
+                });
                 
                 return cb(data, null)
             },(err) => {
@@ -79,6 +100,10 @@ class Role{
 
 
     static async deleteById(id){
+        let data = {};
+        data.deletedAt = timestamp; data.deleter = firebaseAuth.currentUser.displayName;
+        await roleCollections.doc(id).update(data);
+
         return roleCollections.doc(id).delete().then(() => {
             return ;
         }).catch(err => console.log(err));

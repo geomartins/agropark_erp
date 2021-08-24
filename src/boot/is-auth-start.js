@@ -1,5 +1,4 @@
 import { firebaseAuth } from './firebase';
-import { api, axios } from './axios';
 import { setData,getData } from '../repositories/plugins'
 import PushyService from 'src/services/pushy_service';
 import FirestoreService from 'src/services/firestore_service';
@@ -14,7 +13,7 @@ export default async ({ app, router, store, Vue, urlPath, redirect }) => {
       let avatar = user.photoURL;
       let token = await user.getIdToken();
       let role = (await user.getIdTokenResult()).claims.role;
-      
+
       setData('token', token);
       setData('role', role)
       setData("uid", user.uid)

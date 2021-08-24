@@ -13,9 +13,12 @@ class Domain{
     fetch(type,cb){
         let ref;
         if(dataRef && type == 'next'){
+            console.log('In AAAAAAAAA')
             // console.log('Inside old data', dataRef)
             ref = domainCollections.orderBy('createdAt','desc').startAfter(dataRef).limit(25);
         }else if(type == 'initial'){
+            console.log('In BBBBB')
+            data = [];
             ref = domainCollections.orderBy('createdAt','desc').limit(25);
         }
 
@@ -27,6 +30,7 @@ class Domain{
             if(!querySnapshot.empty){
                 data = [];
                 querySnapshot.forEach((doc) => {
+                    console.log(doc.data(), 'truest')
                     let ch = { ...doc.data() };
                     ch.id = doc.id;
                     data.push(ch);
@@ -35,6 +39,19 @@ class Domain{
             }else{
                 console.log('No data available');
             }
+
+           
+            
+            
+
+            querySnapshot.docChanges().forEach((change) => {
+                if(querySnapshot.empty && change.type === "removed"){
+                    data = [];
+                }
+            });
+
+            
+             console.log(data,'yes ooo')
             
             return cb(data, null)
         },(err) => {
@@ -86,6 +103,10 @@ class Domain{
 
 
     static async deleteById(id){
+        let data = {};
+        data.deletedAt = timestamp; data.deleter = firebaseAuth.currentUser.displayName;
+        await domainCollections.doc(id).update(data);
+
         return domainCollections.doc(id).delete().then(() => {
             return ;
         }).catch(err => console.log(err));

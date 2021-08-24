@@ -16,7 +16,7 @@
             <div class="q-mt-md"></div>
 
             <q-card-section class="q-pt-none">
-                <q-select color="grey-3" outlined :dense="dense"  v-model="name" :options="$store.state.roles_details.dependencies.modules" label="Module">
+                <q-select color="grey-3" outlined :dense="dense"  v-model="name" :options="$store.state.roles_details.dependencies.module.ids" label="Module">
                 </q-select>
               </q-card-section>
 

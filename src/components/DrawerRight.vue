@@ -19,30 +19,13 @@
 
 <script>
 import Vue from 'vue'
-import ModuleCategoriesCreateForm from "./forms/ModuleCategoriesCreateForm"
-import ModuleCategoriesUpdateForm from "./forms/ModuleCategoriesUpdateForm"
-
-import ExtensionCategoriesCreateForm from "./forms/ExtensionCategoriesCreateForm"
-import ExtensionCategoriesUpdateForm from "./forms/ExtensionCategoriesUpdateForm"
-
-import DepartmentsCreateForm from "./forms/DepartmentsCreateForm"
-import DepartmentsUpdateForm from "./forms/DepartmentsUpdateForm"
-
-
 import DomainsCreateForm from "./forms/DomainsCreateForm"
-
-import UnitsCreateForm from "./forms/UnitsCreateForm"
-import UnitsUpdateForm from "./forms/UnitsUpdateForm"
 
 import RolesCreateForm from "./forms/RolesCreateForm"
 import RolesUpdateForm from "./forms/RolesUpdateForm"
 
 import ModulesCreateForm from "./forms/ModulesCreateForm"
 import ModulesUpdateForm from "./forms/ModulesUpdateForm"
-
-
-import ExtensionsCreateForm from "./forms/ExtensionsCreateForm"
-import ExtensionsUpdateForm from "./forms/ExtensionsUpdateForm"
 
 import UsersCreateForm from "./forms/UsersCreateForm"
 import UsersUpdateForm from "./forms/UsersUpdateForm"
@@ -59,20 +42,13 @@ import UsersBankUpdateForm from "./forms/details/UsersBankUpdateForm"
 
 import UsersPersonalInformationUpdateForm from "./forms/details/UsersPersonalInformationUpdateForm"
 import UsersResetCreateForm from "./forms/details/UsersResetCreateForm"
-
-
-import UsersSettingUpdateForm from "./forms/details/UsersSettingUpdateForm"
 import UsersAvatarUpdateForm from "./forms/details/UsersAvatarUpdateForm"
-
 import UsersDocumentCreateForm from "./forms/details/UsersDocumentCreateForm"
 
 
 import RoleInformationUpdateForm from "./forms/details/RoleInformationUpdateForm"
-
 import RolesModuleCreateForm from "./forms/details/RolesModuleCreateForm"
 import RolesModuleUpdateForm from "./forms/details/RolesModuleUpdateForm"
-
-
 import RolesExtensionCreateForm from "./forms/details/RolesExtensionCreateForm"
 import RolesExtensionUpdateForm from "./forms/details/RolesExtensionUpdateForm"
 
@@ -90,25 +66,20 @@ import SeedBanksCropTypesUpdateForm from "./forms/SeedBanksCropTypesUpdateForm"
 import SeedBankInventoryCreateForm from "./forms/details/SeedBankInventoryCreateForm.vue"
 
 
+import FeedbackCreateForm from "./forms/utilities/FeedbackCreateForm.vue"
+import UsersDependencyUpdateForm from './forms/UsersDependencyUpdateForm'
+import ModulesDependencyUpdateForm from './forms/ModulesDependencyUpdateForm'
+
+
 
 export default Vue.extend({
     name: 'Drawer',
     components: {
-        "app-module-categories-create-form": ModuleCategoriesCreateForm,
-        "app-module-categories-update-form": ModuleCategoriesUpdateForm,
-        "app-extension-categories-create-form": ExtensionCategoriesCreateForm,
-        "app-extension-categories-update-form": ExtensionCategoriesUpdateForm,
-        "app-departments-create-form": DepartmentsCreateForm,
-        "app-departments-update-form": DepartmentsUpdateForm,
         "app-domains-create-form": DomainsCreateForm,
-        "app-units-create-form": UnitsCreateForm,
-        "app-units-update-form": UnitsUpdateForm,
         "app-roles-create-form": RolesCreateForm,
         "app-roles-update-form": RolesUpdateForm,
         "app-modules-create-form": ModulesCreateForm,
         "app-modules-update-form": ModulesUpdateForm,
-        "app-extensions-create-form": ExtensionsCreateForm,
-        "app-extensions-update-form": ExtensionsUpdateForm,
         "app-users-create-form": UsersCreateForm,
         "app-users-update-form": UsersUpdateForm,
         "app-users-department-create-form": UsersDepartmentCreateForm,
@@ -119,7 +90,6 @@ export default Vue.extend({
         "app-users-bank-update-form": UsersBankUpdateForm,
         "app-users-personal-information-update-form": UsersPersonalInformationUpdateForm,
         "app-users-reset-create-form": UsersResetCreateForm,
-        "app-users-setting-update-form": UsersSettingUpdateForm,
         "app-users-avatar-update-form": UsersAvatarUpdateForm,
         "app-users-document-create-form": UsersDocumentCreateForm,
         "app-role-information-update-form": RoleInformationUpdateForm,
@@ -131,7 +101,10 @@ export default Vue.extend({
         "app-seed-banks-crop-categories-update-form": SeedBanksCropCategoriesUpdateForm,
         "app-seed-banks-crop-types-create-form": SeedBanksCropTypesCreateForm,
         "app-seed-banks-crop-types-update-form": SeedBanksCropTypesUpdateForm,
-        "app-seed-bank-inventory-create-form": SeedBankInventoryCreateForm
+        "app-seed-bank-inventory-create-form": SeedBankInventoryCreateForm,
+        "app-feedback-create-form": FeedbackCreateForm,
+        "app-users-dependency-update-form": UsersDependencyUpdateForm,
+        "app-modules-dependency-update-form": ModulesDependencyUpdateForm
     },
     data(){
         return {

@@ -1,8 +1,9 @@
 <template>
-    <div class="q-pa-md">
+    <div class="">
 
                     <q-table
                     flat
+                    grid
                     
                     :data="datas"
                     :columns="columns"
@@ -12,52 +13,52 @@
                     :loading="$store.state.users.loading"
                      :table-header-style="{textTransform: 'uppercase'}"
                      :pagination="initialPagination"
+                     hide-pagination
                     >
-                    <template v-slot:body="props">
 
-                        <q-tr :props="props">
-                            <q-td key="id" :props="props">
-                                {{ props.pageIndex+1 }} 
-                            </q-td>
-                            <q-td key="name" :props="props">
-                                {{ props.row.firstname+' '+ props.row.middlename+' '+props.row.lastname }} 
-                            </q-td>
 
-                            <q-td key="role" :props="props">
-                                {{ props.row.role }} 
-                            </q-td>
-                           
-                            <q-td key="timestamp" :props="props">
-                                <q-btn flat  icon="visibility" padding="xs" class="editIcon" @click.prevent="props.expand = !props.expand">
-                                    <q-tooltip>
-                                      View
-                                    </q-tooltip>
-                                </q-btn>
-                                <q-btn flat  icon="mode" padding="xs" class="editIcon" @click.prevent="editItem(props.row)" >
-                                     <q-tooltip>
-                                      Edit
-                                    </q-tooltip>
-                                </q-btn>
-                                <q-btn flat  icon="delete_outline" padding="xs" class="deleteIcon" @click.prevent="deleteItem(props.row.id)" >
-                                     <q-tooltip>
-                                       Delete
-                                    </q-tooltip>
-                                </q-btn>
+                       ///////////
 
-                            </q-td>
-                        </q-tr>
-                        <q-tr v-show="props.expand" :props="props">
 
-                            <q-td colspan="100%">
-                                <div class="text-left">
+                     <template v-slot:item="props">
+                                    <div class="q-pa-xs col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        
+                                            <q-list bordered>
+                                                <q-expansion-item
+                                                    group="somegroup"
+                                                    icon="person_outline"
+                                                    :label="props.row.firstname+' '+ props.row.middlename+' '+props.row.lastname"
+                                                    :caption="props.row.role"
+                                                    :header-style="{textTransform: 'capitalize'}"
+                                                    header-class="text-primary"
+                                                >
+                                                    <q-card>
+                                                    <q-card-section>
+                                                       
+                                                        <app-users-list-tile  :row="props.row"></app-users-list-tile>
+                                                        <div style="position: absolute; top: 10px; right: 0px">
+                                                            <q-btn flat  icon="mode" padding="xs" class="editIcon" @click.prevent="editItem(props.row)" >
+                                                                <q-tooltip>
+                                                                Edit
+                                                                </q-tooltip>
+                                                             </q-btn>
+                                                            <q-btn flat  icon="delete_outline" padding="xs" class="deleteIcon" @click.prevent="deleteItem(props.row.id)" >
+                                                                <q-tooltip>
+                                                                Delete
+                                                                </q-tooltip>
+                                                            </q-btn>
+                                                        </div>
 
-                                    <app-users-list-tile  :row="props.row"></app-users-list-tile>
+                                                    </q-card-section>
+                                                    </q-card>
+                                                </q-expansion-item>                                               
+                                            </q-list>
+                                        
+                                        <q-separator/>
+                                    </div>
+                                </template>
 
-                                </div>
-                            </q-td>
-                        </q-tr>
-                    </template>
-
+                    
 
                     <template v-slot:top>
                       <q-icon name="file_download" style="color: #ccc; font-size: 1.8em;" @click.prevent="exportable()">
@@ -78,6 +79,19 @@
                         </q-input>
                     </template>
 
+                  
+
+
+
+
+
+
+
+
+                    //////////////
+
+
+                  
                   
 
 

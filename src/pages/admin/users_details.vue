@@ -1,7 +1,7 @@
 <template>
     <q-page>
         <q-pull-to-refresh @refresh="refresh">
-           <app-users-details-toolbar></app-users-details-toolbar>
+          
            
           <div class="row">
               <div class="col-lg-1 col-xs-0"></div>
@@ -64,10 +64,9 @@ export default {
         async main(){
             this.$store.commit('admin_layout/UPDATE_BREAD_CRUMB', { prevPageTitle: 'Users', pageTitle: 'User Details' })
             this.$store.commit('users_details/UPDATE_USER_ID',this.$route.params.id)
-            this.$store.commit('users_details/CLEAR_PERSONAL_INFORMATION_FORM_DATA');
-            this.$store.dispatch('users_details/fetchPersonalInformation', this).then(() => {
-                
-            });
+            this.$store.dispatch('users_details/fetchPersonalInformation', this)
+            this.$store.dispatch('users_details/fetchUserDependency', this);
+            this.$store.dispatch('users_details/fetchRoleDependency', this);
         },
         async refresh(done){
             this.main().then(() => done());
@@ -77,11 +76,6 @@ export default {
     created(){ 
         this.main();
      },
-    beforeRouteLeave (to, from , next) {
-        this.$store.dispatch('users_details/unsubscribe', this);
-        this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false)
-        next();
-    }
 }
 
 

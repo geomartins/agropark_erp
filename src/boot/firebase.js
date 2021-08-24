@@ -31,14 +31,18 @@ const moduleCategoryCollections = fs.collection('module_categories');
 const extensionCategoryCollections = fs.collection('extension_categories');
 const activityCollections = fs.collection('activities');
 const moduleNotifierCollections = fs.collection('module_notifiers');
+const extensionNotifierCollections = fs.collection('extension_notifiers');
 const arrayRemove = firebase.firestore.FieldValue.arrayRemove
 const departmentCollections = fs.collection('departments');
 const seedBankCollections = fs.collection('seed_banks');
 const seedBankCropCategoryCollections = fs.collection('seed_bank_crop_categories');
+const feedbackCollections = fs.collection('feedbacks');
 const unitCollections = fs.collection('units');
 const roleCollections = fs.collection('roles');
 const userCollections = fs.collection('users');
 const moduleCollections = fs.collection('modules');
+
+const dependencyCollections = fs.collection('dependencies');
 const extensionCollections = fs.collection('extensions');
 const configurationCollections = fs.collection('configurations')
 const timestamp = firebase.firestore.FieldValue.serverTimestamp()
@@ -47,6 +51,7 @@ const firestoreTimestamp = firebase.firestore.Timestamp;
 
 //CollectionGroups
 const requestCollectionGroups = fs.collectionGroup('requests');
+const notifierCollectionGroups = fs.collectionGroup('notifiers');
 const inventoryCollectionGroups = fs.collectionGroup('inventories');
 
 // firebase.analytics();
@@ -68,19 +73,22 @@ export {
   extensionCategoryCollections,
   activityCollections,
   moduleNotifierCollections,
+  extensionNotifierCollections,
   departmentCollections,
   seedBankCollections,
   seedBankCropCategoryCollections,
+  feedbackCollections,
   unitCollections,
   roleCollections,
   userCollections,
   moduleCollections,
   extensionCollections,
   configurationCollections,
-  
+  dependencyCollections,
 
   requestCollectionGroups,
   inventoryCollectionGroups,
+  notifierCollectionGroups,
   arrayRemove,
   timestamp 
 }

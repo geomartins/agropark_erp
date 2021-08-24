@@ -35,6 +35,12 @@ class FlexValidators{
             if(validator.includes('email')){
                 this.email(formDataKey, validator.split(':'))
             }
+            if(validator.includes('emailExtension')){
+                this.emailExtension(formDataKey, validator.split(':'))
+            }
+            if(validator.includes('validTelephone')){
+                this.validTelephone(formDataKey, validator.split(':'))
+            }
             if(validator.includes('notNull')){
                 this.notNull(formDataKey, validator.split(':'))
             }
@@ -74,6 +80,18 @@ class FlexValidators{
         var mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
         if(!this.formData[formDataKey].match(mailformat)){
             this.errors.push(`${formDataKey} field contains invalid email format `)
+        }
+    }
+
+    emailExtension(formDataKey, rules){
+        if(!this.formData[formDataKey].split('@')[1].includes("agropark.ng")){
+            this.errors.push(`${formDataKey} field contains invalid email extension `)
+        }
+    }
+
+    validTelephone(formDataKey, rules){
+        if(!this.formData[formDataKey].includes("234") || this.formData[formDataKey].length != 13){
+            this.errors.push(`${formDataKey} field contains invalid telephone format `)
         }
     }
 

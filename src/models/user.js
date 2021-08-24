@@ -1,4 +1,4 @@
-import { userCollections, configurationCollections, firebaseAuth, timestamp, fs } from '../boot/firebase'
+import { userCollections, dependencyCollections, firebaseAuth, timestamp, fs } from '../boot/firebase'
 import { purifyObject, generateUid } from '../repositories/pick';
 import AlgoliaService from '../services/algolia_service';
 
@@ -13,14 +13,43 @@ class User{
         this.email = email;
         this.id = id;
     }
+    static async fetchRoleDependency(cb){
+        return dependencyCollections.doc('roles').onSnapshot((querySnapshot) => {
+            if(querySnapshot.exists){
+               return cb(querySnapshot.data(), null);
+            }else{
+                return cb({}, null);
+            }
 
-    async dependencies(cb){
-        return configurationCollections.doc('roles').get().then(doc => {
-            if(!doc.exists){
-               return cb([])
-            }        
-            return cb(doc.data().ids);
+        }, (err) => {
+            const errMessage = {message: err.code };
+            return cb({},errMessage);
         })
+    }
+    static async fetchUserDependency(cb){
+        return dependencyCollections.doc('users').onSnapshot((querySnapshot) => {
+            if(querySnapshot.exists){
+               return cb(querySnapshot.data(), null);
+            }else{
+                return cb({}, null);
+            }
+
+        }, (err) => {
+            const errMessage = {message: err.code };
+            return cb({},errMessage);
+        })
+       
+    }
+
+    static async updateUserDependency(data){
+        let id = data.id;
+        delete data.id;
+        data.editor = firebaseAuth.currentUser.uid; data.editedAt = timestamp;
+        return dependencyCollections.doc(id).set(purifyObject(data), { merge: true}).then((docRef) => {
+            return docRef;
+        }).catch(err => {
+            throw err;
+        });
     }
 
     fetch(type, cb){
@@ -30,6 +59,7 @@ class User{
                 // console.log('Inside old data', dataRef)
                 ref = userCollections.orderBy('createdAt','desc').startAfter(dataRef).limit(25);
             }else if(type == 'initial'){
+                data = [];
                 ref = userCollections.orderBy('createdAt','desc').limit(25);
             }
 
@@ -48,6 +78,12 @@ class User{
                     data.push(ch);
                      
                  });
+
+                 querySnapshot.docChanges().forEach((change) => {
+                    if(querySnapshot.empty && change.type === "removed"){
+                        data = [];
+                    }
+                });
                  console.log(data,'yes ooo')
                 return cb(data, null)
             },(err) => {
@@ -103,6 +139,10 @@ class User{
 
 
     static async deleteById(id){
+        let data = {};
+        data.deletedAt = timestamp; data.deleter = firebaseAuth.currentUser.displayName;
+
+        await userCollections.doc(id).update(data);
         return userCollections.doc(id).delete().then(() => {
             return ;
         }).catch(err => console.log(err));

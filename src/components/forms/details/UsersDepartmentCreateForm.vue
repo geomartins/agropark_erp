@@ -16,7 +16,7 @@
             <div class="q-mt-md"></div>
 
             <q-card-section class="q-pt-none">
-                <q-select color="grey-3" outlined :dense="dense"  v-model="name" :options="$store.state.users_details.dependencies.departments" label="Department">
+                <q-select color="grey-3" outlined :dense="dense"  v-model="name" :options="$store.state.users_details.dependencies.user.departments.split(',')" label="Department">
                 </q-select>
               </q-card-section>
 

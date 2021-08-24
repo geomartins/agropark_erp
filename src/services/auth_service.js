@@ -27,22 +27,6 @@ class AuthService{
     }
 
     async customClaim(){
-        console.log(firebaseAuth)
-//         firebase.auth().currentUser.getIdTokenResult()
-//   .then((idTokenResult) => {
-//      // Confirm the user is an Admin.
-//      if (!!idTokenResult.claims.admin) {
-//        // Show admin UI.
-//        showAdminUI();
-//      } else {
-//        // Show regular user UI.
-//        showRegularUI();
-//      }
-//   })
-//   .catch((error) => {
-//     console.log(error);
-//   });
-        // console.log(await firebaseAuth.currentUser)
         firebaseAuth.currentUser.getIdTokenResult().then((idTokenResult) => {
             //get the user custom claim: e.g coo, cfo
             return idTokenResult.claims.admin;

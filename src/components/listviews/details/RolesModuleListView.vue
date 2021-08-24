@@ -191,12 +191,7 @@ export default {
           this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-roles-module-create-form');
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true);
        },
-      async showModules(){
-          this.$store.dispatch('roles_details/fetchModules',this).then(() => {
-              this.$store.dispatch('roles_details/fetchModuleDependencies', this);
-          })
-
-      }
+      
     }
 }
 </script>

@@ -92,14 +92,16 @@ export default {
             this.UPDATE_ROLE_ID(this.$route.params.id);
             this.CLEAR_ROLE_INFORMATION_FORM_DATA();
 
-            this.fetchRoleInformation(this).then(()=> {
-                this.$store.dispatch('roles_details/fetchModules',this).then(() => {
-                    this.$store.dispatch('roles_details/fetchModuleDependencies', this);
-                })
-                this.$store.dispatch('roles_details/fetchExtensions',this).then(() => {
-                    this.$store.dispatch('roles_details/fetchExtensionDependencies', this);
-                })
-            });
+            this.fetchRoleInformation(this);
+            this.$store.dispatch('roles_details/fetchModules',this);
+            this.$store.dispatch('roles_details/fetchModuleDependency');
+
+            this.$store.dispatch('roles_details/fetchExtensions',this)
+            this.$store.dispatch('roles_details/fetchExtensionDependency');
+
+            this.$store.dispatch('roles_details/fetchRoleDependency');
+               
+            
         },
         async refresh(done){
             this.main().then(() => done());
@@ -108,12 +110,7 @@ export default {
 
     created(){ 
         this.main();
-     },
-    beforeRouteLeave (to, from , next) {
-        this.unsubscribe(this);
-        this.UPDATE_RIGHT_DRAWER_OPEN(false);
-        next();
-    }
+    },
 }
 
 </script>

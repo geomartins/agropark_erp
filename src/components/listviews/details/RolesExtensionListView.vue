@@ -126,12 +126,7 @@ export default {
           this.$store.commit('admin_layout/UPDATE_COMPONENT_NAME','app-roles-extension-create-form');
           this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',true);
        },
-      async showExtensions(){
-          this.$store.dispatch('roles_details/fetchExtensions',this).then(() => {
-              this.$store.dispatch('roles_details/fetchExtensionDependencies', this);
-          })
-
-      }
+      
     }
 }
 </script>

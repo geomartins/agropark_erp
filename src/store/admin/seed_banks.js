@@ -244,7 +244,7 @@ const actions = {
        commit('UPDATE_UNSUBSCRIBE', { type: 'fetchCropCategories', value: unsubscribe});
     },
 
-    async updateCropCategory({commit, state},instance){
+    async updateCropCategory(p){
         try{
             commit('UPDATE_IS_LOADING', true);
             const data = state.cropCategoriesFormData;

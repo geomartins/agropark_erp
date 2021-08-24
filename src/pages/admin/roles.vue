@@ -20,6 +20,8 @@
 import { mapState } from 'vuex';
 import RolesListView from '../../components/listviews/RolesListView'
 import Skeleton from '../../components/Skeleton'
+import FirestoreService from '../../services/firestore_service'
+
 export default {
   name: "roles",
   meta: {
@@ -57,15 +59,13 @@ export default {
    
   },
    beforeMount() {
+    new FirestoreService().moduleNotifierCleaner("roles").catch(err => {
+           console.log(err.message);
+    });
     this.main();
   },
   mounted() {
     this.getNextData();
   },
-  beforeRouteLeave (to, from , next) {
-      this.$store.dispatch('roles/unsubscribe', this);
-      this.$store.commit('admin_layout/UPDATE_RIGHT_DRAWER_OPEN',false)
-      next();
-  }
 }
 </script>

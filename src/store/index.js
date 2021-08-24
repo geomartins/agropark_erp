@@ -4,22 +4,25 @@ import login from './auth/login'
 import password_reset from './auth/password_reset'
 import password_confirmation from './auth/password_confirmation'
 import admin_layout from './admin_layout'
-import module_categories from './admin/module_categories'
-import extension_categories from './admin/extension_categories'
-import activities from './admin/activities'
 import module_notifiers from './admin/module_notifiers'
-import departments from './admin/departments';
+import extension_notifiers from './admin/extension_notifiers'
 import seed_banks from './admin/seed_banks'
 import seed_bank_details from './admin/seed_bank_details'
 import domains from './admin/domains';
-import units from './admin/units';
 import roles from './admin/roles'
 import modules from './admin/modules'
-import extensions from './admin/extensions'
 import users from './admin/users'
 import users_details from './admin/users_details'
 import roles_details from './admin/roles_details'
+import utilities from './admin/utilities'
 // import example from './module-example'
+
+import createPersistedState from "vuex-persistedstate";
+import SecureLS from "secure-ls";
+var ls = new SecureLS({
+  encodingType: "aes",
+  isCompression: false,
+});
 
 Vue.use(Vuex)
 
@@ -34,6 +37,15 @@ Vue.use(Vuex)
 
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
+    plugins: [
+      // createPersistedState({
+      //   storage: {
+      //     getItem: key => ls.get(key),
+      //     setItem: (key, value) => ls.set(key, value),
+      //     removeItem: key => ls.remove(key)
+      //   }
+      // })
+    ],
     modules: {
       
       //auth
@@ -43,15 +55,10 @@ export default function (/* { ssrContext } */) {
       admin_layout,
  
       //admin
-      module_categories,
-      extension_categories,
-      activities,
       module_notifiers,
-      departments,
+      extension_notifiers,
       domains,
       modules,
-      extensions,
-      units,
       
       roles,
       roles_details,
@@ -60,7 +67,10 @@ export default function (/* { ssrContext } */) {
       users_details,
 
       seed_banks,
-      seed_bank_details
+      seed_bank_details,
+
+      utilities,
+      
 
 
 
